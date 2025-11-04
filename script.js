@@ -1,8 +1,28 @@
 class SolarSystemExplorer {
     constructor() {
-        this.canvas = document.getElementById('gameCanvas');
-        this.ctx = this.canvas.getContext('2d');
-        this.setupCanvas();
+        this.currentView = '2D';
+        this.setupViews();
+        this.init2D();
+        this.init3D();
+        this.setupEventListeners();
+        this.createStars();
+        this.resetView();
+        this.animate();
+    }
+
+    setupViews() {
+        this.container3D = document.getElementById('container3D');
+        this.canvas2D = document.getElementById('gameCanvas');
+        this.canvas3D = document.createElement('canvas');
+        this.canvas3D.id = 'threeCanvas';
+        this.container3D.appendChild(this.canvas3D);
+        
+        this.canvas2D.classList.add('active');
+    }
+
+    init2D() {
+        this.ctx = this.canvas2D.getContext('2d');
+        this.setupCanvas2D();
 
         // Game state
         this.camera = { x: 0, y: 0, zoom: 1 };
@@ -210,23 +230,130 @@ class SolarSystemExplorer {
                 ]
             }
         };
-
-        this.setupEventListeners();
-        this.createStars();
-        this.resetView();
-        this.animate();
     }
 
-    setupCanvas() {
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
+    init3D() {
+        // Three.js setup
+        this.scene = new THREE.Scene();
+        this.camera3D = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
+        this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas3D, antialias: true });
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.renderer.setClearColor(0x000011, 1);
+
+        // Orbit controls
+        this.controls = new THREE.OrbitControls(this.camera3D, this.renderer.domElement);
+        this.controls.enableDamping = true;
+        this.controls.dampingFactor = 0.05;
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0x333333);
+        this.scene.add(ambientLight);
+
+        const sunLight = new THREE.PointLight(0xffffff, 2, 1000);
+        this.scene.add(sunLight);
+
+        // Stars background
+        this.create3DStars();
+
+        // Create solar system
+        this.create3DSolarSystem();
+
+        // Initial camera position
+        this.camera3D.position.set(0, 300, 500);
+        this.controls.update();
+    }
+
+    create3DStars() {
+        const starGeometry = new THREE.BufferGeometry();
+        const starMaterial = new THREE.PointsMaterial({
+            color: 0xffffff,
+            size: 2,
+            sizeAttenuation: true
+        });
+
+        const starVertices = [];
+        for (let i = 0; i < 10000; i++) {
+            const x = (Math.random() - 0.5) * 2000;
+            const y = (Math.random() - 0.5) * 2000;
+            const z = (Math.random() - 0.5) * 2000;
+            starVertices.push(x, y, z);
+        }
+
+        starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
+        const stars = new THREE.Points(starGeometry, starMaterial);
+        this.scene.add(stars);
+    }
+
+    create3DSolarSystem() {
+        // Sun
+        const sunGeometry = new THREE.SphereGeometry(20, 32, 32);
+        const sunMaterial = new THREE.MeshBasicMaterial({
+            color: 0xffff00,
+            emissive: 0xffff00,
+            emissiveIntensity: 0.5
+        });
+        this.sun = new THREE.Mesh(sunGeometry, sunMaterial);
+        this.scene.add(this.sun);
+
+        // Create planets
+        this.planetMeshes = {};
+        Object.entries(this.planetData).forEach(([key, planet]) => {
+            const geometry = new THREE.SphereGeometry(planet.radius / 2, 32, 32);
+            const material = new THREE.MeshPhongMaterial({
+                color: planet.color,
+                shininess: 30
+            });
+            
+            const planetMesh = new THREE.Mesh(geometry, material);
+            
+            // Create orbit path
+            const orbitGeometry = new THREE.RingGeometry(planet.orbitRadius - 0.5, planet.orbitRadius + 0.5, 64);
+            const orbitMaterial = new THREE.MeshBasicMaterial({
+                color: 0xffffff,
+                side: THREE.DoubleSide,
+                transparent: true,
+                opacity: 0.1
+            });
+            const orbit = new THREE.Mesh(orbitGeometry, orbitMaterial);
+            orbit.rotation.x = Math.PI / 2;
+            this.scene.add(orbit);
+
+            // Saturn rings
+            if (key === 'saturn') {
+                const ringGeometry = new THREE.RingGeometry(planet.radius + 5, planet.radius + 15, 32);
+                const ringMaterial = new THREE.MeshBasicMaterial({
+                    color: 0xfad0c4,
+                    side: THREE.DoubleSide,
+                    transparent: true,
+                    opacity: 0.7
+                });
+                const rings = new THREE.Mesh(ringGeometry, ringMaterial);
+                rings.rotation.x = Math.PI / 2;
+                planetMesh.add(rings);
+            }
+
+            this.planetMeshes[key] = planetMesh;
+            this.scene.add(planetMesh);
+        });
+    }
+
+    setupCanvas2D() {
+        this.canvas2D.width = window.innerWidth;
+        this.canvas2D.height = window.innerHeight;
         window.addEventListener('resize', () => {
-            this.canvas.width = window.innerWidth;
-            this.canvas.height = window.innerHeight;
+            this.canvas2D.width = window.innerWidth;
+            this.canvas2D.height = window.innerHeight;
+            this.renderer.setSize(window.innerWidth, window.innerHeight);
+            this.camera3D.aspect = window.innerWidth / window.innerHeight;
+            this.camera3D.updateProjectionMatrix();
         });
     }
 
     setupEventListeners() {
+        // View toggle
+        document.getElementById('view2D').addEventListener('click', () => this.switchView('2D'));
+        document.getElementById('view3D').addEventListener('click', () => this.switchView('3D'));
+
         // Planet buttons
         document.querySelectorAll('.planet-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -268,18 +395,24 @@ class SolarSystemExplorer {
             document.getElementById('badgePopup').classList.remove('show');
         });
 
-        // Canvas interactions
+        // Canvas interactions for 2D
+        this.setup2DInteractions();
+    }
+
+    setup2DInteractions() {
         let isDragging = false;
         let lastMouseX = 0;
         let lastMouseY = 0;
 
-        this.canvas.addEventListener('mousedown', (e) => {
+        this.canvas2D.addEventListener('mousedown', (e) => {
+            if (this.currentView !== '2D') return;
             isDragging = true;
             lastMouseX = e.clientX;
             lastMouseY = e.clientY;
         });
 
-        this.canvas.addEventListener('mousemove', (e) => {
+        this.canvas2D.addEventListener('mousemove', (e) => {
+            if (this.currentView !== '2D') return;
             if (isDragging && !this.selectedPlanet) {
                 const deltaX = e.clientX - lastMouseX;
                 const deltaY = e.clientY - lastMouseY;
@@ -290,15 +423,37 @@ class SolarSystemExplorer {
             }
         });
 
-        this.canvas.addEventListener('mouseup', () => {
+        this.canvas2D.addEventListener('mouseup', () => {
             isDragging = false;
         });
 
-        this.canvas.addEventListener('wheel', (e) => {
+        this.canvas2D.addEventListener('wheel', (e) => {
+            if (this.currentView !== '2D') return;
             e.preventDefault();
             const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
             this.camera.zoom = Math.max(0.1, Math.min(10, this.camera.zoom * zoomFactor));
         });
+    }
+
+    switchView(view) {
+        this.currentView = view;
+        
+        // Update UI
+        document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(`view${view}`).classList.add('active');
+        
+        // Show/hide canvases
+        this.canvas2D.classList.toggle('active', view === '2D');
+        this.canvas3D.classList.toggle('active', view === '3D');
+        
+        // Show/hide 3D controls info
+        document.getElementById('controls3DInfo').style.display = view === '3D' ? 'block' : 'none';
+        
+        if (view === '3D') {
+            this.reset3DView();
+        } else {
+            this.resetView();
+        }
     }
 
     createStars() {
@@ -322,8 +477,12 @@ class SolarSystemExplorer {
         document.querySelectorAll('.planet-btn').forEach(btn => btn.classList.remove('active'));
         document.querySelector(`[data-planet="${planetKey}"]`).classList.add('active');
 
-        // Animate camera to planet
-        this.animateCameraTo(planetKey);
+        // Animate to planet based on current view
+        if (this.currentView === '2D') {
+            this.animateCameraTo(planetKey);
+        } else {
+            this.animate3DToPlanet(planetKey);
+        }
 
         // Show planet info
         this.showPlanetInfo(planet);
@@ -343,7 +502,7 @@ class SolarSystemExplorer {
     }
 
     animateCameraTo(planetKey) {
-        if (this.isAnimating) return;
+        if (this.isAnimating || this.currentView !== '2D') return;
         
         this.isAnimating = true;
         const planet = this.planetData[planetKey];
@@ -355,13 +514,13 @@ class SolarSystemExplorer {
         const startX = this.camera.x;
         const startY = this.camera.y;
         const startZoom = this.camera.zoom;
-        const duration = 2000; // 2 seconds
+        const duration = 2000;
         const startTime = Date.now();
 
         const animate = () => {
             const elapsed = Date.now() - startTime;
             const progress = Math.min(elapsed / duration, 1);
-            const easeProgress = 1 - Math.pow(1 - progress, 3); // Ease out cubic
+            const easeProgress = 1 - Math.pow(1 - progress, 3);
 
             this.camera.x = startX + (targetX - startX) * easeProgress;
             this.camera.y = startY + (targetY - startY) * easeProgress;
@@ -377,12 +536,59 @@ class SolarSystemExplorer {
         animate();
     }
 
+    animate3DToPlanet(planetKey) {
+        const planet = this.planetData[planetKey];
+        const planetMesh = this.planetMeshes[planetKey];
+        
+        if (!planetMesh) return;
+
+        // Calculate target position (current position in orbit)
+        const angle = (this.time / planet.orbitPeriod) * 2 * Math.PI;
+        const targetPosition = new THREE.Vector3(
+            Math.cos(angle) * planet.orbitRadius,
+            0,
+            Math.sin(angle) * planet.orbitRadius
+        );
+
+        // Animate camera to look at planet
+        const startPosition = this.camera3D.position.clone();
+        const targetCameraPosition = targetPosition.clone().multiplyScalar(2);
+        targetCameraPosition.y = 50;
+
+        const duration = 2000;
+        const startTime = Date.now();
+
+        const animate = () => {
+            const elapsed = Date.now() - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const easeProgress = 1 - Math.pow(1 - progress, 3);
+
+            this.camera3D.position.lerpVectors(startPosition, targetCameraPosition, easeProgress);
+            this.controls.target.lerpVectors(this.controls.target, targetPosition, easeProgress);
+            this.controls.update();
+
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            }
+        };
+
+        animate();
+    }
+
     resetView() {
         this.selectedPlanet = null;
         document.querySelectorAll('.planet-btn').forEach(btn => btn.classList.remove('active'));
         document.getElementById('infoPanel').classList.remove('show');
         document.getElementById('moonPanel').classList.remove('show');
 
+        if (this.currentView === '2D') {
+            this.reset2DView();
+        } else {
+            this.reset3DView();
+        }
+    }
+
+    reset2DView() {
         if (this.isAnimating) return;
         
         this.isAnimating = true;
@@ -405,6 +611,32 @@ class SolarSystemExplorer {
                 requestAnimationFrame(animate);
             } else {
                 this.isAnimating = false;
+            }
+        };
+
+        animate();
+    }
+
+    reset3DView() {
+        const startPosition = this.camera3D.position.clone();
+        const startTarget = this.controls.target.clone();
+        const targetPosition = new THREE.Vector3(0, 300, 500);
+        const targetTarget = new THREE.Vector3(0, 0, 0);
+
+        const duration = 2000;
+        const startTime = Date.now();
+
+        const animate = () => {
+            const elapsed = Date.now() - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const easeProgress = 1 - Math.pow(1 - progress, 3);
+
+            this.camera3D.position.lerpVectors(startPosition, targetPosition, easeProgress);
+            this.controls.target.lerpVectors(startTarget, targetTarget, easeProgress);
+            this.controls.update();
+
+            if (progress < 1) {
+                requestAnimationFrame(animate);
             }
         };
 
@@ -476,14 +708,24 @@ class SolarSystemExplorer {
         // Update time based on animation speed
         this.time += (deltaTime / 1000) * this.animationSpeed;
 
+        if (this.currentView === '2D') {
+            this.animate2D();
+        } else {
+            this.animate3D();
+        }
+
+        requestAnimationFrame(() => this.animate());
+    }
+
+    animate2D() {
         // Clear canvas
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.clearRect(0, 0, this.canvas2D.width, this.canvas2D.height);
 
         // Apply camera transform
         this.ctx.save();
         this.ctx.translate(
-            this.canvas.width / 2 - this.camera.x * this.camera.zoom,
-            this.canvas.height / 2 - this.camera.y * this.camera.zoom
+            this.canvas2D.width / 2 - this.camera.x * this.camera.zoom,
+            this.canvas2D.height / 2 - this.camera.y * this.camera.zoom
         );
         this.ctx.scale(this.camera.zoom, this.camera.zoom);
 
@@ -549,32 +791,30 @@ class SolarSystemExplorer {
                 this.ctx.ellipse(x, y, planet.radius + 12, planet.radius + 5, 0, 0, 2 * Math.PI);
                 this.ctx.stroke();
             }
-
-            // Draw moons if planet is selected and camera is close
-            if (this.selectedPlanet === key && this.camera.zoom > 2) {
-                planet.moons.forEach((moon, index) => {
-                    const moonAngle = (this.time * 2 + index * Math.PI / 2) % (2 * Math.PI);
-                    const moonDistance = 30 + index * 10;
-                    const moonX = x + Math.cos(moonAngle) * moonDistance;
-                    const moonY = y + Math.sin(moonAngle) * moonDistance;
-
-                    this.ctx.fillStyle = '#cccccc';
-                    this.ctx.beginPath();
-                    this.ctx.arc(moonX, moonY, 3, 0, 2 * Math.PI);
-                    this.ctx.fill();
-
-                    // Draw moon orbit
-                    this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
-                    this.ctx.lineWidth = 1;
-                    this.ctx.beginPath();
-                    this.ctx.arc(x, y, moonDistance, 0, 2 * Math.PI);
-                    this.ctx.stroke();
-                });
-            }
         });
 
         this.ctx.restore();
-        requestAnimationFrame(() => this.animate());
+    }
+
+    animate3D() {
+        // Update planet positions in 3D
+        Object.entries(this.planetData).forEach(([key, planet]) => {
+            const planetMesh = this.planetMeshes[key];
+            if (planetMesh) {
+                const angle = (this.time / planet.orbitPeriod) * 2 * Math.PI;
+                planetMesh.position.x = Math.cos(angle) * planet.orbitRadius;
+                planetMesh.position.z = Math.sin(angle) * planet.orbitRadius;
+                
+                // Rotate planets for visual interest
+                planetMesh.rotation.y += 0.01;
+            }
+        });
+
+        // Update controls
+        this.controls.update();
+
+        // Render 3D scene
+        this.renderer.render(this.scene, this.camera3D);
     }
 
     lightenColor(color, percent) {
