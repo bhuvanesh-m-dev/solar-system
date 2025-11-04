@@ -371,11 +371,6 @@ class SolarSystemExplorer {
             });
         });
 
-        // Home button
-        document.getElementById('homeBtn').addEventListener('click', () => {
-            this.resetView();
-        });
-
         // Moon controls
         document.getElementById('viewMoonsBtn').addEventListener('click', () => {
             this.showMoons();
@@ -452,7 +447,7 @@ class SolarSystemExplorer {
         if (view === '3D') {
             this.reset3DView();
         } else {
-            this.resetView();
+            this.reset2DView();
         }
     }
 
