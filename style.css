@@ -1,379 +1,117 @@
-@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar System Explorer for Kids</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="container3D">
+        <canvas id="gameCanvas"></canvas>
+    </div>
+    
+    <!-- Stars background -->
+    <div class="stars" id="starsContainer"></div>
+    
+    <!-- UI Overlay -->
+    <div class="ui-overlay">
+        <!-- View Toggle -->
+        <div class="view-toggle">
+            <button id="view2D" class="view-btn active">2D View</button>
+            <button id="view3D" class="view-btn">3D View</button>
+        </div>
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+        <!-- Planet Selection Buttons -->
+        <div class="planet-buttons">
+            <button class="planet-btn" data-planet="mercury" title="Mercury - The Fastest Planet!">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/0db2633a-97b3-4327-aa61-b71969fb602c.png" alt="Mercury" />
+            </button>
+            <button class="planet-btn" data-planet="venus" title="Venus - The Hottest Planet!">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/e4577770-a07b-42f0-afcf-9a98fe96d407.png" alt="Venus" />
+            </button>
+            <button class="planet-btn" data-planet="earth" title="Earth - Our Home Planet!">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/4b7a9204-23ce-487d-96bd-72c28ec7fc1c.png" alt="Earth" />
+            </button>
+            <button class="planet-btn" data-planet="mars" title="Mars - The Red Planet!">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/bdf7d5be-3e56-4a4b-b616-442e1f71df6b.png" alt="Mars" />
+            </button>
+            <button class="planet-btn" data-planet="jupiter" title="Jupiter - The Giant Planet!">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/da46e918-7b4c-44fe-928c-cf42d2b34b3b.png" alt="Jupiter" />
+            </button>
+            <button class="planet-btn" data-planet="saturn" title="Saturn - The Ringed Planet!">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/8a210008-8dac-49e4-9fc2-14aa08563158.png" alt="Saturn" />
+            </button>
+            <button class="planet-btn" data-planet="uranus" title="Uranus - The Tilted Planet!">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/6aaa5f58-4e7a-4523-ad0c-e843789974f0.png" alt="Uranus" />
+            </button>
+            <button class="planet-btn" data-planet="neptune" title="Neptune - The Windy Planet!">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/b6ae504b-3690-4e44-9c26-54ce00d23830.png" alt="Neptune" />
+            </button>
+        </div>
+        
+        <!-- Speed Controls -->
+        <div class="speed-controls">
+            <h3>Animation Speed</h3>
+            <div style="margin-top: 10px;">
+                <button class="speed-btn" data-speed="-10">-10x</button>
+                <button class="speed-btn" data-speed="-1">-1x</button>
+                <button class="speed-btn active" data-speed="1">1x</button>
+                <button class="speed-btn" data-speed="10">10x</button>
+                <button class="speed-btn" data-speed="100">100x</button>
+                <button class="speed-btn" data-speed="1000">1000x</button>
+            </div>
+        </div>
+        
+        <!-- Progress Bar -->
+        <div class="progress-bar" id="progressBar">
+            <div style="margin-bottom: 8px;">Exploration Progress</div>
+            <div style="background: rgba(255,255,255,0.2); height: 6px; border-radius: 3px;">
+                <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+            </div>
+            <div style="margin-top: 5px; font-size: 14px;" id="progressText">0 / 8 planets explored</div>
+        </div>
+        
+        <!-- Planet Info Panel -->
+        <div class="info-panel" id="infoPanel">
+            <h2 id="planetName">Select a Planet</h2>
+            <div id="planetDetails">Click on a planet button above to learn amazing facts!</div>
+            <button id="viewMoonsBtn" style="margin-top: 15px; background: linear-gradient(45deg, #667eea 0%, #764ba2 100%); border: none; color: white; padding: 10px 20px; border-radius: 8px; cursor: pointer; display: none;">View Moons</button>
+        </div>
+        
+        <!-- Moon Panel -->
+        <div class="moon-panel" id="moonPanel">
+            <h3>Moons</h3>
+            <div id="moonsList"></div>
+            <button id="closeMoonsBtn" style="margin-top: 15px; background: #ff6b6b; border: none; color: white; padding: 8px 16px; border-radius: 8px; cursor: pointer;">Close</button>
+        </div>
+        
+        <!-- Did You Know Popup -->
+        <div class="did-you-know" id="didYouKnow">
+            <h3>Did You Know?</h3>
+            <p id="funFactText"></p>
+            <button id="closeFunFact" style="margin-top: 10px; background: rgba(255,255,255,0.2); border: none; color: white; padding: 6px 12px; border-radius: 6px; cursor: pointer;">Cool!</button>
+        </div>
+        
+        <!-- Badge Popup -->
+        <div class="badge-popup" id="badgePopup">
+            <h2>🏆 Achievement Unlocked!</h2>
+            <p id="badgeText"></p>
+            <button id="closeBadge" style="margin-top: 15px; background: #333; border: none; color: white; padding: 10px 20px; border-radius: 8px; cursor: pointer;">Awesome!</button>
+        </div>
 
-body {
-    font-family: 'Comic Neue', cursive;
-    background: linear-gradient(135deg, #000428 0%, #004e92 100%);
-    overflow: hidden;
-    height: 100vh;
-}
-
-#container3D {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-}
-
-#gameCanvas {
-    display: block;
-    background: radial-gradient(circle at center, #001122 0%, #000000 100%);
-    cursor: grab;
-}
-
-#gameCanvas:active {
-    cursor: grabbing;
-}
-
-.ui-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 10;
-}
-
-.ui-overlay > * {
-    pointer-events: auto;
-}
-
-/* View Toggle */
-.view-toggle {
-    position: absolute;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(20px);
-    border-radius: 25px;
-    padding: 5px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.view-btn {
-    padding: 10px 20px;
-    border: none;
-    background: transparent;
-    color: white;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.view-btn.active {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-}
-
-.planet-buttons {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    max-width: 300px;
-    flex-direction: row;
-}
-
-.planet-btn {
-    width: 60px;
-    height: 60px;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 
-        0 4px 15px rgba(0,0,0,0.3),
-        inset 0 1px 0 rgba(255,255,255,0.2),
-        inset 0 -1px 0 rgba(0,0,0,0.2);
-    position: relative;
-    overflow: hidden;
-}
-
-.planet-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 50%);
-    border-radius: 50%;
-    pointer-events: none;
-}
-
-.planet-btn:hover {
-    transform: scale(1.1);
-    box-shadow: 
-        0 6px 20px rgba(255,255,255,0.3),
-        inset 0 1px 0 rgba(255,255,255,0.3),
-        inset 0 -1px 0 rgba(0,0,0,0.3);
-}
-
-.planet-btn.active {
-    transform: scale(1.2);
-    box-shadow: 
-        0 0 30px rgba(255,255,255,0.6),
-        inset 0 2px 0 rgba(255,255,255,0.4),
-        inset 0 -2px 0 rgba(0,0,0,0.4);
-}
-
-.speed-controls {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 15px;
-    border-radius: 15px;
-    color: white;
-    box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
-}
-
-.speed-btn {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.8) 0%, rgba(118, 75, 162, 0.8) 100%);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: white;
-    padding: 8px 12px;
-    margin: 0 2px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s;
-    box-shadow: 
-        0 4px 6px rgba(0, 0, 0, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
-}
-
-.speed-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 
-        0 6px 12px rgba(0, 0, 0, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3);
-}
-
-.speed-btn.active {
-    background: linear-gradient(135deg, rgba(255, 107, 107, 0.9) 0%, rgba(255, 165, 0, 0.9) 100%);
-    box-shadow: 
-        0 0 15px rgba(255, 107, 107, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3);
-}
-
-.info-panel {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: white;
-    padding: 20px;
-    border-radius: 15px;
-    max-width: 400px;
-    min-height: 150px;
-    transform: translateY(100%);
-    transition: transform 0.5s ease;
-    box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
-}
-
-.info-panel.show {
-    transform: translateY(0);
-}
-
-.moon-panel {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: white;
-    padding: 20px;
-    border-radius: 15px;
-    max-width: 300px;
-    max-height: 400px;
-    overflow-y: auto;
-    transform: translateX(100%);
-    transition: transform 0.5s ease;
-    box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
-}
-
-.moon-panel.show {
-    transform: translateX(0);
-}
-
-.badge-popup {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    background: linear-gradient(135deg, rgba(255, 215, 0, 0.9) 0%, rgba(255, 237, 78, 0.9) 100%);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: #333;
-    padding: 30px;
-    border-radius: 20px;
-    text-align: center;
-    z-index: 100;
-    transition: transform 0.5s ease;
-    box-shadow: 
-        0 20px 40px rgba(0, 0, 0, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.4);
-}
-
-.badge-popup.show {
-    transform: translate(-50%, -50%) scale(1);
-}
-
-.did-you-know {
-    position: absolute;
-    top: 50%;
-    right: 20px;
-    transform: translateY(-50%) translateX(100%);
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: white;
-    padding: 20px;
-    border-radius: 15px;
-    max-width: 300px;
-    transition: transform 0.5s ease;
-    box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3);
-}
-
-.did-you-know.show {
-    transform: translateY(-50%) translateX(0);
-}
-
-.stars {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-}
-
-.star {
-    position: absolute;
-    background: white;
-    border-radius: 50%;
-    animation: twinkle 2s infinite alternate;
-}
-
-@keyframes twinkle {
-    0% { opacity: 0.3; }
-    100% { opacity: 1; }
-}
-
-.home-btn {
-    width: 40%;
-    margin: 10px auto 0 auto;
-    display: block;
-    position: static;
-    background: linear-gradient(135deg, rgba(255, 107, 107, 0.9) 0%, rgba(255, 165, 0, 0.9) 100%);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: white;
-    padding: 12px 20px;
-    border-radius: 25px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: all 0.3s ease;
-    box-shadow: 
-        0 6px 20px rgba(0, 0, 0, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3);
-}
-
-.home-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 
-        0 8px 25px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.4);
-}
-
-.moon-list {
-    display: grid;
-    gap: 10px;
-    margin-top: 15px;
-}
-
-.moon-item {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 10px;
-    border-radius: 8px;
-    border-left: 4px solid #64ffda;
-}
-
-.progress-bar {
-    position: absolute;
-    bottom: 200px;
-    left: 20px;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 15px;
-    border-radius: 15px;
-    color: white;
-    min-width: 200px;
-    box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
-}
-
-.progress-fill {
-    height: 6px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 3px;
-    transition: width 0.3s ease;
-}
-
-.controls-info {
-    position: absolute;
-    bottom: 20px;
-    right: 350px;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: white;
-    padding: 15px;
-    border-radius: 15px;
-    max-width: 200px;
-    font-size: 12px;
-    display: none;
-}
-
-.controls-info h4 {
-    margin-bottom: 8px;
-    color: #64ffda;
-}
-
-/* 3D specific styles */
-#container3D canvas {
-    display: none;
-}
-
-#container3D canvas.active {
-    display: block;
-}
+        <!-- 3D Controls Info -->
+        <div class="controls-info" id="controls3DInfo">
+            <h4>3D Controls</h4>
+            <p>• Left Click + Drag: Rotate</p>
+            <p>• Right Click + Drag: Pan</p>
+            <p>• Scroll: Zoom</p>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
