@@ -13,20 +13,63 @@
         <!-- Canvas will be created by Three.js -->
     </div>
     
+    <!-- Planet Selection Sidebar -->
+    <div class="planet-sidebar">
+        <h3>Solar System Objects</h3>
+        <div class="planet-buttons">
+            <button class="planet-btn" data-planet="sun">
+                <div class="planet-icon" style="background: #ffd700;"></div>
+                <span>Sun</span>
+            </button>
+            <button class="planet-btn" data-planet="mercury">
+                <div class="planet-icon" style="background: #8c7853;"></div>
+                <span>Mercury</span>
+            </button>
+            <button class="planet-btn" data-planet="venus">
+                <div class="planet-icon" style="background: #ffc649;"></div>
+                <span>Venus</span>
+            </button>
+            <button class="planet-btn" data-planet="earth">
+                <div class="planet-icon" style="background: #4facfe;"></div>
+                <span>Earth</span>
+            </button>
+            <button class="planet-btn" data-planet="mars">
+                <div class="planet-icon" style="background: #ff6b6b;"></div>
+                <span>Mars</span>
+            </button>
+            <button class="planet-btn" data-planet="jupiter">
+                <div class="planet-icon" style="background: #d2691e;"></div>
+                <span>Jupiter</span>
+            </button>
+            <button class="planet-btn" data-planet="saturn">
+                <div class="planet-icon" style="background: #fad0c4;"></div>
+                <span>Saturn</span>
+            </button>
+            <button class="planet-btn" data-planet="uranus">
+                <div class="planet-icon" style="background: #4dd0e1;"></div>
+                <span>Uranus</span>
+            </button>
+            <button class="planet-btn" data-planet="neptune">
+                <div class="planet-icon" style="background: #1e3c72;"></div>
+                <span>Neptune</span>
+            </button>
+            <button class="planet-btn" data-planet="asteroidBelt">
+                <div class="planet-icon" style="background: #888888;"></div>
+                <span>Asteroid Belt</span>
+            </button>
+            <button class="planet-btn" data-planet="kuiperBelt">
+                <div class="planet-icon" style="background: #4466aa;"></div>
+                <span>Kuiper Belt</span>
+            </button>
+            <button class="planet-btn" data-planet="oortCloud">
+                <div class="planet-icon" style="background: #6644aa;"></div>
+                <span>Oort Cloud</span>
+            </button>
+        </div>
+    </div>
+
     <!-- UI Controls -->
     <div class="ui-overlay">
-        <!-- Zoom Controls -->
-        <div class="zoom-controls">
-            <h3>Solar System Regions</h3>
-            <div class="zoom-buttons">
-                <button class="zoom-btn" data-region="inner">Inner Planets</button>
-                <button class="zoom-btn" data-region="gasGiants">Gas Giants</button>
-                <button class="zoom-btn" data-region="kuiperBelt">Kuiper Belt</button>
-                <button class="zoom-btn" data-region="oortCloud">Oort Cloud</button>
-                <button class="zoom-btn" data-region="fullSystem">Full System</button>
-            </div>
-        </div>
-        
         <!-- Speed Controls -->
         <div class="speed-controls">
             <h3>Time Scale</h3>
@@ -41,13 +84,17 @@
         
         <!-- Info Panel -->
         <div class="info-panel" id="infoPanel">
-            <h2 id="regionTitle">Solar System Overview</h2>
-            <div id="regionInfo">
+            <h2 id="planetName">Solar System Overview</h2>
+            <div id="planetDetails">
                 <p>Welcome to your 3D Solar System Explorer!</p>
-                <p>Use the region buttons to explore different parts of our cosmic neighborhood.</p>
+                <p>Click on any planet from the sidebar to explore it closely.</p>
+            </div>
+            <div class="planet-actions">
+                <button id="viewDetailsBtn" class="action-btn details-btn">View Details</button>
+                <button id="viewMoonsBtn" class="action-btn moons-btn">View Moons</button>
             </div>
             <div class="scale-info">
-                <p><strong>Note:</strong> Distances and sizes are scaled for visualization. Oort Cloud shown at 1:1000 scale.</p>
+                <p><strong>Note:</strong> Distances and sizes are scaled for visualization.</p>
             </div>
         </div>
         
@@ -57,19 +104,15 @@
             <p>• Left Click + Drag: Rotate View</p>
             <p>• Right Click + Drag: Pan View</p>
             <p>• Mouse Wheel: Zoom In/Out</p>
-            <p>• Double Click: Reset View</p>
         </div>
-        
-        <!-- Progress Indicator -->
-        <div class="distance-indicator">
-            <div class="distance-label">Distance from Sun: <span id="distanceValue">0 AU</span></div>
-            <div class="scale-bar">
-                <div class="scale-markers">
-                    <span>0 AU</span>
-                    <span>50 AU</span>
-                    <span>100 AU</span>
-                </div>
-            </div>
+    </div>
+
+    <!-- Fact Popup -->
+    <div class="fact-popup" id="factPopup">
+        <div class="fact-content">
+            <h3>🌌 Did You Know?</h3>
+            <p id="factText"></p>
+            <button id="closeFact" class="close-btn">Awesome!</button>
         </div>
     </div>
 
