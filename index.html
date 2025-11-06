@@ -3,115 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Solar System Explorer for Kids</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>3D Solar System Explorer - Sun to Oort Cloud</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="container3D">
-        <canvas id="gameCanvas"></canvas>
+        <!-- Canvas will be created by Three.js -->
     </div>
     
-    <!-- Stars background -->
-    <div class="stars" id="starsContainer"></div>
-    
-    <!-- UI Overlay -->
+    <!-- UI Controls -->
     <div class="ui-overlay">
-        <!-- View Toggle -->
-        <div class="view-toggle">
-            <button id="view2D" class="view-btn active">2D View</button>
-            <button id="view3D" class="view-btn">3D View</button>
-        </div>
-
-        <!-- Planet Selection Buttons -->
-        <div class="planet-buttons">
-            <button class="planet-btn" data-planet="mercury" title="Mercury - The Fastest Planet!">
-                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/0db2633a-97b3-4327-aa61-b71969fb602c.png" alt="Mercury" />
-            </button>
-            <button class="planet-btn" data-planet="venus" title="Venus - The Hottest Planet!">
-                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/e4577770-a07b-42f0-afcf-9a98fe96d407.png" alt="Venus" />
-            </button>
-            <button class="planet-btn" data-planet="earth" title="Earth - Our Home Planet!">
-                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/4b7a9204-23ce-487d-96bd-72c28ec7fc1c.png" alt="Earth" />
-            </button>
-            <button class="planet-btn" data-planet="mars" title="Mars - The Red Planet!">
-                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/bdf7d5be-3e56-4a4b-b616-442e1f71df6b.png" alt="Mars" />
-            </button>
-            <button class="planet-btn" data-planet="jupiter" title="Jupiter - The Giant Planet!">
-                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/da46e918-7b4c-44fe-928c-cf42d2b34b3b.png" alt="Jupiter" />
-            </button>
-            <button class="planet-btn" data-planet="saturn" title="Saturn - The Ringed Planet!">
-                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/8a210008-8dac-49e4-9fc2-14aa08563158.png" alt="Saturn" />
-            </button>
-            <button class="planet-btn" data-planet="uranus" title="Uranus - The Tilted Planet!">
-                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/6aaa5f58-4e7a-4523-ad0c-e843789974f0.png" alt="Uranus" />
-            </button>
-            <button class="planet-btn" data-planet="neptune" title="Neptune - The Windy Planet!">
-                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/b6ae504b-3690-4e44-9c26-54ce00d23830.png" alt="Neptune" />
-            </button>
+        <!-- Zoom Controls -->
+        <div class="zoom-controls">
+            <h3>Solar System Regions</h3>
+            <div class="zoom-buttons">
+                <button class="zoom-btn" data-region="inner">Inner Planets</button>
+                <button class="zoom-btn" data-region="gasGiants">Gas Giants</button>
+                <button class="zoom-btn" data-region="kuiperBelt">Kuiper Belt</button>
+                <button class="zoom-btn" data-region="oortCloud">Oort Cloud</button>
+                <button class="zoom-btn" data-region="fullSystem">Full System</button>
+            </div>
         </div>
         
         <!-- Speed Controls -->
         <div class="speed-controls">
-            <h3>Animation Speed</h3>
-            <div style="margin-top: 10px;">
-                <button class="speed-btn" data-speed="-10">-10x</button>
-                <button class="speed-btn" data-speed="-1">-1x</button>
-                <button class="speed-btn active" data-speed="1">1x</button>
+            <h3>Time Scale</h3>
+            <div class="speed-buttons">
+                <button class="speed-btn" data-speed="0">Pause</button>
+                <button class="speed-btn active" data-speed="1">Real Time</button>
                 <button class="speed-btn" data-speed="10">10x</button>
                 <button class="speed-btn" data-speed="100">100x</button>
                 <button class="speed-btn" data-speed="1000">1000x</button>
             </div>
         </div>
         
-        <!-- Progress Bar -->
-        <div class="progress-bar" id="progressBar">
-            <div style="margin-bottom: 8px;">Exploration Progress</div>
-            <div style="background: rgba(255,255,255,0.2); height: 6px; border-radius: 3px;">
-                <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
-            </div>
-            <div style="margin-top: 5px; font-size: 14px;" id="progressText">0 / 8 planets explored</div>
-        </div>
-        
-        <!-- Planet Info Panel -->
+        <!-- Info Panel -->
         <div class="info-panel" id="infoPanel">
-            <h2 id="planetName">Select a Planet</h2>
-            <div id="planetDetails">Click on a planet button above to learn amazing facts!</div>
-            <button id="viewMoonsBtn" style="margin-top: 15px; background: linear-gradient(45deg, #667eea 0%, #764ba2 100%); border: none; color: white; padding: 10px 20px; border-radius: 8px; cursor: pointer; display: none;">View Moons</button>
+            <h2 id="regionTitle">Solar System Overview</h2>
+            <div id="regionInfo">
+                <p>Welcome to your 3D Solar System Explorer!</p>
+                <p>Use the region buttons to explore different parts of our cosmic neighborhood.</p>
+            </div>
+            <div class="scale-info">
+                <p><strong>Note:</strong> Distances and sizes are scaled for visualization. Oort Cloud shown at 1:1000 scale.</p>
+            </div>
         </div>
         
-        <!-- Moon Panel -->
-        <div class="moon-panel" id="moonPanel">
-            <h3>Moons</h3>
-            <div id="moonsList"></div>
-            <button id="closeMoonsBtn" style="margin-top: 15px; background: #ff6b6b; border: none; color: white; padding: 8px 16px; border-radius: 8px; cursor: pointer;">Close</button>
+        <!-- Navigation Help -->
+        <div class="controls-info">
+            <h4>3D Navigation</h4>
+            <p>• Left Click + Drag: Rotate View</p>
+            <p>• Right Click + Drag: Pan View</p>
+            <p>• Mouse Wheel: Zoom In/Out</p>
+            <p>• Double Click: Reset View</p>
         </div>
         
-        <!-- Did You Know Popup -->
-        <div class="did-you-know" id="didYouKnow">
-            <h3>Did You Know?</h3>
-            <p id="funFactText"></p>
-            <button id="closeFunFact" style="margin-top: 10px; background: rgba(255,255,255,0.2); border: none; color: white; padding: 6px 12px; border-radius: 6px; cursor: pointer;">Cool!</button>
-        </div>
-        
-        <!-- Badge Popup -->
-        <div class="badge-popup" id="badgePopup">
-            <h2>🏆 Achievement Unlocked!</h2>
-            <p id="badgeText"></p>
-            <button id="closeBadge" style="margin-top: 15px; background: #333; border: none; color: white; padding: 10px 20px; border-radius: 8px; cursor: pointer;">Awesome!</button>
-        </div>
-
-        <!-- 3D Controls Info -->
-        <div class="controls-info" id="controls3DInfo">
-            <h4>3D Controls</h4>
-            <p>• Left Click + Drag: Rotate</p>
-            <p>• Right Click + Drag: Pan</p>
-            <p>• Scroll: Zoom</p>
+        <!-- Progress Indicator -->
+        <div class="distance-indicator">
+            <div class="distance-label">Distance from Sun: <span id="distanceValue">0 AU</span></div>
+            <div class="scale-bar">
+                <div class="scale-markers">
+                    <span>0 AU</span>
+                    <span>50 AU</span>
+                    <span>100 AU</span>
+                </div>
+            </div>
         </div>
     </div>
-    
+
     <script src="script.js"></script>
 </body>
 </html>
