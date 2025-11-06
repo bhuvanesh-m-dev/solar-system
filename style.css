@@ -20,6 +20,76 @@ body {
     z-index: 1;
 }
 
+/* Planet Selection Sidebar */
+.planet-sidebar {
+    position: fixed;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 20px;
+    z-index: 100;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.planet-sidebar h3 {
+    color: #4facfe;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
+}
+
+.planet-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.planet-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 12px 15px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 150px;
+    backdrop-filter: blur(5px);
+}
+
+.planet-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateX(-5px);
+}
+
+.planet-btn.active {
+    background: linear-gradient(45deg, rgba(79, 172, 254, 0.3), rgba(0, 242, 254, 0.3));
+    border-color: #4facfe;
+    box-shadow: 0 0 15px rgba(79, 172, 254, 0.5);
+}
+
+.planet-icon {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.planet-btn span {
+    font-size: 14px;
+    font-weight: 500;
+}
+
 /* UI Overlay */
 .ui-overlay {
     position: fixed;
@@ -35,59 +105,16 @@ body {
     pointer-events: auto;
 }
 
-/* Zoom Controls */
-.zoom-controls {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    background: rgba(0, 0, 0, 0.8);
-    padding: 15px;
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.zoom-controls h3 {
-    margin-bottom: 10px;
-    color: #4facfe;
-    font-size: 16px;
-}
-
-.zoom-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.zoom-btn {
-    background: linear-gradient(45deg, #667eea, #764ba2);
-    border: none;
-    color: white;
-    padding: 8px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 12px;
-    transition: all 0.3s ease;
-}
-
-.zoom-btn:hover {
-    background: linear-gradient(45deg, #764ba2, #667eea);
-    transform: translateY(-2px);
-}
-
-.zoom-btn.active {
-    background: linear-gradient(45deg, #ff6b6b, #ee5a24);
-    box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
-}
-
 /* Speed Controls */
 .speed-controls {
     position: absolute;
     top: 20px;
-    right: 20px;
-    background: rgba(0, 0, 0, 0.8);
+    left: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
     padding: 15px;
     border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .speed-controls h3 {
@@ -104,22 +131,23 @@ body {
 }
 
 .speed-btn {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     color: white;
     padding: 6px 10px;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
     font-size: 11px;
     transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
 }
 
 .speed-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .speed-btn.active {
-    background: linear-gradient(45deg, #4facfe, #00f2fe);
+    background: linear-gradient(45deg, rgba(79, 172, 254, 0.3), rgba(0, 242, 254, 0.3));
     border-color: #4facfe;
 }
 
@@ -128,11 +156,20 @@ body {
     position: absolute;
     bottom: 20px;
     left: 20px;
-    background: rgba(0, 0, 0, 0.9);
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
     padding: 20px;
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
     max-width: 400px;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.5s ease;
+}
+
+.info-panel.show {
+    transform: translateY(0);
+    opacity: 1;
 }
 
 .info-panel h2 {
@@ -147,10 +184,48 @@ body {
     font-size: 14px;
 }
 
+.planet-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.action-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.details-btn {
+    background: linear-gradient(45deg, rgba(79, 172, 254, 0.3), rgba(0, 242, 254, 0.3));
+    border: 1px solid #4facfe;
+    color: white;
+}
+
+.details-btn:hover {
+    background: linear-gradient(45deg, #4facfe, #00f2fe);
+    transform: translateY(-2px);
+}
+
+.moons-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+}
+
+.moons-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
 .scale-info {
     margin-top: 15px;
     padding-top: 10px;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
     font-size: 12px;
     color: #ccc;
 }
@@ -159,11 +234,12 @@ body {
 .controls-info {
     position: absolute;
     bottom: 20px;
-    right: 20px;
-    background: rgba(0, 0, 0, 0.8);
+    right: 200px;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
     padding: 15px;
     border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     font-size: 12px;
 }
 
@@ -177,84 +253,109 @@ body {
     color: #ccc;
 }
 
-/* Distance Indicator */
-.distance-indicator {
-    position: absolute;
-    top: 50%;
-    left: 20px;
-    transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.8);
-    padding: 15px;
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.distance-label {
-    margin-bottom: 10px;
-    font-size: 14px;
-    color: #4facfe;
-}
-
-.scale-bar {
-    width: 200px;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 2px;
-    position: relative;
-}
-
-.scale-markers {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 5px;
-    font-size: 10px;
-    color: #ccc;
-}
-
-/* Region Labels */
-.region-label {
-    position: absolute;
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 12px;
-    pointer-events: none;
-}
-
-/* Loading Screen */
-.loading-screen {
+/* Fact Popup */
+.fact-popup {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: #000;
+    background: rgba(0, 0, 0, 0.8);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
 }
 
-.loading-text {
+.fact-popup.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.fact-content {
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(79, 172, 254, 0.3);
+    border-radius: 15px;
+    padding: 30px;
+    max-width: 400px;
+    text-align: center;
+    transform: scale(0.7);
+    transition: transform 0.3s ease;
+}
+
+.fact-popup.show .fact-content {
+    transform: scale(1);
+}
+
+.fact-content h3 {
     color: #4facfe;
-    font-size: 24px;
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+
+.fact-content p {
+    line-height: 1.6;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+.close-btn {
+    background: linear-gradient(45deg, #4facfe, #00f2fe);
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .zoom-controls, .speed-controls, .info-panel, .controls-info {
-        position: relative;
-        margin: 10px;
+    .planet-sidebar {
+        right: 10px;
+        max-height: 70vh;
     }
     
-    .distance-indicator {
-        position: relative;
-        top: auto;
-        left: auto;
-        transform: none;
-        margin: 10px;
+    .planet-btn {
+        min-width: 120px;
+        padding: 10px 12px;
     }
     
-    .ui-overlay {
-        display: flex;
-        flex-direction: column;
+    .controls-info {
+        right: 10px;
+        bottom: 10px;
     }
+    
+    .info-panel {
+        max-width: 300px;
+    }
+}
+
+/* Scrollbar Styling */
+.planet-sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.planet-sidebar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.planet-sidebar::-webkit-scrollbar-thumb {
+    background: rgba(79, 172, 254, 0.5);
+    border-radius: 3px;
+}
+
+.planet-sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(79, 172, 254, 0.7);
 }
