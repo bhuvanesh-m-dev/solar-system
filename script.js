@@ -7,7 +7,7 @@ class SolarSystem3D {
         
         this.animationSpeed = 1;
         this.time = 0;
-        this.currentRegion = 'fullSystem';
+        this.currentPlanet = null;
         
         this.planetData = {};
         this.planetMeshes = {};
@@ -54,9 +54,6 @@ class SolarSystem3D {
         this.createOortCloud();
         this.createOrbitPaths();
 
-        // Initial view
-        this.focusOnRegion('fullSystem');
-
         // Handle window resize
         window.addEventListener('resize', () => this.onWindowResize());
     }
@@ -67,8 +64,8 @@ class SolarSystem3D {
         this.scene.add(ambientLight);
 
         // Sun light (point light at center)
-        const sunLight = new THREE.PointLight(0xffffff, 2, 100000);
-        this.scene.add(sunLight);
+        this.sunLight = new THREE.PointLight(0xffffff, 2, 100000);
+        this.scene.add(this.sunLight);
 
         // Directional light from sun
         const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
@@ -120,8 +117,16 @@ class SolarSystem3D {
     }
 
     createPlanets() {
-        // Planet data with realistic relative sizes and distances (scaled for visualization)
+        // Planet data with realistic relative sizes and distances
         this.planetData = {
+            sun: {
+                name: "Sun",
+                radius: 20,
+                color: 0xffff00,
+                funFact: "The Sun contains 99.86% of all the mass in our solar system!",
+                description: "Our magnificent star at the center of the solar system, providing light and energy to all planets.",
+                detailsUrl: "sun/index.html"
+            },
             mercury: {
                 name: "Mercury",
                 radius: 3,
@@ -129,7 +134,11 @@ class SolarSystem3D {
                 orbitPeriod: 88,
                 color: 0x8c7853,
                 tilt: 0.034,
-                rotationPeriod: 58.6
+                rotationPeriod: 58.6,
+                funFact: "Mercury has no atmosphere and temperatures swing from 800°F to -290°F!",
+                description: "The closest planet to the Sun and the fastest in our solar system!",
+                detailsUrl: "mercury/index.html",
+                moons: 0
             },
             venus: {
                 name: "Venus",
@@ -138,7 +147,11 @@ class SolarSystem3D {
                 orbitPeriod: 225,
                 color: 0xffc649,
                 tilt: 177.4,
-                rotationPeriod: -243
+                rotationPeriod: -243,
+                funFact: "Venus spins backwards! A day on Venus is longer than its year!",
+                description: "The hottest planet with a thick toxic atmosphere and volcanic landscape.",
+                detailsUrl: "venus/index.html",
+                moons: 0
             },
             earth: {
                 name: "Earth",
@@ -148,7 +161,12 @@ class SolarSystem3D {
                 color: 0x4facfe,
                 tilt: 23.44,
                 rotationPeriod: 1,
-                moons: 1
+                funFact: "Earth is the only planet known to have liquid water and support life!",
+                description: "Our beautiful home planet with perfect conditions for life as we know it.",
+                detailsUrl: "earth/index.html",
+                moons: [
+                    { name: "Moon", distance: "384,400 km", fact: "Controls Earth's tides" }
+                ]
             },
             mars: {
                 name: "Mars",
@@ -158,7 +176,13 @@ class SolarSystem3D {
                 color: 0xff6b6b,
                 tilt: 25.19,
                 rotationPeriod: 1.03,
-                moons: 2
+                funFact: "Mars has the largest volcano in the solar system - Olympus Mons!",
+                description: "The Red Planet where scientists search for signs of ancient life.",
+                detailsUrl: "mars/index.html",
+                moons: [
+                    { name: "Phobos", distance: "9,377 km", fact: "Orbits Mars 3 times per day" },
+                    { name: "Deimos", distance: "23,460 km", fact: "Shaped like a potato" }
+                ]
             },
             jupiter: {
                 name: "Jupiter",
@@ -168,7 +192,14 @@ class SolarSystem3D {
                 color: 0xd2691e,
                 tilt: 3.13,
                 rotationPeriod: 0.41,
-                moons: 95
+                funFact: "Jupiter is so big that all other planets could fit inside it!",
+                description: "The giant gas planet with a famous Great Red Spot storm.",
+                detailsUrl: "jupiter/index.html",
+                moons: [
+                    { name: "Io", distance: "421,800 km", fact: "Most volcanic object in solar system" },
+                    { name: "Europa", distance: "671,100 km", fact: "Has subsurface ocean" },
+                    { name: "Ganymede", distance: "1,070,400 km", fact: "Largest moon in solar system" }
+                ]
             },
             saturn: {
                 name: "Saturn",
@@ -178,8 +209,14 @@ class SolarSystem3D {
                 color: 0xfad0c4,
                 tilt: 26.73,
                 rotationPeriod: 0.45,
+                funFact: "Saturn would float in water - it's less dense than water!",
+                description: "The beautiful ringed planet with spectacular icy rings.",
+                detailsUrl: "saturn/index.html",
                 rings: true,
-                moons: 146
+                moons: [
+                    { name: "Titan", distance: "1,221,870 km", fact: "Has liquid methane lakes" },
+                    { name: "Enceladus", distance: "238,040 km", fact: "Shoots water geysers into space" }
+                ]
             },
             uranus: {
                 name: "Uranus",
@@ -189,7 +226,13 @@ class SolarSystem3D {
                 color: 0x4dd0e1,
                 tilt: 97.77,
                 rotationPeriod: -0.72,
-                moons: 28
+                funFact: "Uranus rotates on its side like a rolling ball!",
+                description: "The tilted ice giant with faint rings and methane atmosphere.",
+                detailsUrl: "uranus/index.html",
+                moons: [
+                    { name: "Titania", distance: "435,910 km", fact: "Largest moon of Uranus" },
+                    { name: "Miranda", distance: "129,900 km", fact: "Has giant ice cliffs" }
+                ]
             },
             neptune: {
                 name: "Neptune",
@@ -199,12 +242,43 @@ class SolarSystem3D {
                 color: 0x1e3c72,
                 tilt: 28.32,
                 rotationPeriod: 0.67,
-                moons: 16
+                funFact: "Neptune has the strongest winds in the solar system - up to 1,200 mph!",
+                description: "The deep blue windy planet at the edge of our solar system.",
+                detailsUrl: "neptune/index.html",
+                moons: [
+                    { name: "Triton", distance: "354,760 km", fact: "Orbits backwards around Neptune" }
+                ]
+            },
+            asteroidBelt: {
+                name: "Asteroid Belt",
+                radius: 315,
+                color: 0x888888,
+                funFact: "The asteroid belt contains millions of asteroids, but they're very far apart!",
+                description: "A region between Mars and Jupiter filled with rocky debris from the solar system's formation.",
+                detailsUrl: "asteroid-belt/index.html"
+            },
+            kuiperBelt: {
+                name: "Kuiper Belt",
+                radius: 1500,
+                color: 0x4466aa,
+                funFact: "Pluto is the largest known object in the Kuiper Belt!",
+                description: "A vast region beyond Neptune containing icy bodies and dwarf planets.",
+                detailsUrl: "kuiper-belt/index.html"
+            },
+            oortCloud: {
+                name: "Oort Cloud",
+                radius: 3500,
+                color: 0x6644aa,
+                funFact: "The Oort Cloud may contain trillions of icy objects!",
+                description: "A spherical shell of icy bodies surrounding our solar system nearly a light-year away.",
+                detailsUrl: "oort-cloud/index.html"
             }
         };
 
         // Create planets
         Object.entries(this.planetData).forEach(([key, planet]) => {
+            if (key === 'sun' || key === 'asteroidBelt' || key === 'kuiperBelt' || key === 'oortCloud') return;
+            
             const geometry = new THREE.SphereGeometry(planet.radius, 32, 32);
             const material = new THREE.MeshPhongMaterial({
                 color: planet.color,
@@ -238,7 +312,7 @@ class SolarSystem3D {
 
     createAsteroidBelt() {
         const asteroidCount = 2000;
-        const innerRadius = 280; // Between Mars and Jupiter
+        const innerRadius = 280;
         const outerRadius = 350;
         
         const asteroidGeometry = new THREE.BufferGeometry();
@@ -268,7 +342,7 @@ class SolarSystem3D {
 
     createKuiperBelt() {
         const kuiperCount = 3000;
-        const innerRadius = 1200; // Beyond Neptune
+        const innerRadius = 1200;
         const outerRadius = 1800;
         
         const kuiperGeometry = new THREE.BufferGeometry();
@@ -297,11 +371,9 @@ class SolarSystem3D {
     }
 
     createOortCloud() {
-        // Note: Oort Cloud is scaled down 1000x for visualization
-        // Actual Oort Cloud extends from ~2000 AU to 100,000+ AU
         const oortCount = 5000;
-        const innerRadius = 2000; // Scaled down from 2000 AU
-        const outerRadius = 5000; // Scaled down from 50,000+ AU
+        const innerRadius = 2000;
+        const outerRadius = 5000;
         
         const oortGeometry = new THREE.BufferGeometry();
         const oortMaterial = new THREE.PointsMaterial({
@@ -314,7 +386,6 @@ class SolarSystem3D {
 
         const positions = [];
         for (let i = 0; i < oortCount; i++) {
-            // Spherical distribution for Oort Cloud
             const theta = Math.random() * Math.PI * 2;
             const phi = Math.acos(2 * Math.random() - 1);
             const radius = innerRadius + Math.random() * (outerRadius - innerRadius);
@@ -333,29 +404,31 @@ class SolarSystem3D {
 
     createOrbitPaths() {
         Object.entries(this.planetData).forEach(([key, planet]) => {
-            const orbitGeometry = new THREE.RingGeometry(planet.orbitRadius - 0.5, planet.orbitRadius + 0.5, 128);
-            const orbitMaterial = new THREE.MeshBasicMaterial({
-                color: 0xffffff,
-                side: THREE.DoubleSide,
-                transparent: true,
-                opacity: 0.1
-            });
-            const orbit = new THREE.Mesh(orbitGeometry, orbitMaterial);
-            orbit.rotation.x = Math.PI / 2;
-            this.scene.add(orbit);
+            if (planet.orbitRadius) {
+                const orbitGeometry = new THREE.RingGeometry(planet.orbitRadius - 0.5, planet.orbitRadius + 0.5, 128);
+                const orbitMaterial = new THREE.MeshBasicMaterial({
+                    color: 0xffffff,
+                    side: THREE.DoubleSide,
+                    transparent: true,
+                    opacity: 0.1
+                });
+                const orbit = new THREE.Mesh(orbitGeometry, orbitMaterial);
+                orbit.rotation.x = Math.PI / 2;
+                this.scene.add(orbit);
+            }
         });
     }
 
     setupEventListeners() {
-        // Zoom controls
-        document.querySelectorAll('.zoom-btn').forEach(btn => {
+        // Planet buttons
+        document.querySelectorAll('.planet-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const region = e.target.dataset.region;
-                this.focusOnRegion(region);
+                const planet = e.currentTarget.dataset.planet;
+                this.selectPlanet(planet);
                 
                 // Update active button
-                document.querySelectorAll('.zoom-btn').forEach(b => b.classList.remove('active'));
-                e.target.classList.add('active');
+                document.querySelectorAll('.planet-btn').forEach(b => b.classList.remove('active'));
+                e.currentTarget.classList.add('active');
             });
         });
 
@@ -364,69 +437,87 @@ class SolarSystem3D {
             btn.addEventListener('click', (e) => {
                 this.animationSpeed = parseInt(e.target.dataset.speed);
                 
-                // Update active button
                 document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
                 e.target.classList.add('active');
             });
         });
 
-        // Double click to reset view
-        this.renderer.domElement.addEventListener('dblclick', () => {
-            this.focusOnRegion('fullSystem');
+        // View details button
+        document.getElementById('viewDetailsBtn').addEventListener('click', () => {
+            if (this.currentPlanet) {
+                const planet = this.planetData[this.currentPlanet];
+                if (planet.detailsUrl) {
+                    window.open(planet.detailsUrl, '_blank');
+                }
+            }
+        });
+
+        // View moons button
+        document.getElementById('viewMoonsBtn').addEventListener('click', () => {
+            if (this.currentPlanet) {
+                const planet = this.planetData[this.currentPlanet];
+                if (planet.moons && planet.moons.length > 0) {
+                    this.showMoonsInfo(planet);
+                }
+            }
+        });
+
+        // Close fact popup
+        document.getElementById('closeFact').addEventListener('click', () => {
+            document.getElementById('factPopup').classList.remove('show');
         });
     }
 
-    focusOnRegion(region) {
-        this.currentRegion = region;
-        
-        const targetPosition = new THREE.Vector3();
-        const lookAtPosition = new THREE.Vector3();
-        let cameraDistance = 1000;
+    selectPlanet(planetKey) {
+        this.currentPlanet = planetKey;
+        const planet = this.planetData[planetKey];
 
-        switch (region) {
-            case 'inner':
-                targetPosition.set(0, 100, 300);
-                lookAtPosition.set(0, 0, 0);
-                cameraDistance = 400;
-                this.updateInfoPanel('Inner Solar System', 
-                    'Explore the rocky planets: Mercury, Venus, Earth, and Mars. This region contains the Asteroid Belt between Mars and Jupiter.');
-                break;
-                
-            case 'gasGiants':
-                targetPosition.set(0, 200, 800);
-                lookAtPosition.set(0, 0, 0);
-                cameraDistance = 1200;
-                this.updateInfoPanel('Gas Giants Region', 
-                    'Discover Jupiter, Saturn, Uranus, and Neptune - the massive outer planets with complex ring systems and many moons.');
-                break;
-                
-            case 'kuiperBelt':
-                targetPosition.set(0, 300, 2000);
-                lookAtPosition.set(0, 0, 0);
-                cameraDistance = 2500;
-                this.updateInfoPanel('Kuiper Belt', 
-                    'Beyond Neptune lies the Kuiper Belt, home to dwarf planets like Pluto and thousands of icy bodies.');
-                break;
-                
-            case 'oortCloud':
-                targetPosition.set(0, 1000, 8000);
-                lookAtPosition.set(0, 0, 0);
-                cameraDistance = 10000;
-                this.updateInfoPanel('Oort Cloud', 
-                    'The outermost region of our solar system. A spherical shell of icy objects that extends nearly a light-year from the Sun. (Shown at 1:1000 scale)');
-                break;
-                
-            case 'fullSystem':
-            default:
-                targetPosition.set(0, 500, 1500);
-                lookAtPosition.set(0, 0, 0);
-                cameraDistance = 2000;
-                this.updateInfoPanel('Full Solar System', 
-                    'View our entire solar system from the Sun to the distant Oort Cloud. Use the region buttons to explore specific areas.');
-                break;
+        // Show fact popup
+        this.showFactPopup(planet.funFact);
+
+        // Update info panel
+        this.updateInfoPanel(planet);
+
+        // Animate camera to planet
+        this.animateToPlanet(planetKey);
+    }
+
+    animateToPlanet(planetKey) {
+        const planet = this.planetData[planetKey];
+        let targetPosition = new THREE.Vector3();
+        let lookAtPosition = new THREE.Vector3();
+        let cameraDistance = 100;
+
+        if (planetKey === 'sun') {
+            targetPosition.set(0, 50, 150);
+            lookAtPosition.set(0, 0, 0);
+            cameraDistance = 200;
+        } else if (planetKey === 'asteroidBelt') {
+            targetPosition.set(0, 100, 500);
+            lookAtPosition.set(0, 0, 0);
+            cameraDistance = 600;
+        } else if (planetKey === 'kuiperBelt') {
+            targetPosition.set(0, 200, 2000);
+            lookAtPosition.set(0, 0, 0);
+            cameraDistance = 2500;
+        } else if (planetKey === 'oortCloud') {
+            targetPosition.set(0, 500, 6000);
+            lookAtPosition.set(0, 0, 0);
+            cameraDistance = 8000;
+        } else {
+            // For planets, calculate current position in orbit
+            const angle = (this.time / planet.orbitPeriod) * 2 * Math.PI;
+            const planetPosition = new THREE.Vector3(
+                Math.cos(angle) * planet.orbitRadius,
+                0,
+                Math.sin(angle) * planet.orbitRadius
+            );
+            
+            lookAtPosition.copy(planetPosition);
+            targetPosition.copy(planetPosition).add(new THREE.Vector3(0, planet.radius * 3, planet.radius * 8));
+            cameraDistance = planet.radius * 10;
         }
 
-        // Animate camera to new position
         this.animateCameraTo(targetPosition, lookAtPosition, cameraDistance);
     }
 
@@ -454,39 +545,82 @@ class SolarSystem3D {
         animate();
     }
 
-    updateInfoPanel(title, info) {
-        document.getElementById('regionTitle').textContent = title;
-        document.getElementById('regionInfo').innerHTML = `<p>${info}</p>`;
+    showFactPopup(fact) {
+        document.getElementById('factText').textContent = fact;
+        document.getElementById('factPopup').classList.add('show');
+        
+        // Auto hide after 5 seconds
+        setTimeout(() => {
+            document.getElementById('factPopup').classList.remove('show');
+        }, 5000);
     }
 
-    updateDistanceIndicator() {
-        const distanceFromSun = this.camera.position.length();
-        const auDistance = (distanceFromSun / 200).toFixed(1); // Rough conversion to AU
-        document.getElementById('distanceValue').textContent = `${auDistance} AU`;
+    updateInfoPanel(planet) {
+        document.getElementById('planetName').textContent = planet.name;
+        
+        let detailsHTML = `<p>${planet.description}</p>`;
+        
+        if (planet.orbitRadius) {
+            detailsHTML += `
+                <p><strong>Orbital Period:</strong> ${Math.round(planet.orbitPeriod)} Earth days</p>
+                <p><strong>Rotation Period:</strong> ${Math.abs(planet.rotationPeriod)} Earth days</p>
+            `;
+        }
+        
+        if (planet.moons !== undefined) {
+            detailsHTML += `<p><strong>Number of Moons:</strong> ${planet.moons}</p>`;
+        }
+        
+        document.getElementById('planetDetails').innerHTML = detailsHTML;
+        
+        // Show/hide action buttons
+        const detailsBtn = document.getElementById('viewDetailsBtn');
+        const moonsBtn = document.getElementById('viewMoonsBtn');
+        
+        detailsBtn.style.display = planet.detailsUrl ? 'block' : 'none';
+        moonsBtn.style.display = (planet.moons && planet.moons.length > 0) ? 'block' : 'none';
+        
+        document.getElementById('infoPanel').classList.add('show');
+    }
+
+    showMoonsInfo(planet) {
+        let moonsHTML = `<h4>Moons of ${planet.name}</h4>`;
+        planet.moons.forEach(moon => {
+            moonsHTML += `
+                <div class="moon-item">
+                    <strong>${moon.name}</strong><br>
+                    <span>${moon.distance} from ${planet.name}</span><br>
+                    <em>${moon.fact}</em>
+                </div>
+            `;
+        });
+        
+        // You can implement a modal or expand the info panel to show moons
+        alert(`Moons of ${planet.name}:\n\n` + planet.moons.map(moon => 
+            `${moon.name} - ${moon.fact}`
+        ).join('\n'));
     }
 
     animate() {
         requestAnimationFrame(() => this.animate());
 
         if (this.animationSpeed !== 0) {
-            this.time += 0.016 * this.animationSpeed; // Roughly 60fps
+            this.time += 0.016 * this.animationSpeed;
 
             // Update planet positions and rotations
             Object.entries(this.planetData).forEach(([key, planet]) => {
-                const planetMesh = this.planetMeshes[key];
-                if (planetMesh) {
-                    // Orbital motion
+                if (planet.orbitRadius && this.planetMeshes[key]) {
+                    const planetMesh = this.planetMeshes[key];
                     const angle = (this.time / planet.orbitPeriod) * 2 * Math.PI;
                     planetMesh.position.x = Math.cos(angle) * planet.orbitRadius;
                     planetMesh.position.z = Math.sin(angle) * planet.orbitRadius;
                     
-                    // Rotation
                     const rotationSpeed = (2 * Math.PI) / planet.rotationPeriod;
                     planetMesh.rotation.y += rotationSpeed * 0.016 * this.animationSpeed;
                 }
             });
 
-            // Rotate asteroid belt and Kuiper belt for visual effect
+            // Rotate belts for visual effect
             if (this.asteroidBelt) {
                 this.asteroidBelt.rotation.y += 0.001 * this.animationSpeed;
             }
@@ -495,13 +629,7 @@ class SolarSystem3D {
             }
         }
 
-        // Update controls
         this.controls.update();
-        
-        // Update distance indicator
-        this.updateDistanceIndicator();
-
-        // Render scene
         this.renderer.render(this.scene, this.camera);
     }
 
