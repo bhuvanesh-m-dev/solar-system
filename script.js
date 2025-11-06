@@ -1,269 +1,82 @@
-class SolarSystemExplorer {
+class SolarSystem3D {
     constructor() {
-        this.currentView = '2D';
-        this.setupViews();
-        this.init2D();
-        this.init3D();
+        this.scene = null;
+        this.camera = null;
+        this.renderer = null;
+        this.controls = null;
+        
+        this.animationSpeed = 1;
+        this.time = 0;
+        this.currentRegion = 'fullSystem';
+        
+        this.planetData = {};
+        this.planetMeshes = {};
+        this.asteroidBelt = null;
+        this.kuiperBelt = null;
+        this.oortCloud = null;
+        
+        this.init();
         this.setupEventListeners();
-        this.createStars();
-        this.resetView();
         this.animate();
     }
 
-    setupViews() {
-        this.container3D = document.getElementById('container3D');
-        this.canvas2D = document.getElementById('gameCanvas');
-        this.canvas3D = document.createElement('canvas');
-        this.canvas3D.id = 'threeCanvas';
-        this.container3D.appendChild(this.canvas3D);
-        
-        this.canvas2D.classList.add('active');
-    }
-
-    init2D() {
-        this.ctx = this.canvas2D.getContext('2d');
-        this.setupCanvas2D();
-
-        // Game state
-        this.camera = { x: 0, y: 0, zoom: 1 };
-        this.animationSpeed = 1;
-        this.selectedPlanet = null;
-        this.exploredPlanets = new Set();
-        this.isAnimating = false;
-
-        // Time tracking
-        this.time = 0;
-        this.lastFrameTime = 0;
-
-        // Planet data with realistic orbital periods (in Earth days)
-        this.planetData = {
-            mercury: {
-                name: "Mercury",
-                radius: 8,
-                orbitRadius: 100,
-                orbitPeriod: 88,
-                color: "#8c7853",
-                distance: "36 million miles",
-                diameter: "3,032 miles",
-                funFact: "Mercury has no atmosphere and temperatures can swing from 800°F to -300°F!",
-                description: "The closest planet to the Sun and the fastest in our solar system!",
-                moons: []
-            },
-            venus: {
-                name: "Venus",
-                radius: 12,
-                orbitRadius: 140,
-                orbitPeriod: 225,
-                color: "#ffc649",
-                distance: "67 million miles",
-                diameter: "7,521 miles",
-                funFact: "Venus spins backwards! A day on Venus is longer than its year!",
-                description: "The hottest planet in our solar system, even hotter than Mercury!",
-                moons: []
-            },
-            earth: {
-                name: "Earth",
-                radius: 13,
-                orbitRadius: 180,
-                orbitPeriod: 365,
-                color: "#4facfe",
-                distance: "93 million miles",
-                diameter: "7,918 miles",
-                funFact: "Earth is the only planet known to have life and liquid water on its surface!",
-                description: "Our beautiful home planet with perfect conditions for life!",
-                moons: [
-                    {
-                        name: "Moon",
-                        distance: "238,855 miles",
-                        discovered: "Ancient times",
-                        fact: "The Moon controls Earth's tides!"
-                    }
-                ]
-            },
-            mars: {
-                name: "Mars",
-                radius: 10,
-                orbitRadius: 220,
-                orbitPeriod: 687,
-                color: "#ff6b6b",
-                distance: "142 million miles",
-                diameter: "4,212 miles",
-                funFact: "Mars has the largest volcano in the solar system - Olympus Mons!",
-                description: "The Red Planet, where scientists are looking for signs of ancient life!",
-                moons: [
-                    {
-                        name: "Phobos",
-                        distance: "5,826 miles",
-                        discovered: "1877",
-                        fact: "Phobos orbits Mars 3 times per day!"
-                    },
-                    {
-                        name: "Deimos",
-                        distance: "14,573 miles",
-                        discovered: "1877",
-                        fact: "Deimos is shaped like a potato!"
-                    }
-                ]
-            },
-            jupiter: {
-                name: "Jupiter",
-                radius: 35,
-                orbitRadius: 300,
-                orbitPeriod: 4333,
-                color: "#d2691e",
-                distance: "484 million miles",
-                diameter: "86,881 miles",
-                funFact: "Jupiter is so big that all other planets could fit inside it!",
-                description: "The giant protector of our solar system with a famous red spot!",
-                moons: [
-                    {
-                        name: "Io",
-                        distance: "262,000 miles",
-                        discovered: "1610",
-                        fact: "Io has active volcanoes!"
-                    },
-                    {
-                        name: "Europa",
-                        distance: "417,000 miles",
-                        discovered: "1610",
-                        fact: "Europa has an ocean under its ice!"
-                    },
-                    {
-                        name: "Ganymede",
-                        distance: "665,000 miles",
-                        discovered: "1610",
-                        fact: "Ganymede is the largest moon in our solar system!"
-                    },
-                    {
-                        name: "Callisto",
-                        distance: "1.17 million miles",
-                        discovered: "1610",
-                        fact: "Callisto is covered in craters!"
-                    }
-                ]
-            },
-            saturn: {
-                name: "Saturn",
-                radius: 30,
-                orbitRadius: 380,
-                orbitPeriod: 10759,
-                color: "#fad0c4",
-                distance: "886 million miles",
-                diameter: "72,367 miles",
-                funFact: "Saturn's rings are made of ice and rock particles!",
-                description: "The beautiful ringed planet that would float in water!",
-                moons: [
-                    {
-                        name: "Titan",
-                        distance: "759,000 miles",
-                        discovered: "1655",
-                        fact: "Titan has lakes of liquid methane!"
-                    },
-                    {
-                        name: "Enceladus",
-                        distance: "148,000 miles",
-                        discovered: "1789",
-                        fact: "Enceladus shoots water geysers into space!"
-                    },
-                    {
-                        name: "Mimas",
-                        distance: "115,000 miles",
-                        discovered: "1789",
-                        fact: "Mimas looks like the Death Star!"
-                    }
-                ]
-            },
-            uranus: {
-                name: "Uranus",
-                radius: 25,
-                orbitRadius: 460,
-                orbitPeriod: 30687,
-                color: "#4dd0e1",
-                distance: "1.8 billion miles",
-                diameter: "31,518 miles",
-                funFact: "Uranus rotates on its side like a rolling ball!",
-                description: "The tilted ice giant with faint rings and methane clouds!",
-                moons: [
-                    {
-                        name: "Miranda",
-                        distance: "80,000 miles",
-                        discovered: "1948",
-                        fact: "Miranda has cliffs 12 miles high!"
-                    },
-                    {
-                        name: "Ariel",
-                        distance: "118,000 miles",
-                        discovered: "1851",
-                        fact: "Ariel has the brightest surface!"
-                    },
-                    {
-                        name: "Titania",
-                        distance: "271,000 miles",
-                        discovered: "1787",
-                        fact: "Titania is Uranus's largest moon!"
-                    }
-                ]
-            },
-            neptune: {
-                name: "Neptune",
-                radius: 24,
-                orbitRadius: 540,
-                orbitPeriod: 60190,
-                color: "#1e3c72",
-                distance: "2.8 billion miles",
-                diameter: "30,775 miles",
-                funFact: "Neptune has the strongest winds in the solar system - up to 1,200 mph!",
-                description: "The deep blue windy planet at the edge of our solar system!",
-                moons: [
-                    {
-                        name: "Triton",
-                        distance: "220,000 miles",
-                        discovered: "1846",
-                        fact: "Triton orbits backwards!"
-                    },
-                    {
-                        name: "Nereid",
-                        distance: "3.4 million miles",
-                        discovered: "1949",
-                        fact: "Nereid has a very oval orbit!"
-                    }
-                ]
-            }
-        };
-    }
-
-    init3D() {
-        // Three.js setup
+    init() {
+        // Scene setup
         this.scene = new THREE.Scene();
-        this.camera3D = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
-        this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas3D, antialias: true });
+        this.scene.background = new THREE.Color(0x000011);
+
+        // Camera setup
+        this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100000);
+        this.camera.position.set(0, 500, 1000);
+
+        // Renderer setup
+        this.renderer = new THREE.WebGLRenderer({ antialias: true });
         this.renderer.setSize(window.innerWidth, window.innerHeight);
-        this.renderer.setClearColor(0x000011, 1);
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        document.getElementById('container3D').appendChild(this.renderer.domElement);
 
         // Orbit controls
-        this.controls = new THREE.OrbitControls(this.camera3D, this.renderer.domElement);
+        this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
         this.controls.enableDamping = true;
         this.controls.dampingFactor = 0.05;
+        this.controls.minDistance = 10;
+        this.controls.maxDistance = 50000;
 
         // Lighting
+        this.setupLighting();
+        
+        // Create solar system components
+        this.createStars();
+        this.createSun();
+        this.createPlanets();
+        this.createAsteroidBelt();
+        this.createKuiperBelt();
+        this.createOortCloud();
+        this.createOrbitPaths();
+
+        // Initial view
+        this.focusOnRegion('fullSystem');
+
+        // Handle window resize
+        window.addEventListener('resize', () => this.onWindowResize());
+    }
+
+    setupLighting() {
+        // Ambient light
         const ambientLight = new THREE.AmbientLight(0x333333);
         this.scene.add(ambientLight);
 
-        const sunLight = new THREE.PointLight(0xffffff, 2, 1000);
+        // Sun light (point light at center)
+        const sunLight = new THREE.PointLight(0xffffff, 2, 100000);
         this.scene.add(sunLight);
 
-        // Stars background
-        this.create3DStars();
-
-        // Create solar system
-        this.create3DSolarSystem();
-
-        // Initial camera position
-        this.camera3D.position.set(0, 300, 500);
-        this.controls.update();
+        // Directional light from sun
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+        directionalLight.position.set(50, 50, 50);
+        this.scene.add(directionalLight);
     }
 
-    create3DStars() {
+    createStars() {
         const starGeometry = new THREE.BufferGeometry();
         const starMaterial = new THREE.PointsMaterial({
             color: 0xffffff,
@@ -273,9 +86,9 @@ class SolarSystemExplorer {
 
         const starVertices = [];
         for (let i = 0; i < 10000; i++) {
-            const x = (Math.random() - 0.5) * 2000;
-            const y = (Math.random() - 0.5) * 2000;
-            const z = (Math.random() - 0.5) * 2000;
+            const x = (Math.random() - 0.5) * 100000;
+            const y = (Math.random() - 0.5) * 100000;
+            const z = (Math.random() - 0.5) * 100000;
             starVertices.push(x, y, z);
         }
 
@@ -284,43 +97,132 @@ class SolarSystemExplorer {
         this.scene.add(stars);
     }
 
-    create3DSolarSystem() {
-        // Sun
+    createSun() {
         const sunGeometry = new THREE.SphereGeometry(20, 32, 32);
         const sunMaterial = new THREE.MeshBasicMaterial({
             color: 0xffff00,
             emissive: 0xffff00,
-            emissiveIntensity: 0.5
+            emissiveIntensity: 0.8
         });
+        
         this.sun = new THREE.Mesh(sunGeometry, sunMaterial);
         this.scene.add(this.sun);
 
+        // Sun glow effect
+        const glowGeometry = new THREE.SphereGeometry(25, 32, 32);
+        const glowMaterial = new THREE.MeshBasicMaterial({
+            color: 0xff6600,
+            transparent: true,
+            opacity: 0.3
+        });
+        const sunGlow = new THREE.Mesh(glowGeometry, glowMaterial);
+        this.scene.add(sunGlow);
+    }
+
+    createPlanets() {
+        // Planet data with realistic relative sizes and distances (scaled for visualization)
+        this.planetData = {
+            mercury: {
+                name: "Mercury",
+                radius: 3,
+                orbitRadius: 100,
+                orbitPeriod: 88,
+                color: 0x8c7853,
+                tilt: 0.034,
+                rotationPeriod: 58.6
+            },
+            venus: {
+                name: "Venus",
+                radius: 7,
+                orbitRadius: 150,
+                orbitPeriod: 225,
+                color: 0xffc649,
+                tilt: 177.4,
+                rotationPeriod: -243
+            },
+            earth: {
+                name: "Earth",
+                radius: 7.5,
+                orbitRadius: 200,
+                orbitPeriod: 365,
+                color: 0x4facfe,
+                tilt: 23.44,
+                rotationPeriod: 1,
+                moons: 1
+            },
+            mars: {
+                name: "Mars",
+                radius: 4,
+                orbitRadius: 250,
+                orbitPeriod: 687,
+                color: 0xff6b6b,
+                tilt: 25.19,
+                rotationPeriod: 1.03,
+                moons: 2
+            },
+            jupiter: {
+                name: "Jupiter",
+                radius: 40,
+                orbitRadius: 400,
+                orbitPeriod: 4333,
+                color: 0xd2691e,
+                tilt: 3.13,
+                rotationPeriod: 0.41,
+                moons: 95
+            },
+            saturn: {
+                name: "Saturn",
+                radius: 35,
+                orbitRadius: 600,
+                orbitPeriod: 10759,
+                color: 0xfad0c4,
+                tilt: 26.73,
+                rotationPeriod: 0.45,
+                rings: true,
+                moons: 146
+            },
+            uranus: {
+                name: "Uranus",
+                radius: 25,
+                orbitRadius: 800,
+                orbitPeriod: 30687,
+                color: 0x4dd0e1,
+                tilt: 97.77,
+                rotationPeriod: -0.72,
+                moons: 28
+            },
+            neptune: {
+                name: "Neptune",
+                radius: 24,
+                orbitRadius: 1000,
+                orbitPeriod: 60190,
+                color: 0x1e3c72,
+                tilt: 28.32,
+                rotationPeriod: 0.67,
+                moons: 16
+            }
+        };
+
         // Create planets
-        this.planetMeshes = {};
         Object.entries(this.planetData).forEach(([key, planet]) => {
-            const geometry = new THREE.SphereGeometry(planet.radius / 2, 32, 32);
+            const geometry = new THREE.SphereGeometry(planet.radius, 32, 32);
             const material = new THREE.MeshPhongMaterial({
                 color: planet.color,
-                shininess: 30
+                shininess: 30,
+                specular: 0x222222
             });
             
             const planetMesh = new THREE.Mesh(geometry, material);
             
-            // Create orbit path
-            const orbitGeometry = new THREE.RingGeometry(planet.orbitRadius - 0.5, planet.orbitRadius + 0.5, 64);
-            const orbitMaterial = new THREE.MeshBasicMaterial({
-                color: 0xffffff,
-                side: THREE.DoubleSide,
-                transparent: true,
-                opacity: 0.1
-            });
-            const orbit = new THREE.Mesh(orbitGeometry, orbitMaterial);
-            orbit.rotation.x = Math.PI / 2;
-            this.scene.add(orbit);
+            // Set axial tilt
+            planetMesh.rotation.z = planet.tilt * Math.PI / 180;
+            
+            this.planetMeshes[key] = planetMesh;
+            this.scene.add(planetMesh);
 
-            // Saturn rings
-            if (key === 'saturn') {
-                const ringGeometry = new THREE.RingGeometry(planet.radius + 5, planet.radius + 15, 32);
+            // Create Saturn's rings
+            if (planet.rings) {
+                const ringGeometry = new THREE.RingGeometry(planet.radius + 10, planet.radius + 25, 64);
                 const ringMaterial = new THREE.MeshBasicMaterial({
                     color: 0xfad0c4,
                     side: THREE.DoubleSide,
@@ -331,293 +233,207 @@ class SolarSystemExplorer {
                 rings.rotation.x = Math.PI / 2;
                 planetMesh.add(rings);
             }
-
-            this.planetMeshes[key] = planetMesh;
-            this.scene.add(planetMesh);
         });
     }
 
-    setupCanvas2D() {
-        this.canvas2D.width = window.innerWidth;
-        this.canvas2D.height = window.innerHeight;
-        window.addEventListener('resize', () => {
-            this.canvas2D.width = window.innerWidth;
-            this.canvas2D.height = window.innerHeight;
-            this.renderer.setSize(window.innerWidth, window.innerHeight);
-            this.camera3D.aspect = window.innerWidth / window.innerHeight;
-            this.camera3D.updateProjectionMatrix();
+    createAsteroidBelt() {
+        const asteroidCount = 2000;
+        const innerRadius = 280; // Between Mars and Jupiter
+        const outerRadius = 350;
+        
+        const asteroidGeometry = new THREE.BufferGeometry();
+        const asteroidMaterial = new THREE.PointsMaterial({
+            color: 0x888888,
+            size: 1,
+            sizeAttenuation: true
+        });
+
+        const positions = [];
+        for (let i = 0; i < asteroidCount; i++) {
+            const angle = Math.random() * Math.PI * 2;
+            const radius = innerRadius + Math.random() * (outerRadius - innerRadius);
+            const height = (Math.random() - 0.5) * 20;
+            
+            const x = Math.cos(angle) * radius;
+            const z = Math.sin(angle) * radius;
+            const y = height;
+            
+            positions.push(x, y, z);
+        }
+
+        asteroidGeometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+        this.asteroidBelt = new THREE.Points(asteroidGeometry, asteroidMaterial);
+        this.scene.add(this.asteroidBelt);
+    }
+
+    createKuiperBelt() {
+        const kuiperCount = 3000;
+        const innerRadius = 1200; // Beyond Neptune
+        const outerRadius = 1800;
+        
+        const kuiperGeometry = new THREE.BufferGeometry();
+        const kuiperMaterial = new THREE.PointsMaterial({
+            color: 0x4466aa,
+            size: 1.5,
+            sizeAttenuation: true
+        });
+
+        const positions = [];
+        for (let i = 0; i < kuiperCount; i++) {
+            const angle = Math.random() * Math.PI * 2;
+            const radius = innerRadius + Math.random() * (outerRadius - innerRadius);
+            const height = (Math.random() - 0.5) * 50;
+            
+            const x = Math.cos(angle) * radius;
+            const z = Math.sin(angle) * radius;
+            const y = height;
+            
+            positions.push(x, y, z);
+        }
+
+        kuiperGeometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+        this.kuiperBelt = new THREE.Points(kuiperGeometry, kuiperMaterial);
+        this.scene.add(this.kuiperBelt);
+    }
+
+    createOortCloud() {
+        // Note: Oort Cloud is scaled down 1000x for visualization
+        // Actual Oort Cloud extends from ~2000 AU to 100,000+ AU
+        const oortCount = 5000;
+        const innerRadius = 2000; // Scaled down from 2000 AU
+        const outerRadius = 5000; // Scaled down from 50,000+ AU
+        
+        const oortGeometry = new THREE.BufferGeometry();
+        const oortMaterial = new THREE.PointsMaterial({
+            color: 0x6644aa,
+            size: 1,
+            sizeAttenuation: true,
+            transparent: true,
+            opacity: 0.6
+        });
+
+        const positions = [];
+        for (let i = 0; i < oortCount; i++) {
+            // Spherical distribution for Oort Cloud
+            const theta = Math.random() * Math.PI * 2;
+            const phi = Math.acos(2 * Math.random() - 1);
+            const radius = innerRadius + Math.random() * (outerRadius - innerRadius);
+            
+            const x = radius * Math.sin(phi) * Math.cos(theta);
+            const y = radius * Math.sin(phi) * Math.sin(theta);
+            const z = radius * Math.cos(phi);
+            
+            positions.push(x, y, z);
+        }
+
+        oortGeometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+        this.oortCloud = new THREE.Points(oortGeometry, oortMaterial);
+        this.scene.add(this.oortCloud);
+    }
+
+    createOrbitPaths() {
+        Object.entries(this.planetData).forEach(([key, planet]) => {
+            const orbitGeometry = new THREE.RingGeometry(planet.orbitRadius - 0.5, planet.orbitRadius + 0.5, 128);
+            const orbitMaterial = new THREE.MeshBasicMaterial({
+                color: 0xffffff,
+                side: THREE.DoubleSide,
+                transparent: true,
+                opacity: 0.1
+            });
+            const orbit = new THREE.Mesh(orbitGeometry, orbitMaterial);
+            orbit.rotation.x = Math.PI / 2;
+            this.scene.add(orbit);
         });
     }
 
     setupEventListeners() {
-        // View toggle
-        document.getElementById('view2D').addEventListener('click', () => this.switchView('2D'));
-        document.getElementById('view3D').addEventListener('click', () => this.switchView('3D'));
-
-        // Planet buttons
-        document.querySelectorAll('.planet-btn').forEach(btn => {
+        // Zoom controls
+        document.querySelectorAll('.zoom-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const planet = e.currentTarget.dataset.planet;
-                this.selectPlanet(planet);
+                const region = e.target.dataset.region;
+                this.focusOnRegion(region);
+                
+                // Update active button
+                document.querySelectorAll('.zoom-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
             });
         });
 
         // Speed controls
         document.querySelectorAll('.speed-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                document.querySelector('.speed-btn.active').classList.remove('active');
-                e.currentTarget.classList.add('active');
-                this.animationSpeed = parseInt(e.currentTarget.dataset.speed);
+                this.animationSpeed = parseInt(e.target.dataset.speed);
+                
+                // Update active button
+                document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
             });
         });
 
-        // Moon controls
-        document.getElementById('viewMoonsBtn').addEventListener('click', () => {
-            this.showMoons();
-        });
-
-        document.getElementById('closeMoonsBtn').addEventListener('click', () => {
-            document.getElementById('moonPanel').classList.remove('show');
-        });
-
-        // Fun fact controls
-        document.getElementById('closeFunFact').addEventListener('click', () => {
-            document.getElementById('didYouKnow').classList.remove('show');
-        });
-
-        // Badge controls
-        document.getElementById('closeBadge').addEventListener('click', () => {
-            document.getElementById('badgePopup').classList.remove('show');
-        });
-
-        // Canvas interactions for 2D
-        this.setup2DInteractions();
-    }
-
-    setup2DInteractions() {
-        let isDragging = false;
-        let lastMouseX = 0;
-        let lastMouseY = 0;
-
-        this.canvas2D.addEventListener('mousedown', (e) => {
-            if (this.currentView !== '2D') return;
-            isDragging = true;
-            lastMouseX = e.clientX;
-            lastMouseY = e.clientY;
-        });
-
-        this.canvas2D.addEventListener('mousemove', (e) => {
-            if (this.currentView !== '2D') return;
-            if (isDragging && !this.selectedPlanet) {
-                const deltaX = e.clientX - lastMouseX;
-                const deltaY = e.clientY - lastMouseY;
-                this.camera.x -= deltaX / this.camera.zoom;
-                this.camera.y -= deltaY / this.camera.zoom;
-                lastMouseX = e.clientX;
-                lastMouseY = e.clientY;
-            }
-        });
-
-        this.canvas2D.addEventListener('mouseup', () => {
-            isDragging = false;
-        });
-
-        this.canvas2D.addEventListener('wheel', (e) => {
-            if (this.currentView !== '2D') return;
-            e.preventDefault();
-            const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
-            this.camera.zoom = Math.max(0.1, Math.min(10, this.camera.zoom * zoomFactor));
+        // Double click to reset view
+        this.renderer.domElement.addEventListener('dblclick', () => {
+            this.focusOnRegion('fullSystem');
         });
     }
 
-    switchView(view) {
-        this.currentView = view;
+    focusOnRegion(region) {
+        this.currentRegion = region;
         
-        // Update UI
-        document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
-        document.getElementById(`view${view}`).classList.add('active');
-        
-        // Show/hide canvases
-        this.canvas2D.classList.toggle('active', view === '2D');
-        this.canvas3D.classList.toggle('active', view === '3D');
-        
-        // Show/hide 3D controls info
-        document.getElementById('controls3DInfo').style.display = view === '3D' ? 'block' : 'none';
-        
-        if (view === '3D') {
-            this.reset3DView();
-        } else {
-            this.reset2DView();
-        }
-    }
+        const targetPosition = new THREE.Vector3();
+        const lookAtPosition = new THREE.Vector3();
+        let cameraDistance = 1000;
 
-    createStars() {
-        const starsContainer = document.getElementById('starsContainer');
-        for (let i = 0; i < 100; i++) {
-            const star = document.createElement('div');
-            star.className = 'star';
-            star.style.left = Math.random() * 100 + '%';
-            star.style.top = Math.random() * 100 + '%';
-            star.style.width = star.style.height = (Math.random() * 3 + 1) + 'px';
-            star.style.animationDelay = Math.random() * 2 + 's';
-            starsContainer.appendChild(star);
-        }
-    }
-
-    selectPlanet(planetKey) {
-        this.selectedPlanet = planetKey;
-        const planet = this.planetData[planetKey];
-
-        // Update active button
-        document.querySelectorAll('.planet-btn').forEach(btn => btn.classList.remove('active'));
-        document.querySelector(`[data-planet="${planetKey}"]`).classList.add('active');
-
-        // Animate to planet based on current view
-        if (this.currentView === '2D') {
-            this.animateCameraTo(planetKey);
-        } else {
-            this.animate3DToPlanet(planetKey);
+        switch (region) {
+            case 'inner':
+                targetPosition.set(0, 100, 300);
+                lookAtPosition.set(0, 0, 0);
+                cameraDistance = 400;
+                this.updateInfoPanel('Inner Solar System', 
+                    'Explore the rocky planets: Mercury, Venus, Earth, and Mars. This region contains the Asteroid Belt between Mars and Jupiter.');
+                break;
+                
+            case 'gasGiants':
+                targetPosition.set(0, 200, 800);
+                lookAtPosition.set(0, 0, 0);
+                cameraDistance = 1200;
+                this.updateInfoPanel('Gas Giants Region', 
+                    'Discover Jupiter, Saturn, Uranus, and Neptune - the massive outer planets with complex ring systems and many moons.');
+                break;
+                
+            case 'kuiperBelt':
+                targetPosition.set(0, 300, 2000);
+                lookAtPosition.set(0, 0, 0);
+                cameraDistance = 2500;
+                this.updateInfoPanel('Kuiper Belt', 
+                    'Beyond Neptune lies the Kuiper Belt, home to dwarf planets like Pluto and thousands of icy bodies.');
+                break;
+                
+            case 'oortCloud':
+                targetPosition.set(0, 1000, 8000);
+                lookAtPosition.set(0, 0, 0);
+                cameraDistance = 10000;
+                this.updateInfoPanel('Oort Cloud', 
+                    'The outermost region of our solar system. A spherical shell of icy objects that extends nearly a light-year from the Sun. (Shown at 1:1000 scale)');
+                break;
+                
+            case 'fullSystem':
+            default:
+                targetPosition.set(0, 500, 1500);
+                lookAtPosition.set(0, 0, 0);
+                cameraDistance = 2000;
+                this.updateInfoPanel('Full Solar System', 
+                    'View our entire solar system from the Sun to the distant Oort Cloud. Use the region buttons to explore specific areas.');
+                break;
         }
 
-        // Show planet info
-        this.showPlanetInfo(planet);
-
-        // Track exploration
-        if (!this.exploredPlanets.has(planetKey)) {
-            this.exploredPlanets.add(planetKey);
-            this.updateProgress();
-            this.showFunFact(planet.funFact);
-            
-            if (this.exploredPlanets.size === 8) {
-                this.showBadge("Solar System Master!", "You've explored all 8 planets! You're now a true space explorer!");
-            } else if (this.exploredPlanets.size === 4) {
-                this.showBadge("Space Explorer!", "You've explored half the solar system!");
-            }
-        }
+        // Animate camera to new position
+        this.animateCameraTo(targetPosition, lookAtPosition, cameraDistance);
     }
 
-    animateCameraTo(planetKey) {
-        if (this.isAnimating || this.currentView !== '2D') return;
-        
-        this.isAnimating = true;
-        const planet = this.planetData[planetKey];
-        const angle = (this.time / planet.orbitPeriod) * 2 * Math.PI;
-        const targetX = Math.cos(angle) * planet.orbitRadius;
-        const targetY = Math.sin(angle) * planet.orbitRadius;
-        const targetZoom = 3;
-
-        const startX = this.camera.x;
-        const startY = this.camera.y;
-        const startZoom = this.camera.zoom;
-        const duration = 2000;
-        const startTime = Date.now();
-
-        const animate = () => {
-            const elapsed = Date.now() - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            const easeProgress = 1 - Math.pow(1 - progress, 3);
-
-            this.camera.x = startX + (targetX - startX) * easeProgress;
-            this.camera.y = startY + (targetY - startY) * easeProgress;
-            this.camera.zoom = startZoom + (targetZoom - startZoom) * easeProgress;
-
-            if (progress < 1) {
-                requestAnimationFrame(animate);
-            } else {
-                this.isAnimating = false;
-            }
-        };
-
-        animate();
-    }
-
-    animate3DToPlanet(planetKey) {
-        const planet = this.planetData[planetKey];
-        const planetMesh = this.planetMeshes[planetKey];
-        
-        if (!planetMesh) return;
-
-        // Calculate target position (current position in orbit)
-        const angle = (this.time / planet.orbitPeriod) * 2 * Math.PI;
-        const targetPosition = new THREE.Vector3(
-            Math.cos(angle) * planet.orbitRadius,
-            0,
-            Math.sin(angle) * planet.orbitRadius
-        );
-
-        // Animate camera to look at planet
-        const startPosition = this.camera3D.position.clone();
-        const targetCameraPosition = targetPosition.clone().multiplyScalar(2);
-        targetCameraPosition.y = 50;
-
-        const duration = 2000;
-        const startTime = Date.now();
-
-        const animate = () => {
-            const elapsed = Date.now() - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            const easeProgress = 1 - Math.pow(1 - progress, 3);
-
-            this.camera3D.position.lerpVectors(startPosition, targetCameraPosition, easeProgress);
-            this.controls.target.lerpVectors(this.controls.target, targetPosition, easeProgress);
-            this.controls.update();
-
-            if (progress < 1) {
-                requestAnimationFrame(animate);
-            }
-        };
-
-        animate();
-    }
-
-    resetView() {
-        this.selectedPlanet = null;
-        document.querySelectorAll('.planet-btn').forEach(btn => btn.classList.remove('active'));
-        document.getElementById('infoPanel').classList.remove('show');
-        document.getElementById('moonPanel').classList.remove('show');
-
-        if (this.currentView === '2D') {
-            this.reset2DView();
-        } else {
-            this.reset3DView();
-        }
-    }
-
-    reset2DView() {
-        if (this.isAnimating) return;
-        
-        this.isAnimating = true;
-        const startX = this.camera.x;
-        const startY = this.camera.y;
-        const startZoom = this.camera.zoom;
-        const duration = 2000;
-        const startTime = Date.now();
-
-        const animate = () => {
-            const elapsed = Date.now() - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            const easeProgress = 1 - Math.pow(1 - progress, 3);
-
-            this.camera.x = startX + (0 - startX) * easeProgress;
-            this.camera.y = startY + (0 - startY) * easeProgress;
-            this.camera.zoom = startZoom + (0.6 - startZoom) * easeProgress;
-
-            if (progress < 1) {
-                requestAnimationFrame(animate);
-            } else {
-                this.isAnimating = false;
-            }
-        };
-
-        animate();
-    }
-
-    reset3DView() {
-        const startPosition = this.camera3D.position.clone();
+    animateCameraTo(targetPosition, lookAtPosition, distance) {
+        const startPosition = this.camera.position.clone();
         const startTarget = this.controls.target.clone();
-        const targetPosition = new THREE.Vector3(0, 300, 500);
-        const targetTarget = new THREE.Vector3(0, 0, 0);
-
+        
         const duration = 2000;
         const startTime = Date.now();
 
@@ -626,8 +442,8 @@ class SolarSystemExplorer {
             const progress = Math.min(elapsed / duration, 1);
             const easeProgress = 1 - Math.pow(1 - progress, 3);
 
-            this.camera3D.position.lerpVectors(startPosition, targetPosition, easeProgress);
-            this.controls.target.lerpVectors(startTarget, targetTarget, easeProgress);
+            this.camera.position.lerpVectors(startPosition, targetPosition, easeProgress);
+            this.controls.target.lerpVectors(startTarget, lookAtPosition, easeProgress);
             this.controls.update();
 
             if (progress < 1) {
@@ -638,193 +454,65 @@ class SolarSystemExplorer {
         animate();
     }
 
-    showPlanetInfo(planet) {
-        document.getElementById('planetName').textContent = planet.name;
-        document.getElementById('planetDetails').innerHTML = `
-            <p><strong>Distance from Sun:</strong> ${planet.distance}</p>
-            <p><strong>Size:</strong> ${planet.diameter} across</p>
-            <p><strong>Time to orbit Sun:</strong> ${Math.round(planet.orbitPeriod)} Earth days</p>
-            <p style="margin-top: 10px; font-style: italic;">${planet.description}</p>
-        `;
-
-        const viewMoonsBtn = document.getElementById('viewMoonsBtn');
-        if (planet.moons.length > 0) {
-            viewMoonsBtn.style.display = 'block';
-            viewMoonsBtn.textContent = `View ${planet.moons.length} Moon${planet.moons.length > 1 ? 's' : ''}`;
-        } else {
-            viewMoonsBtn.style.display = 'none';
-        }
-
-        document.getElementById('infoPanel').classList.add('show');
+    updateInfoPanel(title, info) {
+        document.getElementById('regionTitle').textContent = title;
+        document.getElementById('regionInfo').innerHTML = `<p>${info}</p>`;
     }
 
-    showMoons() {
-        if (!this.selectedPlanet) return;
-        
-        const planet = this.planetData[this.selectedPlanet];
-        const moonsList = document.getElementById('moonsList');
-        moonsList.innerHTML = planet.moons.map(moon => `
-            <div class="moon-item">
-                <h4>${moon.name}</h4>
-                <p><strong>Distance:</strong> ${moon.distance}</p>
-                <p><strong>Discovered:</strong> ${moon.discovered}</p>
-                <p><em>${moon.fact}</em></p>
-            </div>
-        `).join('');
-
-        document.getElementById('moonPanel').classList.add('show');
-    }
-
-    showFunFact(fact) {
-        document.getElementById('funFactText').textContent = fact;
-        document.getElementById('didYouKnow').classList.add('show');
-        setTimeout(() => {
-            document.getElementById('didYouKnow').classList.remove('show');
-        }, 5000);
-    }
-
-    showBadge(title, text) {
-        document.getElementById('badgePopup').querySelector('h2').textContent = title;
-        document.getElementById('badgeText').textContent = text;
-        document.getElementById('badgePopup').classList.add('show');
-    }
-
-    updateProgress() {
-        const progress = (this.exploredPlanets.size / 8) * 100;
-        document.getElementById('progressFill').style.width = progress + '%';
-        document.getElementById('progressText').textContent = `${this.exploredPlanets.size} / 8 planets explored`;
+    updateDistanceIndicator() {
+        const distanceFromSun = this.camera.position.length();
+        const auDistance = (distanceFromSun / 200).toFixed(1); // Rough conversion to AU
+        document.getElementById('distanceValue').textContent = `${auDistance} AU`;
     }
 
     animate() {
-        const currentTime = Date.now();
-        const deltaTime = currentTime - this.lastFrameTime;
-        this.lastFrameTime = currentTime;
-
-        // Update time based on animation speed
-        this.time += (deltaTime / 1000) * this.animationSpeed;
-
-        if (this.currentView === '2D') {
-            this.animate2D();
-        } else {
-            this.animate3D();
-        }
-
         requestAnimationFrame(() => this.animate());
-    }
 
-    animate2D() {
-        // Clear canvas
-        this.ctx.clearRect(0, 0, this.canvas2D.width, this.canvas2D.height);
+        if (this.animationSpeed !== 0) {
+            this.time += 0.016 * this.animationSpeed; // Roughly 60fps
 
-        // Apply camera transform
-        this.ctx.save();
-        this.ctx.translate(
-            this.canvas2D.width / 2 - this.camera.x * this.camera.zoom,
-            this.canvas2D.height / 2 - this.camera.y * this.camera.zoom
-        );
-        this.ctx.scale(this.camera.zoom, this.camera.zoom);
+            // Update planet positions and rotations
+            Object.entries(this.planetData).forEach(([key, planet]) => {
+                const planetMesh = this.planetMeshes[key];
+                if (planetMesh) {
+                    // Orbital motion
+                    const angle = (this.time / planet.orbitPeriod) * 2 * Math.PI;
+                    planetMesh.position.x = Math.cos(angle) * planet.orbitRadius;
+                    planetMesh.position.z = Math.sin(angle) * planet.orbitRadius;
+                    
+                    // Rotation
+                    const rotationSpeed = (2 * Math.PI) / planet.rotationPeriod;
+                    planetMesh.rotation.y += rotationSpeed * 0.016 * this.animationSpeed;
+                }
+            });
 
-        // Draw sun
-        const sunGradient = this.ctx.createRadialGradient(0, 0, 0, 0, 0, 40);
-        sunGradient.addColorStop(0, '#ffff00');
-        sunGradient.addColorStop(0.3, '#ffa500');
-        sunGradient.addColorStop(1, '#ff6600');
-        this.ctx.fillStyle = sunGradient;
-        this.ctx.beginPath();
-        this.ctx.arc(0, 0, 40, 0, 2 * Math.PI);
-        this.ctx.fill();
-
-        // Draw sun corona
-        this.ctx.fillStyle = 'rgba(255, 255, 0, 0.1)';
-        this.ctx.beginPath();
-        this.ctx.arc(0, 0, 60, 0, 2 * Math.PI);
-        this.ctx.fill();
-
-        // Draw planets and orbits
-        Object.entries(this.planetData).forEach(([key, planet]) => {
-            // Draw orbit
-            this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-            this.ctx.lineWidth = 1;
-            this.ctx.beginPath();
-            this.ctx.arc(0, 0, planet.orbitRadius, 0, 2 * Math.PI);
-            this.ctx.stroke();
-
-            // Calculate planet position
-            const angle = (this.time / planet.orbitPeriod) * 2 * Math.PI;
-            const x = Math.cos(angle) * planet.orbitRadius;
-            const y = Math.sin(angle) * planet.orbitRadius;
-
-            // Draw planet
-            const planetGradient = this.ctx.createRadialGradient(
-                x - planet.radius/3, y - planet.radius/3, 0,
-                x, y, planet.radius
-            );
-            planetGradient.addColorStop(0, this.lightenColor(planet.color, 40));
-            planetGradient.addColorStop(1, planet.color);
-            this.ctx.fillStyle = planetGradient;
-            this.ctx.beginPath();
-            this.ctx.arc(x, y, planet.radius, 0, 2 * Math.PI);
-            this.ctx.fill();
-
-            // Draw planet name if zoomed in
-            if (this.camera.zoom > 2) {
-                this.ctx.fillStyle = 'white';
-                this.ctx.font = '14px Comic Neue';
-                this.ctx.textAlign = 'center';
-                this.ctx.fillText(planet.name, x, y + planet.radius + 20);
+            // Rotate asteroid belt and Kuiper belt for visual effect
+            if (this.asteroidBelt) {
+                this.asteroidBelt.rotation.y += 0.001 * this.animationSpeed;
             }
-
-            // Draw Saturn's rings
-            if (key === 'saturn') {
-                this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.6)';
-                this.ctx.lineWidth = 3;
-                this.ctx.beginPath();
-                this.ctx.ellipse(x, y, planet.radius + 8, planet.radius + 3, 0, 0, 2 * Math.PI);
-                this.ctx.stroke();
-                this.ctx.lineWidth = 2;
-                this.ctx.beginPath();
-                this.ctx.ellipse(x, y, planet.radius + 12, planet.radius + 5, 0, 0, 2 * Math.PI);
-                this.ctx.stroke();
+            if (this.kuiperBelt) {
+                this.kuiperBelt.rotation.y += 0.0005 * this.animationSpeed;
             }
-        });
-
-        this.ctx.restore();
-    }
-
-    animate3D() {
-        // Update planet positions in 3D
-        Object.entries(this.planetData).forEach(([key, planet]) => {
-            const planetMesh = this.planetMeshes[key];
-            if (planetMesh) {
-                const angle = (this.time / planet.orbitPeriod) * 2 * Math.PI;
-                planetMesh.position.x = Math.cos(angle) * planet.orbitRadius;
-                planetMesh.position.z = Math.sin(angle) * planet.orbitRadius;
-                
-                // Rotate planets for visual interest
-                planetMesh.rotation.y += 0.01;
-            }
-        });
+        }
 
         // Update controls
         this.controls.update();
+        
+        // Update distance indicator
+        this.updateDistanceIndicator();
 
-        // Render 3D scene
-        this.renderer.render(this.scene, this.camera3D);
+        // Render scene
+        this.renderer.render(this.scene, this.camera);
     }
 
-    lightenColor(color, percent) {
-        const num = parseInt(color.replace("#", ""), 16);
-        const amt = Math.round(2.55 * percent);
-        const R = (num >> 16) + amt;
-        const G = (num >> 8 & 0x00FF) + amt;
-        const B = (num & 0x0000FF) + amt;
-        return "#" + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 + 
-            (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 + 
-            (B < 255 ? B < 1 ? 0 : B : 255)).toString(16).slice(1);
+    onWindowResize() {
+        this.camera.aspect = window.innerWidth / window.innerHeight;
+        this.camera.updateProjectionMatrix();
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
     }
 }
 
-// Initialize the application when the page loads
+// Initialize the solar system when the page loads
 window.addEventListener('load', () => {
-    new SolarSystemExplorer();
+    new SolarSystem3D();
 });
