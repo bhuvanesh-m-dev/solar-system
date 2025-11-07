@@ -234,7 +234,7 @@ body {
 .controls-info {
     position: absolute;
     bottom: 20px;
-    right: 200px;
+    right: 20px;
     background: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(10px);
     padding: 15px;
@@ -251,6 +251,29 @@ body {
 .controls-info p {
     margin-bottom: 4px;
     color: #ccc;
+}
+
+/* Distance Display */
+#distance-container {
+    position: absolute;
+    bottom: 825px;
+    right: 33px; /* Adjust this to place it next to the sidebar */
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 12px;
+    color: #ccc;
+}
+
+#distance-container p strong {
+    color: #4facfe;
+}
+
+#distance-display {
+    font-weight: bold;
+    color: white;
 }
 
 /* Fact Popup */
@@ -332,8 +355,8 @@ body {
     }
     
     .controls-info {
-        right: 10px;
-        bottom: 10px;
+        right: 20px;
+        bottom: 0px;
     }
     
     .info-panel {
