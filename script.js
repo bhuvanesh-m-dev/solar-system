@@ -14,6 +14,10 @@ class SolarSystem3D {
         this.asteroidBelt = null;
         this.kuiperBelt = null;
         this.oortCloud = null;
+
+        this.raycaster = new THREE.Raycaster();
+        this.mouse = new THREE.Vector2();
+        this.intersectPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
         
         this.init();
         this.setupEventListeners();
@@ -466,6 +470,13 @@ class SolarSystem3D {
         document.getElementById('closeFact').addEventListener('click', () => {
             document.getElementById('factPopup').classList.remove('show');
         });
+
+        // Mouse move for distance calculation
+        document.addEventListener('mousemove', (event) => {
+            // Normalize mouse coordinates
+            this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        });
     }
 
     selectPlanet(planetKey) {
@@ -628,6 +639,14 @@ class SolarSystem3D {
                 this.kuiperBelt.rotation.y += 0.0005 * this.animationSpeed;
             }
         }
+
+        // Distance calculation
+        this.raycaster.setFromCamera(this.mouse, this.camera);
+        const intersection = new THREE.Vector3();
+        this.raycaster.ray.intersectPlane(this.intersectPlane, intersection);
+        const distance = intersection.length();
+        const auDistance = distance / 200; // 1 AU = 200 units
+        document.getElementById('distance-display').textContent = `${auDistance.toFixed(2)} AU`;
 
         this.controls.update();
         this.renderer.render(this.scene, this.camera);
