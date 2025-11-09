@@ -421,6 +421,18 @@ class SolarSystem3D {
             }
 
             setupEventListeners() {
+                // Time scale buttons
+                document.querySelectorAll('.time-scale-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const speed = parseFloat(e.currentTarget.dataset.speed);
+                        this.animationSpeed = speed;
+
+                        // Update active button
+                        document.querySelectorAll('.time-scale-btn').forEach(b => b.classList.remove('active'));
+                        e.currentTarget.classList.add('active');
+                    });
+                });
+
                 // Planet buttons
                 document.querySelectorAll('.planet-btn').forEach(btn => {
                     btn.addEventListener('click', (e) => {
