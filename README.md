@@ -1,6 +1,6 @@
 # 3D Solar System Explorer
 
-This project is a 3D solar system explorer created with Three.js. It displays the sun, planets, asteroid belt, kuiper belt, and oort cloud.
+The next phase of CosmoTalker introduces a browser-based 3D Solar System model, letting users explore planets, orbits, and live celestial data powered by CosmoTalker’s Python engine. Built with modern web technologies (like Three.js / WebGL) for an immersive learning experience.
 
 ## Features
 
