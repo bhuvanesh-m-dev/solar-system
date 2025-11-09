@@ -21,6 +21,43 @@
             z-index: 1;
         }
 
+
+        /* Time Scale Bar */
+        .time-scale-bar {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.72);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 8px;
+            z-index: 100;
+            display: flex;
+            gap: 8px;
+        }
+
+        .time-scale-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 9px;
+            padding: 8px 12px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-size: 13px;
+        }
+
+        .time-scale-btn:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .time-scale-btn.active {
+            background: linear-gradient(45deg, rgba(79, 172, 254, 0.12), rgba(0, 242, 254, 0.12));
+            border-color: #4facfe;
+            box-shadow: 0 0 16px rgba(79, 172, 254, 0.12);
+        }
+
         /* Planet Selection Sidebar */
         .planet-sidebar {
             position: fixed;
