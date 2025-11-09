@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Solar System Explorer - Sun to Oort Cloud</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="container3D">
+        <!-- Canvas will be created by Three.js -->
+    </div>
+    
+    <!-- Planet Selection Sidebar -->
+    <div class="planet-sidebar">
+        <h3>Solar System Objects</h3>
+        <div class="planet-buttons">
+            <button class="planet-btn" data-planet="solarSystem">
+                <div class="planet-icon" style="background: #ffffff;"></div>
+                <span>Solar System</span>
+            </button>
+            <button class="planet-btn" data-planet="sun">
+                <div class="planet-icon" style="background: #ffd700;"></div>
+                <span>Sun</span>
+            </button>
+            <button class="planet-btn" data-planet="mercury">
+                <div class="planet-icon" style="background: #8c7853;"></div>
+                <span>Mercury</span>
+            </button>
+            <button class="planet-btn" data-planet="venus">
+                <div class="planet-icon" style="background: #ffc649;"></div>
+                <span>Venus</span>
+            </button>
+            <button class="planet-btn" data-planet="earth">
+                <div class="planet-icon" style="background: #4facfe;"></div>
+                <span>Earth</span>
+            </button>
+            <button class="planet-btn" data-planet="mars">
+                <div class="planet-icon" style="background: #ff6b6b;"></div>
+                <span>Mars</span>
+            </button>
+            <button class="planet-btn" data-planet="jupiter">
+                <div class="planet-icon" style="background: #d2691e;"></div>
+                <span>Jupiter</span>
+            </button>
+            <button class="planet-btn" data-planet="saturn">
+                <div class="planet-icon" style="background: #fad0c4;"></div>
+                <span>Saturn</span>
+            </button>
+            <button class="planet-btn" data-planet="uranus">
+                <div class="planet-icon" style="background: #4dd0e1;"></div>
+                <span>Uranus</span>
+            </button>
+            <button class="planet-btn" data-planet="neptune">
+                <div class="planet-icon" style="background: #1e3c72;"></div>
+                <span>Neptune</span>
+            </button>
+            <button class="planet-btn" data-planet="asteroidBelt">
+                <div class="planet-icon" style="background: #888888;"></div>
+                <span>Asteroid Belt</span>
+            </button>
+            <button class="planet-btn" data-planet="kuiperBelt">
+                <div class="planet-icon" style="background: #4466aa;"></div>
+                <span>Kuiper Belt</span>
+            </button>
+            <button class="planet-btn" data-planet="oortCloud">
+                <div class="planet-icon" style="background: #6644aa;"></div>
+                <span>Oort Cloud</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- UI Controls -->
+    <div class="ui-overlay">
+        <!-- Speed Controls -->
+        <div class="speed-controls">
+            <h3>Time Scale</h3>
+            <div class="speed-buttons">
+                <button class="speed-btn" data-speed="0">Pause</button>
+                <button class="speed-btn active" data-speed="1">Real Time</button>
+                <button class="speed-btn" data-speed="10">10x</button>
+                <button class="speed-btn" data-speed="100">100x</button>
+                <button class="speed-btn" data-speed="1000">1000x</button>
+            </div>
+        </div>
+        
+        <!-- Info Panel -->
+        <div class="info-panel" id="infoPanel">
+            <h2 id="planetName">Solar System Overview</h2>
+            <div id="planetDetails">
+                <p>Welcome to your 3D Solar System Explorer!</p>
+                <p>Click on any planet from the sidebar to explore it closely.</p>
+            </div>
+            <div class="planet-actions">
+                <button id="viewDetailsBtn" class="action-btn details-btn">View Details</button>
+            </div>
+            <div class="scale-info">
+                <p><strong>Note:</strong> Distances and sizes are scaled for visualization.</p>
+            </div>
+        </div>
+        
+        <!-- Distance Display -->
+        <div id="distance-container">
+            <p><strong>Distance from Sun:</strong> <span id="distance-display">0.00 AU</span></p>
+        </div>
+
+        <!-- Navigation Help -->
+        <div class="controls-info">
+            <h4>3D Navigation</h4>
+            <p>• Left Click + Drag: Rotate View</p>
+            <p>• Right Click + Drag: Pan View</p>
+            <p>• Mouse Wheel: Zoom In/Out</p>
+        </div>
+    </div>
+
+    <!-- Fact Popup -->
+    <div class="fact-popup" id="factPopup">
+        <div class="fact-content">
+            <h3>🌌 Did You Know?</h3>
+            <p id="factText"></p>
+            <button id="closeFact" class="close-btn">Awesome!</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
