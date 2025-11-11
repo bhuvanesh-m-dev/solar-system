@@ -30,7 +30,7 @@ class SolarSystem3D {
                 this.scene.background = new THREE.Color(0x000011);
 
                 // Camera setup
-                this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100000);
+                this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 300000);
                 this.camera.position.set(0, 500, 1000);
 
                 // Renderer setup
@@ -44,7 +44,7 @@ class SolarSystem3D {
                 this.controls.enableDamping = true;
                 this.controls.dampingFactor = 0.08;
                 this.controls.minDistance = 10;
-                this.controls.maxDistance = 50000;
+                this.controls.maxDistance = 150000;
 
                 // Lighting
                 this.setupLighting();
@@ -99,7 +99,7 @@ class SolarSystem3D {
             }
 
             createSun() {
-                const sunGeometry = new THREE.SphereGeometry(20, 32, 32);
+                const sunGeometry = new THREE.SphereGeometry(60, 32, 32);
                 const sunMaterial = new THREE.MeshBasicMaterial({
                     color: 0xffff00,
                     emissive: 0xffff00,
@@ -110,7 +110,7 @@ class SolarSystem3D {
                 this.scene.add(this.sun);
 
                 // Sun glow effect
-                const glowGeometry = new THREE.SphereGeometry(30, 32, 32);
+                const glowGeometry = new THREE.SphereGeometry(90, 32, 32);
                 const glowMaterial = new THREE.MeshBasicMaterial({
                     color: 0xff6600,
                     transparent: true,
@@ -130,7 +130,7 @@ class SolarSystem3D {
                     },
                     sun: { 
                         name: "Sun", 
-                        radius: 20, 
+                        radius: 60, 
                         color: 0xffff00, 
                         funFact: "The Sun contains 99.86% of the solar system mass.", 
                         description: "Our magnificent star at the center of the solar system, providing light and energy to all planets.", 
@@ -139,8 +139,8 @@ class SolarSystem3D {
                     },
                     mercury: { 
                         name: "Mercury", 
-                        radius: 3, 
-                        orbitRadius: 78, 
+                        radius: 9, 
+                        orbitRadius: 234, 
                         orbitPeriod: 88, 
                         color: 0x8c7853, 
                         tilt: 0.034, 
@@ -153,8 +153,8 @@ class SolarSystem3D {
                     },
                     venus: { 
                         name: "Venus", 
-                        radius: 7, 
-                        orbitRadius: 144, 
+                        radius: 21, 
+                        orbitRadius: 432, 
                         orbitPeriod: 225, 
                         color: 0xffc649, 
                         tilt: 177.4, 
@@ -167,8 +167,8 @@ class SolarSystem3D {
                     },
                     earth: { 
                         name: "Earth", 
-                        radius: 7.5, 
-                        orbitRadius: 200, 
+                        radius: 22.5, 
+                        orbitRadius: 600, 
                         orbitPeriod: 365, 
                         color: 0x4facfe, 
                         tilt: 23.44, 
@@ -181,8 +181,8 @@ class SolarSystem3D {
                     },
                     mars: { 
                         name: "Mars", 
-                        radius: 4, 
-                        orbitRadius: 304, 
+                        radius: 12, 
+                        orbitRadius: 912, 
                         orbitPeriod: 687, 
                         color: 0xff6b6b, 
                         tilt: 25.19, 
@@ -195,8 +195,8 @@ class SolarSystem3D {
                     },
                     jupiter: { 
                         name: "Jupiter", 
-                        radius: 40, 
-                        orbitRadius: 1040, 
+                        radius: 120, 
+                        orbitRadius: 3120, 
                         orbitPeriod: 4333, 
                         color: 0xd2691e, 
                         tilt: 3.13, 
@@ -209,8 +209,8 @@ class SolarSystem3D {
                     },
                     saturn: { 
                         name: "Saturn", 
-                        radius: 35, 
-                        orbitRadius: 1908, 
+                        radius: 105, 
+                        orbitRadius: 5724, 
                         orbitPeriod: 10759, 
                         color: 0xfad0c4, 
                         tilt: 26.73, 
@@ -224,8 +224,8 @@ class SolarSystem3D {
                     },
                     uranus: { 
                         name: "Uranus", 
-                        radius: 25, 
-                        orbitRadius: 3840, 
+                        radius: 75, 
+                        orbitRadius: 11520, 
                         orbitPeriod: 30687, 
                         color: 0x4dd0e1, 
                         tilt: 97.77, 
@@ -238,8 +238,8 @@ class SolarSystem3D {
                     },
                     neptune: { 
                         name: "Neptune", 
-                        radius: 24, 
-                        orbitRadius: 6012, 
+                        radius: 72, 
+                        orbitRadius: 18036, 
                         orbitPeriod: 60190, 
                         color: 0x1e3c72, 
                         tilt: 28.32, 
@@ -252,7 +252,7 @@ class SolarSystem3D {
                     },
                     asteroidBelt: { 
                         name: "Asteroid Belt", 
-                        radius: 540, 
+                        radius: 1620, 
                         color: 0x888888, 
                         funFact: "The asteroid belt contains millions of asteroids, but they're very far apart!", 
                         description: "A region between Mars and Jupiter filled with rocky debris from the solar system's formation.", 
@@ -260,7 +260,7 @@ class SolarSystem3D {
                     },
                     kuiperBelt: { 
                         name: "Kuiper Belt", 
-                        radius: 8000, 
+                        radius: 24000, 
                         color: 0x4466aa, 
                         funFact: "Pluto is the largest known object in the Kuiper Belt!", 
                         description: "A vast region beyond Neptune containing icy bodies and dwarf planets.", 
@@ -268,7 +268,7 @@ class SolarSystem3D {
                     },
                     oortCloud: { 
                         name: "Oort Cloud", 
-                        radius: 50000, 
+                        radius: 150000, 
                         color: 0x6644aa, 
                         funFact: "The Oort Cloud may contain trillions of icy objects!", 
                         description: "A spherical shell of icy bodies surrounding our solar system nearly a light-year away.", 
@@ -313,8 +313,8 @@ class SolarSystem3D {
 
             createAsteroidBelt() {
                 const asteroidCount = 1600;
-                const innerRadius = 400;
-                const outerRadius = 800;
+                const innerRadius = 1200;
+                const outerRadius = 2400;
                 
                 const asteroidGeometry = new THREE.BufferGeometry();
                 const asteroidMaterial = new THREE.PointsMaterial({
@@ -343,8 +343,8 @@ class SolarSystem3D {
 
             createKuiperBelt() {
                 const kuiperCount = 2000;
-                const innerRadius = 6100;
-                const outerRadius = 10000;
+                const innerRadius = 18300;
+                const outerRadius = 30000;
                 
                 const kuiperGeometry = new THREE.BufferGeometry();
                 const kuiperMaterial = new THREE.PointsMaterial({
@@ -373,8 +373,8 @@ class SolarSystem3D {
 
             createOortCloud() {
                 const oortCount = 3000;
-                const innerRadius = 40000;
-                const outerRadius = 60000;
+                const innerRadius = 120000;
+                const outerRadius = 180000;
                 
                 const oortGeometry = new THREE.BufferGeometry();
                 const oortMaterial = new THREE.PointsMaterial({
@@ -537,31 +537,31 @@ class SolarSystem3D {
                 let lookAtPosition = new THREE.Vector3();
                 // sensible defaults
                 if (planetKey === 'solarSystem') {
-                    targetPosition.set(0, 5000, 10000);
+                    targetPosition.set(0, 15000, 30000);
                     lookAtPosition.set(0, 0, 0);
                 } else if (planetKey === 'sun') {
-                    targetPosition.set(0, 50, 150);
+                    targetPosition.set(0, 150, 450);
                     lookAtPosition.set(0, 0, 0);
                 } else if (planetKey === 'asteroidBelt') {
-                    targetPosition.set(0, 100, 500);
+                    targetPosition.set(0, 300, 1500);
                     lookAtPosition.set(0, 0, 0);
                 } else if (planetKey === 'kuiperBelt') {
-                    targetPosition.set(0, 200, 2000);
+                    targetPosition.set(0, 600, 6000);
                     lookAtPosition.set(0, 0, 0);
                 } else if (planetKey === 'oortCloud') {
-                    targetPosition.set(0, 500, 70000);
+                    targetPosition.set(0, 1500, 210000);
                     lookAtPosition.set(0, 0, 0);
                 } else {
                     // compute planet's current position in orbit
                     const angle = (this.time / (p.orbitPeriod || 1)) * 2 * Math.PI;
                     const planetPos = new THREE.Vector3(
-                        Math.cos(angle) * (p.orbitRadius || 200),
+                        Math.cos(angle) * (p.orbitRadius || 600),
                         0,
-                        Math.sin(angle) * (p.orbitRadius || 200)
+                        Math.sin(angle) * (p.orbitRadius || 600)
                     );
                     lookAtPosition.copy(planetPos);
                     // camera offset slightly above and back relative to planet
-                    targetPosition.copy(planetPos).add(new THREE.Vector3(0, Math.max(40, p.radius * 3), Math.max(80, p.radius * 8)));
+                    targetPosition.copy(planetPos).add(new THREE.Vector3(0, Math.max(120, p.radius * 3), Math.max(240, p.radius * 8)));
                 }
 
                 // Duration and easing
@@ -616,7 +616,7 @@ class SolarSystem3D {
                 const intersection = new THREE.Vector3();
                 this.raycaster.ray.intersectPlane(this.intersectPlane, intersection);
                 const distance = intersection.length();
-                const auDistance = distance / 200; // 1 AU = 200 units (consistent with data)
+                const auDistance = distance / 600; // 1 AU = 600 units (consistent with data)
                 const aux = document.getElementById('distance-display-aux');
                 if (aux) aux.textContent = `${auDistance.toFixed(2)} AU`;
 
