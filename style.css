@@ -21,15 +21,20 @@
             z-index: 1;
         }
 
+        .glass-ui {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease-in-out;
+        }
 
         /* Time Scale Bar */
         .time-scale-bar {
             position: fixed;
             top: 20px;
             left: 20px;
-            background: rgba(0, 0, 0, 0.72);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 12px;
             padding: 8px;
             z-index: 100;
@@ -38,24 +43,24 @@
         }
 
         .time-scale-btn {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 9px;
             padding: 8px 12px;
             color: white;
             cursor: pointer;
-            transition: all 0.25s ease;
             font-size: 13px;
         }
 
         .time-scale-btn:hover {
-            background: rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
         }
 
         .time-scale-btn.active {
-            background: linear-gradient(45deg, rgba(79, 172, 254, 0.12), rgba(0, 242, 254, 0.12));
+            background: linear-gradient(45deg, rgba(79, 172, 254, 0.3), rgba(0, 242, 254, 0.3));
             border-color: #4facfe;
-            box-shadow: 0 0 16px rgba(79, 172, 254, 0.12);
+            box-shadow: 0 0 16px rgba(79, 172, 254, 0.2);
         }
 
         /* Planet Selection Sidebar */
@@ -64,9 +69,6 @@
             top: 60%;
             right: 20px;
             transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.72);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 12px;
             padding: 14px;
             z-index: 100;
@@ -80,7 +82,7 @@
             margin-bottom: 12px;
             text-align: center;
             font-size: 15px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             padding-bottom: 8px;
         }
 
@@ -91,13 +93,12 @@
         }
 
         .planet-btn {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 9px;
             padding: 10px 12px;
             color: white;
             cursor: pointer;
-            transition: all 0.25s ease;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -107,14 +108,14 @@
         }
 
         .planet-btn:hover {
-            background: rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.2);
             transform: translateX(-6px) scale(1.02);
         }
 
         .planet-btn.active {
-            background: linear-gradient(45deg, rgba(79, 172, 254, 0.12), rgba(0, 242, 254, 0.12));
+            background: linear-gradient(45deg, rgba(79, 172, 254, 0.3), rgba(0, 242, 254, 0.3));
             border-color: #4facfe;
-            box-shadow: 0 0 16px rgba(79, 172, 254, 0.12);
+            box-shadow: 0 0 16px rgba(79, 172, 254, 0.2);
         }
 
         .planet-icon {
@@ -141,15 +142,11 @@
             position: absolute;
             bottom: 20px;
             left: 20px;
-            background: rgba(0, 0, 0, 0.82);
-            backdrop-filter: blur(10px);
             padding: 18px;
             border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
             max-width: 420px;
             transform: translateY(100px);
             opacity: 0;
-            transition: all 0.45s ease;
             z-index: 101;
         }
         .info-panel.show {
@@ -178,24 +175,23 @@
             border-radius: 8px;
             cursor: pointer;
             font-size: 13px;
-            transition: all 0.2s ease;
-            border: 1px solid rgba(255,255,255,0.08);
-            background: rgba(255,255,255,0.02);
-            color: white;
         }
         .details-btn { 
             background: linear-gradient(45deg,#4facfe,#00f2fe); 
             border-color:#4facfe; 
         }
         .moons-btn { 
-            background: rgba(255,255,255,0.03); 
-            border-color: rgba(255,255,255,0.08); 
+            background: rgba(255,255,255,0.1); 
+            border: 1px solid rgba(255,255,255,0.2); 
+        }
+        .moons-btn:hover {
+            background: rgba(255,255,255,0.2);
         }
 
         .scale-info { 
             margin-top:12px; 
             padding-top:8px; 
-            border-top:1px solid rgba(255,255,255,0.06); 
+            border-top:1px solid rgba(255,255,255,0.1); 
             font-size:13px; 
             color:#ccc; 
         }
@@ -205,11 +201,8 @@
             position: absolute;
             top: 20px;
             right: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(10px);
             padding: 12px;
             border-radius: 8px;
-            border: 1px solid rgba(255,255,255,0.06);
             font-size: 13px;
             color: #ccc;
             z-index: 101;
@@ -229,21 +222,17 @@
             z-index: 1200;
             opacity: 0;
             visibility: hidden;
-            transition: all 0.25s ease;
         }
         .fact-popup.show { 
             opacity: 1; 
             visibility: visible; 
         }
         .fact-content {
-            background: rgba(0,0,0,0.9);
             padding:22px;
             border-radius:12px;
-            border: 1px solid rgba(79,172,254,0.2);
             max-width:420px;
             text-align:center;
             transform: scale(0.85);
-            transition: transform 0.25s ease;
         }
         .fact-popup.show .fact-content { 
             transform: scale(1); 
@@ -266,9 +255,44 @@
             border-radius:8px;
             cursor:pointer;
         }
+        .close-btn:hover {
+            opacity: 0.8;
+        }
 
-        /* Responsive */
+        /* Bottom center info bar */
+        .bottom-bar {
+            position: fixed;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 20px;
+            z-index: 220;
+            text-align: center;
+            padding: 10px 20px;
+            font-family: 'Poppins', 'Arial', sans-serif;
+            color: #eaf2f8;
+            font-size: 1rem;
+            border-radius: 12px;
+            max-width: 92%;
+            pointer-events: auto;
+        }
+
+        .bottom-bar a {
+            color: #66fcf1;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .bottom-bar a:hover {
+            opacity: 0.95;
+            text-decoration: underline;
+        }
+
         @media (max-width: 768px) {
+            .bottom-bar {
+                bottom: 12px;
+                padding: 12px 14px;
+                font-size: 0.95rem;
+                max-width: 96%;
+            }
             .planet-sidebar { 
                 right: 10px; 
                 max-height: 70vh; 
@@ -297,47 +321,27 @@
             border-radius:3px; 
         }
 
-        /* Bottom center info bar */
+        .time-scale-bar,
+        .planet-sidebar,
+        .info-panel,
+        #distance-container,
+        .fact-content,
+        .bottom-bar,
+        .time-scale-btn,
+        .planet-btn,
+        .action-btn {
+            transition: all 0.2s ease-in-out;
+        }
+
+        .time-scale-bar,
+        .planet-sidebar,
+        .info-panel,
+        #distance-container,
+        .fact-content,
         .bottom-bar {
-            position: fixed;
-            left: 50%;
-            transform: translateX(-50%);
-            bottom: 20px;
-            z-index: 220;
-            text-align: center;
-            /* removed all padding and margin as requested */
-            padding: 0;
-            margin: 0;
-            font-family: 'Poppins', 'Arial', sans-serif;
-            color: #eaf2f8;
-            /* increased transparency (lower alpha) */
-            background: rgba(15, 20, 30, 0.12);
-            border-top: 1px solid rgba(102, 252, 241, 0.28);
-            font-size: 1rem;
-            backdrop-filter: blur(12px) saturate(180%);
-            -webkit-backdrop-filter: blur(12px) saturate(180%);
-            box-shadow: 0 -2px 15px rgba(102, 252, 241, 0.08);
-            border-radius: 12px;
-            max-width: 92%;
-            pointer-events: auto;
-        }
-
-        .bottom-bar a {
-            color: #66fcf1;
-            font-weight: 600;
-            text-decoration: none;
-            transition: opacity 0.25s ease, transform 0.25s ease;
-        }
-        .bottom-bar a:hover {
-            opacity: 0.95;
-            text-decoration: underline;
-        }
-
-        @media (max-width: 768px) {
-            .bottom-bar {
-                bottom: 12px;
-                padding: 12px 14px;
-                font-size: 0.95rem;
-                max-width: 96%;
-            }
+            background: rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
