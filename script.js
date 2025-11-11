@@ -99,7 +99,7 @@ class SolarSystem3D {
             }
 
             createSun() {
-                const sunGeometry = new THREE.SphereGeometry(60, 32, 32);
+                const sunGeometry = new THREE.SphereGeometry(120, 32, 32);
                 const sunMaterial = new THREE.MeshBasicMaterial({
                     color: 0xffff00,
                     emissive: 0xffff00,
@@ -110,7 +110,7 @@ class SolarSystem3D {
                 this.scene.add(this.sun);
 
                 // Sun glow effect
-                const glowGeometry = new THREE.SphereGeometry(90, 32, 32);
+                const glowGeometry = new THREE.SphereGeometry(180, 32, 32);
                 const glowMaterial = new THREE.MeshBasicMaterial({
                     color: 0xff6600,
                     transparent: true,
@@ -130,7 +130,7 @@ class SolarSystem3D {
                     },
                     sun: { 
                         name: "Sun", 
-                        radius: 60, 
+                        radius: 120, 
                         color: 0xffff00, 
                         funFact: "The Sun contains 99.86% of the solar system mass.", 
                         description: "Our magnificent star at the center of the solar system, providing light and energy to all planets.", 
@@ -195,7 +195,7 @@ class SolarSystem3D {
                     },
                     jupiter: { 
                         name: "Jupiter", 
-                        radius: 120, 
+                        radius: 72, 
                         orbitRadius: 3120, 
                         orbitPeriod: 4333, 
                         color: 0xd2691e, 
@@ -209,7 +209,7 @@ class SolarSystem3D {
                     },
                     saturn: { 
                         name: "Saturn", 
-                        radius: 105, 
+                        radius: 63, 
                         orbitRadius: 5724, 
                         orbitPeriod: 10759, 
                         color: 0xfad0c4, 
@@ -297,7 +297,7 @@ class SolarSystem3D {
 
                     // Create Saturn's rings
                     if (planet.rings) {
-                        const ringGeometry = new THREE.RingGeometry(planet.radius + 10, planet.radius + 25, 64);
+                        const ringGeometry = new THREE.RingGeometry(planet.radius + 10, planet.radius + 85, 640);
                         const ringMaterial = new THREE.MeshBasicMaterial({
                             color: 0xfad0c4,
                             side: THREE.DoubleSide,
@@ -306,7 +306,12 @@ class SolarSystem3D {
                         });
                         const rings = new THREE.Mesh(ringGeometry, ringMaterial);
                         rings.rotation.x = Math.PI / 2;
-                        planetMesh.add(rings);
+                        
+                        const ringGroup = new THREE.Group();
+                        ringGroup.add(rings);
+                        ringGroup.rotation.z = planet.tilt * Math.PI / 180;
+                        
+                        planetMesh.add(ringGroup);
                     }
                 });
             }
@@ -599,6 +604,13 @@ class SolarSystem3D {
                             mesh.position.z = Math.sin(angle) * planet.orbitRadius;
                             const rotationSpeed = (2 * Math.PI) / (planet.rotationPeriod || 1);
                             mesh.rotation.y += rotationSpeed * 0.016 * this.animationSpeed;
+
+                            if (planet.rings) {
+                                const ringGroup = mesh.children.find(child => child.type === 'Group');
+                                if (ringGroup) {
+                                    ringGroup.rotation.y += rotationSpeed * 0.016 * this.animationSpeed;
+                                }
+                            }
                         }
                     });
 
