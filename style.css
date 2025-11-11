@@ -61,7 +61,7 @@
         /* Planet Selection Sidebar */
         .planet-sidebar {
             position: fixed;
-            top: 50%;
+            top: 60%;
             right: 20px;
             transform: translateY(-50%);
             background: rgba(0, 0, 0, 0.72);
@@ -203,8 +203,8 @@
         /* Distance container (right side, optional) */
         #distance-container {
             position: absolute;
-            bottom: 820px;
-            right: 33px;
+            top: 20px;
+            right: 20px;
             background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(10px);
             padding: 12px;
