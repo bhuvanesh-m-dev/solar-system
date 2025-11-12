@@ -70,7 +70,6 @@ If you have ideas for new features, animations, or educational integrations, we�
 2. **Create your feature branch**
  
   ```bash
-git checkout -b feature/YourAmazingFeature
 # Commit your changes
 git add .
 git commit -m "Add your amazing feature"
