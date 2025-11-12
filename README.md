@@ -58,15 +58,12 @@ Then simply open **index.html** in your browser — no server required!
 ⏰ **Time Scale Bar** – Adjust animation speed (slow motion or hyperspeed).     
 🛰️ **Info Panel** – Displays orbit speed, distance, and fun cosmic facts.   
 
-<p align="center">
-  <img src="https://bhuvanesh-m-dev.github.io/solar-system/assets/controls.png" width="500" alt="User Controls" />
-</p>
 
 ---
 
 ## 🤝 Contributing
 
-Contributions make the **open-source cosmos** shine brighter! 🌟  
+Contributions make the **open-source cosmos** shine brighter! 🌟     
 If you have ideas for new features, animations, or educational integrations, we’d love your help.
 
 1. **Fork the project**  
@@ -74,6 +71,7 @@ If you have ideas for new features, animations, or educational integrations, we�
    ```bash
    git checkout -b feature/YourAmazingFeature
    Commit your changes
+   ```
 
 git commit -m "Add YourAmazingFeature"
 
