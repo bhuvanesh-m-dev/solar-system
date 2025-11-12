@@ -99,7 +99,8 @@ but commercial use is not permitted without written permission.
 📧 Contact: bhuvaneshm.developer@gmail.com
 
 <p align="center"> <img src="https://img.shields.io/badge/License-MIT%20|%20CC--BY--NC%204.0-blue" alt="License Badge" /> </p>
-🌌 Credits
+
+![BHUVANESH M ](https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif)
 
 Developed with ❤️ by Bhuvanesh M
 Creator of CosmoTalker — bridging astronomy, Python, and art.
