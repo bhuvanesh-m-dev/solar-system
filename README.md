@@ -69,7 +69,7 @@ If you have ideas for new features, animations, or educational integrations, we�
 1. **Fork the project**  
 2. **Create your feature branch**
  
-  ```bash
+
 # Commit your changes
 git add .
 git commit -m "Add your amazing feature"
