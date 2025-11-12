@@ -87,16 +87,11 @@ git push origin feature/YourAmazingFeature
 🧾 License
 
 ⚖️ CosmoTalker Python Library
-Licensed under the MIT License
-
-© 2025–present Bhuvanesh M
+Licensed under the MIT License © 2025–present Bhuvanesh M
 
 This library is open-source and may be used freely in personal or commercial projects with proper attribution.
 
-🌠 Solar System Visualization (Orbitarium)
-Licensed under Creative Commons Attribution–NonCommercial 4.0 International (CC BY-NC 4.0)
-
-© 2025–present Bhuvanesh M
+🌠 Solar System Visualization (Orbitarium) Licensed under Creative Commons Attribution–NonCommercial 4.0 International (CC BY-NC 4.0) © 2025–present Bhuvanesh M
 
 You are free to share and adapt the project for learning and research,
 but commercial use is not permitted without written permission.
@@ -109,6 +104,8 @@ but commercial use is not permitted without written permission.
 Developed with ❤️ by Bhuvanesh M
 Creator of CosmoTalker — bridging astronomy, Python, and art.
 
-“The universe speaks — CosmoTalker listens.” 💫
+# 🌌 CosmoTalker
+
+**The universe speaks — CosmoTalker listens.** 💫
 
 <p align="center"> <img src="https://bhuvanesh-m-dev.github.io/solar-system/assets/footer_cosmo.svg" width="420" alt="CosmoTalker Footer Visual" /> </p> ```
