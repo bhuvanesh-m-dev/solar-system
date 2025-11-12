@@ -482,6 +482,27 @@ class SolarSystem3D {
                     this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
                     this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
                 });
+
+                // Share button
+                const shareBtn = document.getElementById('share-btn');
+                const sharePopup = document.getElementById('share-popup');
+                const closeSharePopup = document.getElementById('close-share-popup');
+
+                if (shareBtn && sharePopup && closeSharePopup) {
+                    shareBtn.addEventListener('click', () => {
+                        sharePopup.classList.add('show');
+                    });
+
+                    closeSharePopup.addEventListener('click', () => {
+                        sharePopup.classList.remove('show');
+                    });
+
+                    sharePopup.addEventListener('click', (e) => {
+                        if (e.target === sharePopup) {
+                            sharePopup.classList.remove('show');
+                        }
+                    });
+                }
             }
 
             onPlanetSelected(planetKey) {
