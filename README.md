@@ -1,4 +1,4 @@
-crt the markdown language # 🌌 3D Solar System Explorer
+# 🌌 3D Solar System Explorer
 
 > **"Where code meets cosmos — explore the universe in your browser!"** 🚀  
 
