@@ -28,6 +28,9 @@
             <button class="time-scale-btn" data-speed="100000">100000x</button>
         </div>
 
+        <!-- Share Button -->
+        <button id="share-btn" class="glass-ui">Share</button>
+
         <!-- Planet Selection Sidebar -->
         <aside class="planet-sidebar" aria-label="Solar system objects">
             <h3>Solar System Objects</h3>
@@ -105,6 +108,14 @@
         <!-- Distance Display -->
         <div id="distance-container">
             <p><strong>Cursor distance:</strong> <span id="distance-display-aux">—</span></p>
+        </div>
+    </div>
+
+    <!-- Share Popup -->
+    <div id="share-popup" class="share-popup" role="dialog" aria-hidden="true">
+        <div class="share-popup-content">
+            <button id="close-share-popup" class="close-btn">&times;</button>
+            <iframe src="share.html" frameborder="0"></iframe>
         </div>
     </div>
 
