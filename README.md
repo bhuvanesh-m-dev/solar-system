@@ -1,4 +1,4 @@
-# 🌌 3D Solar System Explorer
+# 🌌 CosmoTalker : Orbitarium (3D Solar System) 
 
 > **"Where code meets cosmos — explore the universe in your browser!"** 🚀  
 
