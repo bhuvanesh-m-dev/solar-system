@@ -41,7 +41,7 @@ A modern web browser (Chrome, Edge, Firefox, or Brave, etc) with JavaScript enab
 ### 🪄 Installation
 
 ```bash
-git clone https://github.com/bhuvanesh-m-dev/solar-system.git
+git clone https://github.com/bhuvanesh-m-dev/solar-system.git ```
 
 
 
