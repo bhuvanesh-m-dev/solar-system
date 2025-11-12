@@ -9,12 +9,12 @@ Built with **Three.js / WebGL**, it transforms learning into an immersive cosmic
 
 ## 🌠 Features
 
-✨ **3D Visualization** — Glide through a realistic solar system rendered in 3D.  
-🪐 **Planet Selection** — Click any planet to view its orbit and live details.  
-⏳ **Time Scale Control** — Adjust orbital speed and rotation dynamically.  
-📋 **Information Panel** — View planetary data, mass, orbit radius, and more.  
-🌍 **Fun Facts** — Learn surprising trivia about every planet.  
-🧭 **Smooth Navigation** — Orbit, zoom, and explore freely in space.
+✨ **3D Visualization** — Glide through a realistic solar system rendered in 3D.     
+🪐 **Planet Selection** — Click any planet to view its orbit and live details.     
+⏳ **Time Scale Control** — Adjust orbital speed and rotation dynamically.      
+📋 **Information Panel** — View planetary data, mass, orbit radius, and more.      
+🌍 **Fun Facts** — Learn surprising trivia about every planet.     
+🧭 **Smooth Navigation** — Orbit, zoom, and explore freely in space.   
 
 ---
 
