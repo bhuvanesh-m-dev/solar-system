@@ -67,11 +67,14 @@ Contributions make the **open-source cosmos** shine brighter! 🌟  
 If you have ideas for new features, animations, or educational integrations, we’d love your help.
 
 1. **Fork the project**  
-2. **Create your feature branch**  
-   ```bash
-   git checkout -b feature/YourAmazingFeature
-   Commit your changes
-   ```
+2. **Create your feature branch**
+ 
+  ```bash
+git checkout -b feature/YourAmazingFeature
+# Commit your changes
+git add .
+git commit -m "Add your amazing feature"
+```
 
 git commit -m "Add YourAmazingFeature"
 
