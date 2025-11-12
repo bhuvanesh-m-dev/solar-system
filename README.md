@@ -36,7 +36,7 @@ Built with **Three.js / WebGL**, it transforms learning into an immersive cosmic
 Follow these simple steps to explore the Solar System locally.
 
 ### 🔧 Prerequisites
-A modern web browser (Chrome, Edge, Firefox, or Brave) with JavaScript enabled.
+A modern web browser (Chrome, Edge, Firefox, or Brave, etc) with JavaScript enabled.
 
 ### 🪄 Installation
 
