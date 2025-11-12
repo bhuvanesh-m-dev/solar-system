@@ -330,7 +330,7 @@
             border-radius: 12px;
             padding: 20px;
             width: 90%;
-            max-width: 500px;
+            max-width: 750px;
         }
 
         #close-share-popup {
@@ -346,7 +346,7 @@
 
         .share-popup iframe {
             width: 100%;
-            height: 250px; /* Adjust as needed */
+            height: 244px; /* Adjust as needed */
             border: none;
             background: transparent;
         }
