@@ -52,11 +52,11 @@ Then simply open **index.html** in your browser — no server required!
 
 ## 🎮 Usage Controls
 
-🖱️ **Rotate View** – Click and drag your mouse to orbit the camera.  
-🔍 **Zoom** – Use the mouse scroll wheel to zoom in/out.  
-🪐 **Select Planet** – Click on a planet or use the right sidebar list.  
-⏰ **Time Scale Bar** – Adjust animation speed (slow motion or hyperspeed).  
-🛰️ **Info Panel** – Displays orbit speed, distance, and fun cosmic facts.
+🖱️ **Rotate View** – Click and drag your mouse to orbit the camera.     
+🔍 **Zoom** – Use the mouse scroll wheel to zoom in/out.     
+🪐 **Select Planet** – Click on a planet or use the right sidebar list.     
+⏰ **Time Scale Bar** – Adjust animation speed (slow motion or hyperspeed).     
+🛰️ **Info Panel** – Displays orbit speed, distance, and fun cosmic facts.   
 
 <p align="center">
   <img src="https://bhuvanesh-m-dev.github.io/solar-system/assets/controls.png" width="500" alt="User Controls" />
