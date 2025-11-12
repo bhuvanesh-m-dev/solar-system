@@ -1,52 +1,44 @@
-# 3D Solar System Explorer
+# 🌌 3D Solar System Explorer
 
-The next phase of CosmoTalker introduces a browser-based 3D Solar System model, letting users explore planets, orbits, and live celestial data powered by CosmoTalker’s Python engine. Built with modern web technologies (like Three.js / WebGL) for an immersive learning experience.
+> **"Where code meets cosmos — explore the universe in your browser!"** 🚀  
 
-## Features
+The next phase of **CosmoTalker** brings a **browser-based 3D Solar System model**, allowing users to explore planets, orbits, and real celestial data powered by **CosmoTalker’s Python engine**.  
+Built with **Three.js / WebGL**, it transforms learning into an immersive cosmic experience — a blend of science, interactivity, and art.
 
-*   **3D Visualization:** View the solar system in 3D.
-*   **Planet Selection:** Select a planet to view its details.
-*   **Time Scale:** Control the animation speed with a time scale bar.
-*   **Information Panel:** View details about the selected planet.
-*   **Fun Facts:** Get fun facts about the planets.
+---
 
-## Demo
+## 🌠 Features
 
-You can view a live demo of the project [here](https://bhuvanesh-m-dev.github.io/solar-system/).
+✨ **3D Visualization** — Glide through a realistic solar system rendered in 3D.  
+🪐 **Planet Selection** — Click any planet to view its orbit and live details.  
+⏳ **Time Scale Control** — Adjust orbital speed and rotation dynamically.  
+📋 **Information Panel** — View planetary data, mass, orbit radius, and more.  
+🌍 **Fun Facts** — Learn surprising trivia about every planet.  
+🧭 **Smooth Navigation** — Orbit, zoom, and explore freely in space.
 
-## Getting Started
+---
 
-To get a local copy up and running follow these simple steps.
+## 🖥️ Live Demo
 
-### Prerequisites
+🚀 **Launch the Explorer here:**  
+🔗 [https://bhuvanesh-m-dev.github.io/solar-system/](https://bhuvanesh-m-dev.github.io/solar-system/)  
 
-You need a web browser to run this project.
+<p align="center">
+  <img src="https://bhuvanesh-m-dev.github.io/solar-system/assets/preview.gif" width="600" alt="3D Solar System Demo Preview" />
+</p>
 
-### Installation
+> *Not to scale — distances and planetary sizes are for visual reference only.*
 
-1.  Clone the repo
-    ```sh
-    git clone https://github.com/bhuvanesh-m-dev/solar-system.git
-    ```
-2.  Open `index.html` in your browser.
+---
 
-## Usage
+## ⚙️ Getting Started
 
-*   Use the mouse to rotate the camera.
-*   Use the scroll wheel to zoom in and out.
-*   Click on a planet in the right sidebar to view its details.
-*   Use the time scale bar in the top left to control the animation speed.
+Follow these simple steps to explore the Solar System locally.
 
-## Contributing
+### 🔧 Prerequisites
+A modern web browser (Chrome, Edge, Firefox, or Brave) with JavaScript enabled.
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+### 🪄 Installation
 
-1.  Fork the Project
-2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4.  Push to the Branch (`git push origin feature/AmazingFeature`)
-5.  Open a Pull Request
-
-## License
-
-Distributed under the MIT License. See `LICENSE` for more information.
+```bash
+git clone https://github.com/bhuvanesh-m-dev/solar-system.git
