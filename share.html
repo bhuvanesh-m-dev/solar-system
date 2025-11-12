@@ -7,7 +7,7 @@
     <style>
         :root {
             --share-url: 'https://bhuvanesh-m-dev.github.io/solar-system';
-            --share-text: 'Journey through a data-driven Solar System — where science meets design. Simplified for clarity, envisioned by CosmoTalker: Orbitarium.';
+            --share-text: 'Journey through a data-driven Solar System — where science meets design. Simplified for clarity, envisioned by CosmoTalker : Orbitarium.';
             --share-title: 'Orbitarium - A 3D Solar System Explorer';
         }
 
@@ -41,6 +41,15 @@
             font-size: 14px;
         }
 
+        p a {
+            color: #66fcf1;
+            text-decoration: none;
+        }
+
+        p a:hover {
+            text-decoration: underline;
+        }
+
         .share-buttons {
             display: flex;
             flex-wrap: wrap;
@@ -72,8 +81,8 @@
 <body>
 
     <div class="share-container">
-        <h2>Share this Experience</h2>
-        <p>Journey through a data-driven Solar System — where science meets design. Simplified for clarity, envisioned by CosmoTalker: Orbitarium.</p>
+        <h2>Share this Experience!</h2>
+        <p>Journey through a data-driven Solar System — where science meets design. Simplified for clarity, envisioned by <a href="https://github.com/bhuvanesh-m-dev/cosmotalker" target="_blank" rel="noopener noreferrer">CosmoTalker : Orbitarium</a></p>
         <div class="share-buttons">
             <a href="#" id="whatsapp-share" class="share-btn">WhatsApp</a>
             <a href="#" id="telegram-share" class="share-btn">Telegram</a>
