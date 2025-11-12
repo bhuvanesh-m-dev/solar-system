@@ -104,8 +104,6 @@ but commercial use is not permitted without written permission.
 Developed with ❤️ by Bhuvanesh M
 Creator of CosmoTalker — bridging astronomy, Python, and art.
 
-# 🌌 CosmoTalker
+![BHUVANESH M ](https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif)
 
 **The universe speaks — CosmoTalker listens.** 💫
-
-<p align="center"> <img src="https://bhuvanesh-m-dev.github.io/solar-system/assets/footer_cosmo.svg" width="420" alt="CosmoTalker Footer Visual" /> </p> ```
