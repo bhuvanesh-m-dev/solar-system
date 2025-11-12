@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Share Orbitarium</title>
+    <style>
+        :root {
+            --share-url: 'https://bhuvanesh-m-dev.github.io/solar-system';
+            --share-text: 'Journey through a data-driven Solar System — where science meets design. Simplified for clarity, envisioned by CosmoTalker: Orbitarium.';
+            --share-title: 'Orbitarium - A 3D Solar System Explorer';
+        }
+
+        body {
+            font-family: 'Poppins', 'Arial', sans-serif;
+            background: transparent;
+            color: white;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .share-container {
+            background: rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+        h2 {
+            color: #4facfe;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #eaf2f8;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .share-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .share-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 9px;
+            padding: 10px 15px;
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .share-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="share-container">
+        <h2>Share this Experience</h2>
+        <p>Journey through a data-driven Solar System — where science meets design. Simplified for clarity, envisioned by CosmoTalker: Orbitarium.</p>
+        <div class="share-buttons">
+            <a href="#" id="whatsapp-share" class="share-btn">WhatsApp</a>
+            <a href="#" id="telegram-share" class="share-btn">Telegram</a>
+            <a href="#" id="x-share" class="share-btn">X (Twitter)</a>
+            <a href="#" id="linkedin-share" class="share-btn">LinkedIn</a>
+            <button id="copy-link" class="share-btn">Copy Link</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const url = encodeURIComponent(getComputedStyle(document.documentElement).getPropertyValue('--share-url').trim().replace(/'/g, ''));
+            const text = encodeURIComponent(getComputedStyle(document.documentElement).getPropertyValue('--share-text').trim().replace(/'/g, ''));
+            const title = encodeURIComponent(getComputedStyle(document.documentElement).getPropertyValue('--share-title').trim().replace(/'/g, ''));
+
+            document.getElementById('whatsapp-share').href = `https://api.whatsapp.com/send?text=${text}%20${url}`;
+            document.getElementById('telegram-share').href = `https://t.me/share/url?url=${url}&text=${text}`;
+            document.getElementById('x-share').href = `https://twitter.com/intent/tweet?url=${url}&text=${text}`;
+            document.getElementById('linkedin-share').href = `https://www.linkedin.com/shareArticle?mini=true&url=${url}&title=${title}&summary=${text}`;
+
+            const copyLinkBtn = document.getElementById('copy-link');
+            copyLinkBtn.addEventListener('click', () => {
+                const linkToCopy = getComputedStyle(document.documentElement).getPropertyValue('--share-url').trim().replace(/'/g, '');
+                navigator.clipboard.writeText(linkToCopy).then(() => {
+                    copyLinkBtn.textContent = 'Copied!';
+                    setTimeout(() => {
+                        copyLinkBtn.textContent = 'Copy Link';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy: ', err);
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
