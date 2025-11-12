@@ -27,7 +27,7 @@ Built with **Three.js / WebGL**, it transforms learning into an immersive cosmic
   <img src="https://bhuvanesh-m-dev.github.io/solar-system/assets/preview.gif" width="600" alt="3D Solar System Demo Preview" />
 </p>
 
-> *Not to scale — distances and planetary sizes are for visual reference only.*
+> *Not to scale — planetary sizes are for visual reference only.*
 
 ---
 
