@@ -460,18 +460,6 @@ class SolarSystem3D {
                     }
                 });
 
-                // View moons button
-                document.getElementById('viewMoonsBtn').addEventListener('click', () => {
-                    if (!this.currentPlanet) return;
-                    const p = this.planetData[this.currentPlanet];
-                    if (p && Array.isArray(p.moons)) {
-                        const text = p.moons.map(m => `${m.name}: ${m.fact || ''} (${m.distance || ''})`).join('\n');
-                        alert(`Moons of ${p.name}:\n\n${text}`);
-                    } else {
-                        alert(`${p.name} has no detailed moon list.`);
-                    }
-                });
-
                 // Close fact popup
                 document.getElementById('closeFact').addEventListener('click', () => {
                     document.getElementById('factPopup').classList.remove('show');
@@ -500,6 +488,27 @@ class SolarSystem3D {
                     sharePopup.addEventListener('click', (e) => {
                         if (e.target === sharePopup) {
                             sharePopup.classList.remove('show');
+                        }
+                    });
+                }
+
+                // "More" button
+                const moreBtn = document.getElementById('more-btn');
+                const morePopup = document.getElementById('more-popup');
+                const closeMorePopup = document.getElementById('close-more-popup');
+
+                if (moreBtn && morePopup && closeMorePopup) {
+                    moreBtn.addEventListener('click', () => {
+                        morePopup.classList.add('show');
+                    });
+
+                    closeMorePopup.addEventListener('click', () => {
+                        morePopup.classList.remove('show');
+                    });
+
+                    morePopup.addEventListener('click', (e) => {
+                        if (e.target === morePopup) {
+                            morePopup.classList.remove('show');
                         }
                     });
                 }
