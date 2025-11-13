@@ -33,13 +33,13 @@
         /* Time Scale Bar */
         .time-scale-bar {
             position: fixed;
-            bottom: 140px; /* Position above the navigation info panel */
+            bottom: 20px; 
             right: 20px;
             border-radius: 12px;
             padding: 8px;
             z-index: 100;
             display: flex;
-            flex-direction: column; /* Arrange slices vertically */
+            flex-direction: row; /* Arrange buttons horizontally */
             gap: 5px;
         }
 
@@ -379,7 +379,7 @@
         /* Navigation Info Panel (bottom-right) */
         #navigation-info {
             position: fixed;
-            bottom: 20px;
+            bottom: 80px; /* Position above the time scale bar */
             right: 20px;
             padding: 15px;
             border-radius: 12px;
@@ -458,3 +458,80 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
+
+/* "More" button */
+#more-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    padding: 8px 12px;
+    border-radius: 9px;
+    color: white;
+    cursor: pointer;
+    font-size: 13px;
+    z-index: 102;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease-in-out;
+}
+
+#more-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+/* "More" Popup */
+.more-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1300;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+.more-popup.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.more-popup-content {
+    position: relative;
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    padding: 20px;
+    width: 90%;
+    max-width: 750px;
+}
+
+#close-more-popup {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.more-popup iframe {
+    width: 100%;
+    height: 244px; /* Adjust as needed */
+    border: none;
+    background: transparent;
+}
