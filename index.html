@@ -9,12 +9,24 @@
     <!-- Poppins font for UI (used by bottom bar) -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="more/style.css">
 </head>
 <body>
     <div id="container3D">
         <!-- Canvas will be created by Three.js -->
     </div>
     
+    <!-- "More" button -->
+    <button id="more-btn" class="glass-ui">More</button>
+
+    <!-- "More" Popup -->
+    <div id="more-popup" class="more-popup" role="dialog" aria-hidden="true">
+        <div class="more-popup-content">
+            <button id="close-more-popup" class="close-btn">&times;</button>
+            <iframe src="more/index.html" frameborder="0"></iframe>
+        </div>
+    </div>
+
     <!-- UI Controls -->
     <div class="ui-overlay">
         <!-- Time Scale Bar -->
@@ -119,15 +131,7 @@
         </div>
     </div>
 
-    <!-- 3D Navigation Info -->
-    <div id="navigation-info" class="glass-ui">
-        <h3>3D Navigation</h3>
-        <p>
-            Left click + Drag: Rotate view<br>
-            Right click + Drag: Pan view<br>
-            Mouse wheel: Zoom in/out
-        </p>
-    </div>
+   
 
     <!-- Fact Popup -->
     <div id="factPopup" class="fact-popup" role="dialog" aria-hidden="true">
@@ -139,6 +143,7 @@
     </div>
 
     <script src="script.js"></script>
+    <script src="more/script.js"></script>
     <!-- Bottom center info bar -->
     <div id="bottomBar" class="bottom-bar" role="contentinfo" aria-label="Site credit">
         This universe runs on <a href="https://bhuvanesh-m-dev.github.io/cosmotalker" target="_blank" rel="noopener noreferrer">CosmoTalker</a> — where Python meets the cosmos, exploring one orbit at a time.
