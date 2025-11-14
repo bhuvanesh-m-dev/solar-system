@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D சூரிய மண்டல ஆராய்ச்சி - சூரியனிலிருந்து ஓர்ட் மேகம் வரை</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.min.js"></script>
+    <!-- Poppins font for UI (used by bottom bar) -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="more/style.css">
+</head>
+<body>
+    <div id="container3D">
+        <!-- Canvas will be created by Three.js -->
+    </div>
+    
+    <!-- "More" button -->
+    <button id="more-btn" class="glass-ui">மேலும்</button>
+
+    <!-- "More" Popup -->
+    <div id="more-popup" class="more-popup" role="dialog" aria-hidden="true">
+        <div class="more-popup-content">
+            <button id="close-more-popup" class="close-btn">&times;</button>
+            <iframe src="more/index.html" frameborder="0"></iframe>
+        </div>
+    </div>
+
+    <!-- UI Controls -->
+    <div class="ui-overlay">
+        <!-- Time Scale Bar -->
+        <div class="time-scale-bar">
+            <button class="time-scale-btn" data-speed="0">இடைநிறுத்து</button>
+            <button class="time-scale-btn" data-speed="1">நிகழ்நேரம்</button>
+            <button class="time-scale-btn active" data-speed="1">1x</button>
+            <button class="time-scale-btn" data-speed="10">10x</button>
+            <button class="time-scale-btn" data-speed="100">100x</button>
+            <button class="time-scale-btn" data-speed="1000">1000x</button>
+            <button class="time-scale-btn" data-speed="100000">100000x</button>
+        </div>
+
+        <!-- Share Button -->
+        <button id="share-btn" class="glass-ui">பகிர்</button>
+
+        <!-- Planet Selection Sidebar -->
+        <aside class="planet-sidebar" aria-label="Solar system objects">
+            <h3>சூரிய மண்டல பொருட்கள்</h3>
+            <div class="planet-buttons">
+                <button class="planet-btn active" data-planet="solarSystem">
+                    <div class="planet-icon" style="background: #ffffff;"></div>
+                    <span>கண்ணோட்டம்</span>
+                </button>
+                <button class="planet-btn" data-planet="sun">
+                    <div class="planet-icon" style="background: #ffd700;"></div>
+                    <span>சூரியன்</span>
+                </button>
+                <button class="planet-btn" data-planet="mercury">
+                    <div class="planet-icon" style="background: #8c7853;"></div>
+                    <span>புதன்</span>
+                </button>
+                <button class="planet-btn" data-planet="venus">
+                    <div class="planet-icon" style="background: #ffc649;"></div>
+                    <span>வெள்ளி</span>
+                </button>
+                <button class="planet-btn" data-planet="earth">
+                    <div class="planet-icon" style="background: #4facfe;"></div>
+                    <span>பூமி</span>
+                </button>
+                <button class="planet-btn" data-planet="mars">
+                    <div class="planet-icon" style="background: #ff6b6b;"></div>
+                    <span>செவ்வாய்</span>
+                </button>
+                <button class="planet-btn" data-planet="jupiter">
+                    <div class="planet-icon" style="background: #d2691e;"></div>
+                    <span>வியாழன்</span>
+                </button>
+                <button class="planet-btn" data-planet="saturn">
+                    <div class="planet-icon" style="background: #fad0c4;"></div>
+                    <span>சனி</span>
+                </button>
+                <button class="planet-btn" data-planet="uranus">
+                    <div class="planet-icon" style="background: #4dd0e1;"></div>
+                    <span>யுரேனஸ்</span>
+                </button>
+                <button class="planet-btn" data-planet="neptune">
+                    <div class="planet-icon" style="background: #1e3c72;"></div>
+                    <span>நெப்டியூன்</span>
+                </button>
+                <button class="planet-btn" data-planet="asteroidBelt">
+                    <div class="planet-icon" style="background: #888888;"></div>
+                    <span>சிறுகோள் பட்டை</span>
+                </button>
+                <button class="planet-btn" data-planet="kuiperBelt">
+                    <div class="planet-icon" style="background: #4466aa;"></div>
+                    <span>குயிப்பர் பட்டை</span>
+                </button>
+                <button class="planet-btn" data-planet="oortCloud">
+                    <div class="planet-icon" style="background: #6644aa;"></div>
+                    <span>ஓர்ட் மேகம்</span>
+                </button>
+            </div>
+        </aside>
+        
+        <!-- Info Panel -->
+        <div id="infoPanel" class="info-panel show" aria-live="polite">
+            <h2 id="planetName">சூரிய மண்டலம்</h2>
+            <div id="planetDetails">
+                <p>முழு சூரிய மண்டலத்தின் கண்ணோட்டம்.</p>
+            </div>
+            <div class="planet-actions">
+                <button id="viewDetailsBtn" class="action-btn details-btn">விவரங்களைக் காண்க</button>
+            </div>
+            <div class="scale-info">
+                <div><strong>தூரம்:</strong> <span id="distance-display">—</span></div>
+            </div>
+        </div>
+        
+        <!-- Distance Display -->
+        <div id="distance-container">
+            <p><strong>கர்சர் தூரம்:</strong> <span id="distance-display-aux">—</span></p>
+        </div>
+    </div>
+
+    <!-- Share Popup -->
+    <div id="share-popup" class="share-popup" role="dialog" aria-hidden="true">
+        <div class="share-popup-content">
+            <button id="close-share-popup" class="close-btn">&times;</button>
+            <iframe src="share.html" frameborder="0"></iframe>
+        </div>
+    </div>
+
+   
+
+    <!-- Fact Popup -->
+    <div id="factPopup" class="fact-popup" role="dialog" aria-hidden="true">
+        <div class="fact-content">
+            <h3>🌌 உங்களுக்குத் தெரியுமா?</h3>
+            <p id="factText"></p>
+            <button id="closeFact" class="close-btn">அருமை!</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="more/script.js"></script>
+    <!-- Bottom center info bar -->
+    <div id="bottomBar" class="bottom-bar" role="contentinfo" aria-label="Site credit">
+        இந்த பிரபஞ்சம் <a href="https://bhuvanesh-m-dev.github.io/cosmotalker" target="_blank" rel="noopener noreferrer">CosmoTalker</a> மீது இயங்குகிறது — நிரல் பிரபஞ்சத்தைச் சந்திக்கும் இடம், ஒரு சுற்றுப்பாதையை ஒரு நேரத்தில் ஆராய்கிறது.
+    </div>
+</body>
+</html>
