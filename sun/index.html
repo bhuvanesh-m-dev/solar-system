@@ -1,17 +1,488 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sun Details</title>
-    <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="style.css">
+    <title>The Sun - CosmoTalker-Orbitarium</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        :root {
+            --primary-bg: #0a0a0a;
+            --secondary-bg: #1a1500;
+            --text-color: #e0e0e0;
+            --header-color: #ffffff;
+            --accent-color: #ffcc00;
+            /* Solar Yellow/Gold */
+            --card-border: #5a4a00;
+        }
+
+        body {
+            background-color: var(--primary-bg);
+            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Cg fill="%23ffcc00" fill-opacity="0.1"%3E%3Ccircle cx="50" cy="50" r="1"/%3E%3Ccircle cx="10" cy="10" r="1"/%3E%3Ccircle cx="90" cy="90" r="1"/%3E%3Ccircle cx="10" cy="90" r="1"/%3E%3Ccircle cx="90" cy="10" r="1"/%3E%3Ccircle cx="30" cy="70" r="1"/%3E%3Ccircle cx="70" cy="30" r="1"/%3E%3Ccircle cx="30" cy="30" r="1"/%3E%3Ccircle cx="70" cy="70" r="1"/%3E%3Ccircle cx="50" cy="10" r="1"/%3E%3Ccircle cx="10" cy="50" r="1"/%3E%3Ccircle cx="90" cy="50" r="1"/%3E%3Ccircle cx="50" cy="90" r="1"/%3E%3C/g%3E%3C/svg%3E');
+            color: var(--text-color);
+            font-family: 'Exo 2', sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header.hero {
+            height: 60vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://upload.wikimedia.org/wikipedia/commons/b/b4/The_Sun_by_the_Atmospheric_Imaging_Assembly_of_NASA%27s_Solar_Dynamics_Observatory_-_20100819.jpg') no-repeat center center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: var(--header-color);
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+        }
+
+        header.hero h1 {
+            font-size: 4rem;
+            margin: 0;
+            font-weight: 700;
+            color: #ffcc00;
+        }
+
+        header.hero p {
+            font-size: 1.5rem;
+            margin: 10px 0 0;
+            font-weight: 300;
+        }
+
+        .quick-facts-pill {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            background-color: rgba(46, 36, 0, 0.8);
+            padding: 15px;
+            border-radius: 50px;
+            margin-top: 2rem;
+            border: 1px solid var(--card-border);
+        }
+
+        .quick-facts-pill span {
+            background-color: var(--accent-color);
+            color: #000;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        section {
+            background-color: var(--secondary-bg);
+            margin: 2rem 0;
+            padding: 2rem;
+            border-radius: 10px;
+            border: 1px solid var(--card-border);
+        }
+
+        h2 {
+            color: var(--header-color);
+            font-size: 2.5rem;
+            font-weight: 700;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        .overview-content {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .overview-content img {
+            max-width: 300px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 204, 0, 0.2);
+        }
+
+        .key-facts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .fact-card {
+            background-color: var(--primary-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+
+        .fact-card h3 {
+            color: var(--accent-color);
+            margin-top: 0;
+            font-size: 1.2rem;
+        }
+
+        .fact-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .fact-card li {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .fact-card li strong {
+            color: var(--header-color);
+        }
+
+        #threejs-container {
+            width: 100%;
+            height: 500px;
+            border-radius: 10px;
+            background-color: #000;
+            border: 1px solid var(--card-border);
+            cursor: grab;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .gallery img {
+            width: 100%;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.05);
+        }
+
+        .share-buttons {
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .share-buttons a {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: var(--accent-color);
+            color: #000;
+            text-decoration: none;
+            font-weight: 700;
+            transition: background-color 0.3s ease;
+        }
+
+        .share-buttons a:hover {
+            background-color: #ffaa00;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        /* For accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+    </style>
 </head>
+
 <body>
-    <div class="container glass-ui">
-        <h1>View Details option from CosmoTalker : Orbitarium will be relesed soon</h1>
-        <p>Thank you to visit the CosmoTalker Orbitarium....</p>
-        <a href="../index.html" class="action-btn details-btn" style="text-decoration: none; margin-top: 20px; display: inline-block;">Return to the CosmoTalker's Orbitarium</a>
+
+    <header class="hero">
+        <h1 id="planet-name">The Sun</h1>
+        <p>The Star at the Center of our Solar System.</p>
+        <div class="quick-facts-pill">
+            <span>Star Type: G2V</span>
+            <span>Radius: 696,340 km</span>
+            <span>Mass: 1.989 x 10^30 kg</span>
+            <span>8 Planets</span>
+            <span>Age: 4.6 Billion Years</span>
+        </div>
+    </header>
+
+    <div class="container">
+        <main>
+            <section id="overview">
+                <h2>Overview</h2>
+                <div class="overview-content">
+                    <div>
+                        <p>The Sun is the star at the center of the Solar System. It is a nearly perfect ball of hot
+                            plasma, heated to incandescence by nuclear fusion reactions in its core. The Sun radiates
+                            this energy mainly as light, ultraviolet, and infrared radiation, and is the most important
+                            source of energy for life on Earth.</p>
+                        <p>Its diameter is about 1.39 million kilometers (864,000 miles), or 109 times that of Earth.
+                            Its mass is about 330,000 times that of Earth, accounting for about 99.86% of the total mass
+                            of the Solar System. Roughly three-quarters of the Sun's mass consists of hydrogen; the rest
+                            is mostly helium.</p>
+                    </div>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/The_Sun_by_the_Atmospheric_Imaging_Assembly_of_NASA%27s_Solar_Dynamics_Observatory_-_20100819.jpg/600px-The_Sun_by_the_Atmospheric_Imaging_Assembly_of_NASA%27s_Solar_Dynamics_Observatory_-_20100819.jpg"
+                        alt="Full view of the Sun showing solar flares and activity.">
+                </div>
+            </section>
+
+            <section id="key-facts">
+                <h2>Key Facts</h2>
+                <div class="key-facts-grid">
+                    <div class="fact-card">
+                        <h3>Physical</h3>
+                        <ul>
+                            <li><strong>Radius:</strong> <span>696,340 km (109 x Earth)</span></li>
+                            <li><strong>Mass:</strong> <span>1.989 x 10^30 kg</span></li>
+                            <li><strong>Surface Area:</strong> <span>6.09 x 10^12 km²</span></li>
+                            <li><strong>Gravity:</strong> <span>274 m/s² (28 x Earth)</span></li>
+                            <li><strong>Composition:</strong> <span>Hydrogen, Helium</span></li>
+                        </ul>
+                    </div>
+                    <div class="fact-card">
+                        <h3>Characteristics</h3>
+                        <ul>
+                            <li><strong>Spectral Type:</strong> <span>G2V (Yellow Dwarf)</span></li>
+                            <li><strong>Surface Temp:</strong> <span>~5,500 °C (5,778 K)</span></li>
+                            <li><strong>Core Temp:</strong> <span>~15 Million °C</span></li>
+                            <li><strong>Luminosity:</strong> <span>3.828 x 10^26 W</span></li>
+                        </ul>
+                    </div>
+                    <div class="fact-card">
+                        <h3>Rotation</h3>
+                        <ul>
+                            <li><strong>At Equator:</strong> <span>~25 Days</span></li>
+                            <li><strong>At Poles:</strong> <span>~35 Days</span></li>
+                            <li><strong>Axial Tilt:</strong> <span>7.25°</span></li>
+                        </ul>
+                    </div>
+                    <div class="fact-card">
+                        <h3>Atmosphere</h3>
+                        <ul>
+                            <li><strong>Photosphere:</strong> <span>Visible Surface</span></li>
+                            <li><strong>Chromosphere:</strong> <span>Above Photosphere</span></li>
+                            <li><strong>Corona:</strong> <span>Outer Atmosphere</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="visualisations">
+                <h2>Visualisations</h2>
+                <h3>Interactive 3D Model</h3>
+                <p>Click and drag to rotate the Sun.</p>
+                <div id="threejs-container" role="application" aria-label="Interactive 3D model of the Sun"></div>
+            </section>
+
+            <section id="internal-structure">
+                <h2>Internal Structure</h2>
+                <div class="overview-content">
+                    <div>
+                        <p>The Sun's structure consists of several layers. The <strong>Core</strong> is the innermost
+                            layer where nuclear fusion occurs, converting hydrogen into helium and releasing vast
+                            amounts of energy. Surrounding the core is the <strong>Radiative Zone</strong>, where energy
+                            travels outward through radiation.</p>
+                        <p>Above that is the <strong>Convective Zone</strong>, where hot plasma rises, cools, and sinks,
+                            creating convection currents. The visible surface is the <strong>Photosphere</strong>. Above
+                            it lie the <strong>Chromosphere</strong> and the <strong>Corona</strong>, which extends
+                            millions of kilometers into space.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="planetary-system">
+                <h2>The Planetary System</h2>
+                <p>The Sun is orbited by eight major planets, numerous dwarf planets, asteroids, comets, and other
+                    bodies. The four inner planets are terrestrial (rocky), while the four outer planets are giant
+                    planets.</p>
+
+                <div class="key-facts-grid" style="margin-top: 2rem;">
+                    <div class="fact-card">
+                        <h3>Inner Planets</h3>
+                        <ul>
+                            <li><strong>Mercury:</strong> <span>Closest, smallest</span></li>
+                            <li><strong>Venus:</strong> <span>Hottest, thick atmosphere</span></li>
+                            <li><strong>Earth:</strong> <span>Supports life, liquid water</span></li>
+                            <li><strong>Mars:</strong> <span>Red planet, potential for life</span></li>
+                        </ul>
+                        <p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--accent-color);">
+                            <a href="https://www.ecosia.org/search?q=inner+planets+solar+system" target="_blank"
+                                style="color: var(--accent-color); text-decoration: underline;">Search Inner Planets</a>
+                        </p>
+                    </div>
+                    <div class="fact-card">
+                        <h3>Outer Planets</h3>
+                        <ul>
+                            <li><strong>Jupiter:</strong> <span>Largest, Gas Giant</span></li>
+                            <li><strong>Saturn:</strong> <span>Ringed, Gas Giant</span></li>
+                            <li><strong>Uranus:</strong> <span>Tilted, Ice Giant</span></li>
+                            <li><strong>Neptune:</strong> <span>Windy, Ice Giant</span></li>
+                        </ul>
+                        <p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--accent-color);">
+                            <a href="https://www.ecosia.org/search?q=outer+planets+solar+system" target="_blank"
+                                style="color: var(--accent-color); text-decoration: underline;">Search Outer Planets</a>
+                        </p>
+                    </div>
+                </div>
+
+                <div
+                    style="margin-top: 2rem; padding: 1rem; background-color: var(--primary-bg); border-radius: 8px; border: 1px solid var(--card-border);">
+                    <p style="margin: 0; font-size: 0.9rem;">
+                        <strong>Image Resources:</strong> Search for Sun images on
+                        <a href="https://www.ecosia.org/search?q=sun+images+nasa" target="_blank"
+                            style="color: var(--accent-color); text-decoration: underline;">web</a>
+                    </p>
+                </div>
+            </section>
+
+            <section id="exploration">
+                <h2>History & Exploration</h2>
+                <p>Humans have observed the Sun since antiquity, often worshipping it as a deity. Scientific
+                    understanding grew with the development of telescopes and spectroscopy.</p>
+                <p>Modern exploration involves dedicated solar observatories. The <strong>SOHO</strong> (Solar and
+                    Heliospheric Observatory) has been watching the Sun since 1995. The <strong>Parker Solar
+                        Probe</strong>, launched in 2018, is currently flying closer to the Sun than any previous
+                    spacecraft, studying its corona and solar wind.</p>
+            </section>
+        </main>
+
+        <footer>
+            <p>
+                <strong>CosmoTalker-Orbitarium is an open-source project.</strong>
+                CosmoTalker does <em>not</em> claim ownership of the images used here. Most images are taken from online
+                sources and are distributed under Creative Commons or similar licenses; some images are
+                licensed/third-party.
+            </p>
+            <p>
+                When viewing images: <em>right-click → "Open image in new tab"</em> will open the original online image
+                URL (the source). You can also click an image to open its original source in a new tab.
+            </p>
+            <p style="font-size:0.9rem;color:#bdbdbd;">
+                If you believe an image here is incorrectly attributed or requires removal, please open an issue on the
+                CosmoTalker repository.
+            </p>
+            <p>&copy; 2025-present CosmoTalker-Orbitarium</p>
+        </footer>
+
     </div>
+
+    <script>
+        // Three.js - Interactive 3D Model
+        const container = document.getElementById('threejs-container');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        container.appendChild(renderer.domElement);
+
+        // Sun Group
+        const sunGroup = new THREE.Group();
+        scene.add(sunGroup);
+
+        // Texture Loader
+        const textureLoader = new THREE.TextureLoader();
+
+        // Sun Sphere
+        // Using MeshBasicMaterial so it glows (unaffected by lighting)
+        const geometry = new THREE.SphereGeometry(5, 64, 64);
+        const texture = textureLoader.load('https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Map_of_the_full_sun.jpg/1024px-Map_of_the_full_sun.jpg');
+        const material = new THREE.MeshBasicMaterial({ map: texture });
+        const sphere = new THREE.Mesh(geometry, material);
+        sunGroup.add(sphere);
+
+        // Optional: Add a simple glow effect using a slightly larger, transparent sphere
+        const glowGeometry = new THREE.SphereGeometry(5.2, 64, 64);
+        const glowMaterial = new THREE.MeshBasicMaterial({
+            color: 0xffaa00,
+            transparent: true,
+            opacity: 0.15,
+            side: THREE.BackSide
+        });
+        const glowMesh = new THREE.Mesh(glowGeometry, glowMaterial);
+        sunGroup.add(glowMesh);
+
+        camera.position.z = 12;
+
+        // Mouse interaction variables
+        let isMouseDown = false;
+        let previousMousePosition = { x: 0, y: 0 };
+
+        container.addEventListener('mousedown', (e) => {
+            isMouseDown = true;
+            container.style.cursor = 'grabbing';
+        });
+
+        container.addEventListener('mouseup', (e) => {
+            isMouseDown = false;
+            container.style.cursor = 'grab';
+        });
+
+        container.addEventListener('mouseleave', (e) => {
+            isMouseDown = false;
+            container.style.cursor = 'grab';
+        });
+
+        container.addEventListener('mousemove', (e) => {
+            if (!isMouseDown) return;
+
+            const deltaX = e.clientX - previousMousePosition.x;
+            const deltaY = e.clientY - previousMousePosition.y;
+
+            sunGroup.rotation.y += deltaX * 0.005;
+            sunGroup.rotation.x += deltaY * 0.005;
+
+            previousMousePosition = { x: e.clientX, y: e.clientY };
+        });
+
+        // Set initial mouse position
+        container.addEventListener('mouseenter', (e) => {
+            previousMousePosition = { x: e.clientX, y: e.clientY };
+        });
+
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            if (!isMouseDown) {
+                sphere.rotation.y += 0.001; // Slow rotation
+            }
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        });
+    </script>
+
 </body>
+
 </html>
