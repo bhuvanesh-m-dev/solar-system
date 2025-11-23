@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar System Overview - CosmoTalker-Orbitarium</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        :root {
+            --primary-bg: #0a0a0a;
+            --secondary-bg: #151515;
+            --text-color: #e0e0e0;
+            --header-color: #ffffff;
+            --accent-color: #ffcc00;
+            /* golden sun accent */
+            --card-border: #333333;
+        }
+
+        body {
+            background-color: var(--primary-bg);
+            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Cg fill="%23ffcc00" fill-opacity="0.07"%3E%3Ccircle cx="50" cy="50" r="1"/%3E%3Ccircle cx="10" cy="10" r="1"/%3E%3Ccircle cx="90" cy="90" r="1"/%3E%3Ccircle cx="10" cy="90" r="1"/%3E%3Ccircle cx="90" cy="10" r="1"/%3E%3Ccircle cx="30" cy="70" r="1"/%3E%3Ccircle cx="70" cy="30" r="1"/%3E%3Ccircle cx="30" cy="30" r="1"/%3E%3Ccircle cx="70" cy="70" r="1"/%3E%3Ccircle cx="50" cy="10" r="1"/%3E%3Ccircle cx="10" cy="50" r="1"/%3E%3Ccircle cx="90" cy="50" r="1"/%3E%3Ccircle cx="50" cy="90" r="1"/%3E%3C/g%3E%3C/svg%3E');
+            color: var(--text-color);
+            font-family: 'Exo 2', sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header.hero {
+            height: 60vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://upload.wikimedia.org/wikipedia/commons/9/97/Artist%27s_impression_of_the_Solar_System.jpg') no-repeat center center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: var(--header-color);
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+        }
+
+        header.hero h1 {
+            font-size: 4rem;
+            margin: 0;
+            font-weight: 700;
+        }
+
+        header.hero p {
+            font-size: 1.5rem;
+            margin: 10px 0 0;
+            font-weight: 300;
+        }
+
+        .quick-facts-pill {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            background-color: rgba(21, 21, 21, 0.8);
+            padding: 12px;
+            border-radius: 45px;
+            margin-top: 2rem;
+            border: 1px solid var(--card-border);
+        }
+
+        .quick-facts-pill span {
+            background-color: var(--accent-color);
+            color: #000;
+            padding: 4px 12px;
+            border-radius: 18px;
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        section {
+            background-color: var(--secondary-bg);
+            margin: 2rem 0;
+            padding: 2rem;
+            border-radius: 10px;
+            border: 1px solid var(--card-border);
+        }
+
+        h2 {
+            color: var(--header-color);
+            font-size: 2.5rem;
+            font-weight: 700;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 8px;
+            margin-top: 0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background-color: var(--primary-bg);
+            padding: 1.2rem;
+            border-radius: 8px;
+        }
+
+        .card h3 {
+            color: var(--accent-color);
+            margin-top: 0;
+            font-size: 1.2rem;
+        }
+
+        .card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .card li {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .card li strong {
+            color: var(--header-color);
+        }
+
+        #threejs-container {
+            width: 100%;
+            height: 600px;
+            border-radius: 10px;
+            background-color: var(--primary-bg);
+            border: 1px solid var(--card-border);
+            cursor: grab;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="hero">
+        <h1>Solar System</h1>
+        <p>The complete family of Sun, planets, belts, and distant clouds.</p>
+        <div class="quick-facts-pill">
+            <span>8 Planets</span>
+            <span>1 Star (Sun)</span>
+            <span>Asteroid Belt</span>
+            <span>Kuiper Belt</span>
+            <span>Oort Cloud</span>
+        </div>
+    </header>
+
+    <div class="container">
+        <main>
+            <section id="overview">
+                <h2>Overview</h2>
+                <p>The Solar System consists of the Sun at its centre, eight major planets, dwarf planets, countless
+                    moons, the asteroid belt between Mars and Jupiter, the icy Kuiper Belt beyond Neptune, and the
+                    distant, spherical Oort Cloud that is the source of long‑period comets. All bodies orbit the Sun
+                    under its dominant gravity.</p>
+            </section>
+
+            <section id="planets-summary">
+                <h2>Planets Summary</h2>
+                <div class="grid">
+                    <div class="card">
+                        <h3>Mercury</h3>
+                        <ul>
+                            <li><strong>Type:</strong> <span>Terrestrial</span></li>
+                            <li><strong>Distance:</strong> <span>0.39 AU</span></li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>Venus</h3>
+                        <ul>
+                            <li><strong>Type:</strong> <span>Terrestrial</span></li>
+                            <li><strong>Distance:</strong> <span>0.72 AU</span></li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>Earth</h3>
+                        <ul>
+                            <li><strong>Type:</strong> <span>Terrestrial</span></li>
+                            <li><strong>Distance:</strong> <span>1.00 AU</span></li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>Mars</h3>
+                        <ul>
+                            <li><strong>Type:</strong> <span>Terrestrial</span></li>
+                            <li><strong>Distance:</strong> <span>1.52 AU</span></li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>Jupiter</h3>
+                        <ul>
+                            <li><strong>Type:</strong> <span>Gas Giant</span></li>
+                            <li><strong>Distance:</strong> <span>5.20 AU</span></li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>Saturn</h3>
+                        <ul>
+                            <li><strong>Type:</strong> <span>Gas Giant</span></li>
+                            <li><strong>Distance:</strong> <span>9.58 AU</span></li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>Uranus</h3>
+                        <ul>
+                            <li><strong>Type:</strong> <span>Ice Giant</span></li>
+                            <li><strong>Distance:</strong> <span>19.2 AU</span></li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>Neptune</h3>
+                        <ul>
+                            <li><strong>Type:</strong> <span>Ice Giant</span></li>
+                            <li><strong>Distance:</strong> <span>30.1 AU</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="belts">
+                <h2>Belts & Clouds</h2>
+                <div class="grid">
+                    <div class="card">
+                        <h3>Asteroid Belt</h3>
+                        <ul>
+                            <li><strong>Location:</strong> <span>2.2–3.2 AU</span></li>
+                            <li><strong>Mass:</strong> <span>~4% of Moon</span></li>
+                            <li><strong>Notable:</strong> <span>Ceres (dwarf planet)</span></li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>Kuiper Belt</h3>
+                        <ul>
+                            <li><strong>Location:</strong> <span>30–50 AU</span></li>
+                            <li><strong>Mass:</strong> <span>~25× Asteroid Belt</span></li>
+                            <li><strong>Notable:</strong> <span>Pluto, Haumea, Makemake</span></li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>Oort Cloud</h3>
+                        <ul>
+                            <li><strong>Location:</strong> <span>2,000–100,000 AU</span></li>
+                            <li><strong>Mass:</strong> <span>Uncertain (billions of objects)</span></li>
+                            <li><strong>Source:</strong> <span>Long‑period comets</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="visualisation">
+                <h2>Interactive 3D Visualisation</h2>
+                <p>Drag to rotate the entire Solar System. The Sun is at the centre, planets are shown as coloured
+                    spheres on scaled orbits, and the belts are represented by particle rings.</p>
+                <div id="threejs-container" role="application" aria-label="Interactive 3D model of the Solar System">
+                </div>
+            </section>
+        </main>
+        <footer>
+            <p><strong>CosmoTalker‑Orbitarium is an open‑source project.</strong> Images are sourced from public
+                repositories and are used under appropriate licenses.</p>
+            <p style="font-size:0.9rem;color:#bdbdbd;">© 2025‑present CosmoTalker‑Orbitarium</p>
+        </footer>
+    </div>
+
+    <script>
+        // Three.js Solar System model – simplified scaled representation
+        const container = document.getElementById('threejs-container');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 2000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        container.appendChild(renderer.domElement);
+
+        // Sun
+        const sunGeo = new THREE.SphereGeometry(2, 32, 32);
+        const sunMat = new THREE.MeshBasicMaterial({ color: 0xffcc00 });
+        const sun = new THREE.Mesh(sunGeo, sunMat);
+        scene.add(sun);
+
+        // Planet data (scaled radii & distances for visual appeal)
+        const planets = [
+            { name: 'Mercury', color: 0xb1b1b1, radius: 0.3, distance: 5 },
+            { name: 'Venus', color: 0xe6b800, radius: 0.5, distance: 7 },
+            { name: 'Earth', color: 0x2a75ff, radius: 0.5, distance: 9 },
+            { name: 'Mars', color: 0xff4500, radius: 0.4, distance: 12 },
+            { name: 'Jupiter', color: 0xd9a066, radius: 1.2, distance: 20 },
+            { name: 'Saturn', color: 0xf5deb3, radius: 1.0, distance: 28 },
+            { name: 'Uranus', color: 0x66cdaa, radius: 0.9, distance: 36 },
+            { name: 'Neptune', color: 0x4169e1, radius: 0.9, distance: 44 }
+        ];
+
+        const planetGroup = new THREE.Group();
+        scene.add(planetGroup);
+
+        planets.forEach(p => {
+            const geo = new THREE.SphereGeometry(p.radius, 24, 24);
+            const mat = new THREE.MeshStandardMaterial({ color: p.color });
+            const mesh = new THREE.Mesh(geo, mat);
+            mesh.position.set(p.distance, 0, 0);
+            planetGroup.add(mesh);
+        });
+
+        // Asteroid Belt (particle ring)
+        const beltGeo = new THREE.RingGeometry(13, 14, 128);
+        const beltMat = new THREE.MeshBasicMaterial({ color: 0x888888, side: THREE.DoubleSide, transparent: true, opacity: 0.5 });
+        const belt = new THREE.Mesh(beltGeo, beltMat);
+        belt.rotation.x = Math.PI / 2;
+        scene.add(belt);
+
+        // Kuiper Belt (outer particle ring)
+        const kuiperGeo = new THREE.RingGeometry(30, 32, 128);
+        const kuiperMat = new THREE.MeshBasicMaterial({ color: 0x99ccff, side: THREE.DoubleSide, transparent: true, opacity: 0.4 });
+        const kuiper = new THREE.Mesh(kuiperGeo, kuiperMat);
+        kuiper.rotation.x = Math.PI / 2;
+        scene.add(kuiper);
+
+        // Lighting
+        const ambient = new THREE.AmbientLight(0xffffff, 1.2);
+        scene.add(ambient);
+
+        camera.position.set(0, 30, 80);
+        camera.lookAt(0, 0, 0);
+
+        // Mouse interaction
+        let isDown = false;
+        let prev = { x: 0, y: 0 };
+        container.addEventListener('mousedown', e => { isDown = true; container.style.cursor = 'grabbing'; });
+        container.addEventListener('mouseup', e => { isDown = false; container.style.cursor = 'grab'; });
+        container.addEventListener('mouseleave', e => { isDown = false; container.style.cursor = 'grab'; });
+        container.addEventListener('mousemove', e => {
+            if (!isDown) return;
+            const dx = e.clientX - prev.x;
+            const dy = e.clientY - prev.y;
+            scene.rotation.y += dx * 0.005;
+            scene.rotation.x += dy * 0.005;
+            prev = { x: e.clientX, y: e.clientY };
+        });
+        container.addEventListener('mouseenter', e => { prev = { x: e.clientX, y: e.clientY }; });
+
+        function animate() {
+            requestAnimationFrame(animate);
+            // Slow auto‑rotation when not dragging
+            if (!isDown) scene.rotation.y += 0.0004;
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Resize handling
+        window.addEventListener('resize', () => {
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        });
+    </script>
+</body>
+
+</html>
