@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Solar System Explorer - Earth</title>
+    <title>Earth - CosmoTalker-Orbitarium</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;700&display=swap" rel="stylesheet">
@@ -14,8 +15,9 @@
             --secondary-bg: #1a1a2e;
             --text-color: #e0e0e0;
             --header-color: #ffffff;
-            --accent-color: #4d94ff;
-            --card-border: #2a2a4a;
+            --accent-color: #4da6ff;
+            /* Blue for Earth */
+            --card-border: #2a4a5a;
         }
 
         body {
@@ -36,14 +38,14 @@
 
         header.hero {
             height: 60vh;
-            background: url('https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?q=80&w=2072&auto=format&fit=crop') no-repeat center center/cover;
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/The_Earth_seen_from_Apollo_17.jpg/1024px-The_Earth_seen_from_Apollo_17.jpg') no-repeat center center/cover;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
             color: var(--header-color);
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
         }
 
         header.hero h1 {
@@ -72,7 +74,7 @@
 
         .quick-facts-pill span {
             background-color: var(--accent-color);
-            color: var(--header-color);
+            color: #000;
             padding: 5px 15px;
             border-radius: 20px;
             font-size: 0.9rem;
@@ -162,7 +164,7 @@
             border-radius: 8px;
             transition: transform 0.3s ease;
         }
-        
+
         .gallery img:hover {
             transform: scale(1.05);
         }
@@ -178,14 +180,14 @@
             padding: 10px 20px;
             border-radius: 5px;
             background-color: var(--accent-color);
-            color: var(--header-color);
+            color: #000;
             text-decoration: none;
             font-weight: 700;
             transition: background-color 0.3s ease;
         }
 
         .share-buttons a:hover {
-            background-color: #3a7ad5;
+            background-color: #3a8cc5;
         }
 
         footer {
@@ -209,13 +211,14 @@
         }
     </style>
 </head>
+
 <body>
 
     <header class="hero">
         <h1 id="planet-name">Earth</h1>
-        <p>The Blue Marble, our home in the cosmos.</p>
+        <p>The Blue Marble, our home.</p>
         <div class="quick-facts-pill">
-            <span>1 AU from Sun</span>
+            <span>1.0 AU from Sun</span>
             <span>Radius: 6,371 km</span>
             <span>Mass: 5.97 x 10^24 kg</span>
             <span>1 Moon</span>
@@ -229,10 +232,17 @@
                 <h2>Overview</h2>
                 <div class="overview-content">
                     <div>
-                        <p>Earth, our home planet, is the third planet from the Sun and the only astronomical object known to harbor life. While large volumes of water can be found throughout the Solar System, only Earth sustains liquid surface water. About 71% of Earth's surface is made up of the ocean, dwarfing Earth's polar ice, lakes, and rivers.</p>
-                        <p>The remaining 29% of Earth's surface is land, consisting of continents and islands. Earth's surface layer is formed of several slowly moving tectonic plates, which interact to produce mountain ranges, volcanoes, and earthquakes. Earth's liquid outer core generates the magnetic field that shapes Earth's magnetosphere, deflecting damaging solar winds.</p>
+                        <p>Earth is the third planet from the Sun and the only astronomical object known to harbor life.
+                            About 29.2% of Earth's surface is land consisting of continents and islands. The remaining
+                            70.8% is covered with water, mostly by oceans, seas, gulfs, and other salt-water bodies, but
+                            also by lakes, rivers, and other freshwater, which together constitute the hydrosphere.</p>
+                        <p>Earth's atmosphere consists mostly of nitrogen and oxygen. Tropical regions receive more
+                            energy from the Sun than polar regions and is redistributed by atmospheric and ocean
+                            circulation. Greenhouse gases also play an important role in regulating the surface
+                            temperature.</p>
                     </div>
-                    <img src="https://images.unsplash.com/photo-1564053489984-3c7bb2bd2194?q=80&w=2070&auto=format&fit=crop" alt="A beautiful view of Earth from space showing clouds and oceans.">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/The_Earth_seen_from_Apollo_17.jpg/600px-The_Earth_seen_from_Apollo_17.jpg"
+                        alt="Full view of Earth from space.">
                 </div>
             </section>
 
@@ -252,24 +262,24 @@
                     <div class="fact-card">
                         <h3>Orbital</h3>
                         <ul>
-                            <li><strong>Avg. Distance:</strong> <span>1 AU (149.6M km)</span></li>
+                            <li><strong>Avg. Distance:</strong> <span>1.0 AU (149.6M km)</span></li>
                             <li><strong>Orbital Period:</strong> <span>365.25 days</span></li>
                             <li><strong>Eccentricity:</strong> <span>0.0167</span></li>
-                            <li><strong>Inclination:</strong> <span>0.00005°</span></li>
+                            <li><strong>Inclination:</strong> <span>0.00°</span></li>
                         </ul>
                     </div>
                     <div class="fact-card">
                         <h3>Rotation</h3>
                         <ul>
-                            <li><strong>Length of Day:</strong> <span>23.9 hours</span></li>
-                            <li><strong>Axial Tilt:</strong> <span>23.5°</span></li>
+                            <li><strong>Length of Day:</strong> <span>24 hours</span></li>
+                            <li><strong>Axial Tilt:</strong> <span>23.4°</span></li>
                         </ul>
                     </div>
                     <div class="fact-card">
                         <h3>Atmosphere</h3>
                         <ul>
                             <li><strong>Constituents:</strong> <span>N2 (78%), O2 (21%)</span></li>
-                            <li><strong>Pressure:</strong> <span>1 bar</span></li>
+                            <li><strong>Pressure:</strong> <span>1.013 bar</span></li>
                         </ul>
                     </div>
                 </div>
@@ -280,43 +290,95 @@
                 <h3>Interactive 3D Model</h3>
                 <p>Click and drag to rotate the planet.</p>
                 <div id="threejs-container" role="application" aria-label="Interactive 3D model of Earth"></div>
-                <h3 style="margin-top: 2rem;">Gallery</h3>
-                <div class="gallery">
-                    <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop" alt="Earth at night showing city lights.">
-                    <img src="https://images.unsplash.com/photo-1454789548928-9efd52dc4031?q=80&w=1780&auto=format&fit=crop" alt="An astronaut in space with Earth in the background.">
-                    <img src="https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?q=80&w=2071&auto=format&fit=crop" alt="A satellite's view of the Earth's curve.">
-                </div>
             </section>
-            
+
             <section id="internal-structure">
                 <h2>Internal Structure & Geology</h2>
                 <div class="overview-content">
-                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Earth_cross_section-i18.png/1024px-Earth_cross_section-i18.png" alt="Diagram of Earth's internal structure, showing crust, mantle, outer core, and inner core." style="max-width: 250px;">
                     <div>
-                        <p>Earth has a layered interior. The solid iron inner core, liquid nickel-iron outer core, silicate mantle and crust. The crust is the thinnest layer and is separated from the mantle by the Mohorovičić discontinuity. The planet's interior heat comes from a combination of residual heat from planetary accretion and from radioactive decay of elements.</p>
-                        <p>The Earth's lithosphere is divided into tectonic plates, which have been moving for billions of years. This movement is responsible for most of the planet's geological activity, including earthquakes, volcanic eruptions, and the formation of mountain ranges.</p>
+                        <p>Earth's interior, like that of the other terrestrial planets, is divided into layers by their
+                            chemical or physical (rheological) properties. The outer layer is a chemically distinct
+                            silicate solid crust, which is underlain by a highly viscous solid mantle.</p>
+                        <p>The crust is separated from the mantle by the Mohorovičić discontinuity. The thickness of the
+                            crust varies: in average 6 km (3.7 mi) under the oceans and 30–50 km (19–31 mi) for the
+                            continents. Beneath the mantle, an extremely low viscosity liquid outer core lies above a
+                            solid inner core.</p>
                     </div>
+                </div>
+            </section>
+
+            <section id="earth-moons">
+                <h2>Earth's Moon</h2>
+                <p>Earth has one large natural satellite, simply known as <strong>the Moon</strong>. It is the
+                    fifth-largest satellite in the Solar System and the largest among planetary satellites relative to
+                    the size of the planet that it orbits.</p>
+
+                <div class="key-facts-grid" style="margin-top: 2rem;">
+                    <div class="fact-card">
+                        <h3>The Moon (Luna)</h3>
+                        <ul>
+                            <li><strong>Diameter:</strong> <span>3,474 km (2,159 mi)</span></li>
+                            <li><strong>Orbital Period:</strong> <span>27.3 days</span></li>
+                            <li><strong>Distance from Earth:</strong> <span>384,400 km (238,855 mi)</span></li>
+                            <li><strong>Discovery:</strong> <span>Prehistoric</span></li>
+                        </ul>
+                        <p style="margin-top: 1rem; font-size: 0.9rem;">The Moon is tidally locked to Earth, which means
+                            that the same side always faces Earth. Its gravitational influence produces the ocean tides,
+                            body tides, and the slight lengthening of the day.</p>
+                        <p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--accent-color);">
+                            <a href="https://www.ecosia.org/search?q=earth+moon+images" target="_blank"
+                                style="color: var(--accent-color); text-decoration: underline;">Search for Moon images
+                                on web</a>
+                        </p>
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <h3 style="color: var(--accent-color); font-size: 1.5rem; margin-bottom: 1rem;">Characteristics</h3>
+                    <p>The Moon is a rocky body with a surface covered in craters, dead volcanoes, and lava flows. It
+                        has a very thin atmosphere (exosphere) and weak gravity (about 1/6th of Earth's). It is the only
+                        celestial body beyond Earth that has been visited by humans.</p>
+                </div>
+
+                <div
+                    style="margin-top: 2rem; padding: 1rem; background-color: var(--primary-bg); border-radius: 8px; border: 1px solid var(--card-border);">
+                    <p style="margin: 0; font-size: 0.9rem;">
+                        <strong>Image Resources:</strong> Search for Earth moon images on
+                        <a href="https://www.ecosia.org/search?q=earth+moon" target="_blank"
+                            style="color: var(--accent-color); text-decoration: underline;">web</a>
+                    </p>
                 </div>
             </section>
 
             <section id="exploration">
                 <h2>History & Exploration</h2>
-                <p>While Earth has been observed by humanity since antiquity, our perspective shifted dramatically in the 20th century. The Space Race between the United States and the Soviet Union led to the first artificial satellites, the first human in space (Yuri Gagarin, 1961), and the first humans to walk on the Moon (Apollo 11, 1969).</p>
-                <p>Numerous probes, satellites, and telescopes have since been launched to study our own planet from space, monitoring weather, climate, oceans, and land use. The International Space Station (ISS) serves as a permanent human outpost in low Earth orbit, dedicated to scientific research.</p>
-            </section>
-
-            <section class="share-buttons">
-                <h2>Join the Community</h2>
-                <a href="#" target="_blank" rel="noopener noreferrer">Join Discord</a>
-                <a href="#" target="_blank" rel="noopener noreferrer">Join Telegram</a>
-                <a href="#" target="_blank" rel="noopener noreferrer">Join WhatsApp</a>
+                <p>Humans have explored Earth since the dawn of our species, but space-based exploration began in the
+                    mid-20th century. The first photo of Earth from space was taken in 1946. Satellites now monitor
+                    weather, climate, and communications.</p>
+                <p>The International Space Station (ISS) has been continuously inhabited since 2000, serving as a
+                    microgravity and space environment research laboratory. Earth observation satellites provide crucial
+                    data on climate change, deforestation, and natural disasters.</p>
             </section>
         </main>
 
         <footer>
-            <p>Data sourced from NASA, ESA, and JPL. Created for educational purposes.</p>
-            <p>&copy; 2025 Solar System Explorer</p>
+            <p>
+                <strong>CosmoTalker-Orbitarium is an open-source project.</strong>
+                CosmoTalker does <em>not</em> claim ownership of the images used here. Most images are taken from online
+                sources and are distributed under Creative Commons or similar licenses; some images are
+                licensed/third-party.
+            </p>
+            <p>
+                When viewing images: <em>right-click → "Open image in new tab"</em> will open the original online image
+                URL (the source). You can also click an image to open its original source in a new tab.
+            </p>
+            <p style="font-size:0.9rem;color:#bdbdbd;">
+                If you believe an image here is incorrectly attributed or requires removal, please open an issue on the
+                CosmoTalker repository.
+            </p>
+            <p>&copy; 2025-present CosmoTalker-Orbitarium</p>
         </footer>
+
     </div>
 
     <script>
@@ -332,7 +394,8 @@
         // Planet
         const geometry = new THREE.SphereGeometry(5, 64, 64);
         const textureLoader = new THREE.TextureLoader();
-        const texture = textureLoader.load('https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Solarsystemscope_texture_8k_earth_daymap.jpg/1024px-Solarsystemscope_texture_8k_earth_daymap.jpg');
+        // Using an Earth texture map
+        const texture = textureLoader.load('https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Solarsystemscope_texture_8k_earth_daymap.jpg/1024px-Solarsystemscope_texture_8k_earth_daymap.jpg');
         const material = new THREE.MeshStandardMaterial({ map: texture });
         const sphere = new THREE.Mesh(geometry, material);
         scene.add(sphere);
@@ -359,7 +422,7 @@
             isMouseDown = false;
             container.style.cursor = 'grab';
         });
-        
+
         container.addEventListener('mouseleave', (e) => {
             isMouseDown = false;
             container.style.cursor = 'grab';
@@ -373,13 +436,13 @@
 
             sphere.rotation.y += deltaX * 0.005;
             sphere.rotation.x += deltaY * 0.005;
-        
+
             previousMousePosition = { x: e.clientX, y: e.clientY };
         });
-        
+
         // Set initial mouse position
         container.addEventListener('mouseenter', (e) => {
-             previousMousePosition = { x: e.clientX, y: e.clientY };
+            previousMousePosition = { x: e.clientX, y: e.clientY };
         });
 
 
@@ -403,4 +466,5 @@
     </script>
 
 </body>
+
 </html>
