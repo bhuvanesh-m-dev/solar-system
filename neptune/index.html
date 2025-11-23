@@ -1,17 +1,528 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sun Details</title>
-    <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="style.css">
+    <title>Neptune - CosmoTalker-Orbitarium</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        :root {
+            --primary-bg: #0a0a1a;
+            --secondary-bg: #1a1a2e;
+            --text-color: #e0e0e0;
+            --header-color: #ffffff;
+            --accent-color: #5b5ddf;
+            /* Deep Blue for Neptune */
+            --card-border: #3a3a5a;
+        }
+
+        body {
+            background-color: var(--primary-bg);
+            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Cg fill="%231a1a2e" fill-opacity="0.4"%3E%3Ccircle cx="50" cy="50" r="1"/%3E%3Ccircle cx="10" cy="10" r="1"/%3E%3Ccircle cx="90" cy="90" r="1"/%3E%3Ccircle cx="10" cy="90" r="1"/%3E%3Ccircle cx="90" cy="10" r="1"/%3E%3Ccircle cx="30" cy="70" r="1"/%3E%3Ccircle cx="70" cy="30" r="1"/%3E%3Ccircle cx="30" cy="30" r="1"/%3E%3Ccircle cx="70" cy="70" r="1"/%3E%3Ccircle cx="50" cy="10" r="1"/%3E%3Ccircle cx="10" cy="50" r="1"/%3E%3Ccircle cx="90" cy="50" r="1"/%3E%3Ccircle cx="50" cy="90" r="1"/%3E%3C/g%3E%3C/svg%3E');
+            color: var(--text-color);
+            font-family: 'Exo 2', sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header.hero {
+            height: 60vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://upload.wikimedia.org/wikipedia/commons/5/56/Neptune_Full.jpg') no-repeat center center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: var(--header-color);
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+        }
+
+        header.hero h1 {
+            font-size: 4rem;
+            margin: 0;
+            font-weight: 700;
+        }
+
+        header.hero p {
+            font-size: 1.5rem;
+            margin: 10px 0 0;
+            font-weight: 300;
+        }
+
+        .quick-facts-pill {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            background-color: rgba(26, 26, 46, 0.8);
+            padding: 15px;
+            border-radius: 50px;
+            margin-top: 2rem;
+            border: 1px solid var(--card-border);
+        }
+
+        .quick-facts-pill span {
+            background-color: var(--accent-color);
+            color: #fff;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        section {
+            background-color: var(--secondary-bg);
+            margin: 2rem 0;
+            padding: 2rem;
+            border-radius: 10px;
+            border: 1px solid var(--card-border);
+        }
+
+        h2 {
+            color: var(--header-color);
+            font-size: 2.5rem;
+            font-weight: 700;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        .overview-content {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .overview-content img {
+            max-width: 300px;
+            border-radius: 10px;
+        }
+
+        .key-facts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .fact-card {
+            background-color: var(--primary-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .fact-card h3 {
+            color: var(--accent-color);
+            margin-top: 0;
+            font-size: 1.2rem;
+        }
+
+        .fact-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .fact-card li {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .fact-card li strong {
+            color: var(--header-color);
+        }
+
+        #threejs-container {
+            width: 100%;
+            height: 500px;
+            border-radius: 10px;
+            background-color: var(--primary-bg);
+            border: 1px solid var(--card-border);
+            cursor: grab;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .gallery img {
+            width: 100%;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.05);
+        }
+
+        .share-buttons {
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .share-buttons a {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: var(--accent-color);
+            color: #fff;
+            text-decoration: none;
+            font-weight: 700;
+            transition: background-color 0.3s ease;
+        }
+
+        .share-buttons a:hover {
+            background-color: #4a4ccf;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        /* For accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+    </style>
 </head>
+
 <body>
-    <div class="container glass-ui">
-        <h1>View Details option from CosmoTalker : Orbitarium will be relesed soon</h1>
-        <p>Thank you to visit the CosmoTalker Orbitarium....</p>
-        <a href="../index.html" class="action-btn details-btn" style="text-decoration: none; margin-top: 20px; display: inline-block;">Return to the CosmoTalker's Orbitarium</a>
+
+    <header class="hero">
+        <h1 id="planet-name">Neptune</h1>
+        <p>The Windy Planet, furthest from the Sun.</p>
+        <div class="quick-facts-pill">
+            <span>30.1 AU from Sun</span>
+            <span>Radius: 24,622 km</span>
+            <span>Mass: 1.02 x 10^26 kg</span>
+            <span>14 Moons</span>
+            <span>Discovered: 1846</span>
+        </div>
+    </header>
+
+    <div class="container">
+        <main>
+            <section id="overview">
+                <h2>Overview</h2>
+                <div class="overview-content">
+                    <div>
+                        <p>Neptune is the eighth and farthest-known Solar planet from the Sun. In the Solar System, it
+                            is the fourth-largest planet by diameter, the third-most-massive planet, and the densest
+                            giant planet. It is 17 times the mass of Earth, slightly more massive than its near-twin
+                            Uranus.</p>
+                        <p>Neptune is denser and physically smaller than Uranus because its greater mass causes more
+                            gravitational compression of its atmosphere. Being composed primarily of gases and liquids,
+                            it has no well-defined "solid surface." The planet orbits the Sun once every 164.8 years.
+                        </p>
+                    </div>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Neptune_Full.jpg/600px-Neptune_Full.jpg"
+                        alt="Full view of Neptune showing its deep blue color and Great Dark Spot.">
+                </div>
+            </section>
+
+            <section id="key-facts">
+                <h2>Key Facts</h2>
+                <div class="key-facts-grid">
+                    <div class="fact-card">
+                        <h3>Physical</h3>
+                        <ul>
+                            <li><strong>Radius:</strong> <span>24,622 km</span></li>
+                            <li><strong>Mass:</strong> <span>1.02 x 10^26 kg</span></li>
+                            <li><strong>Density:</strong> <span>1.64 g/cm³</span></li>
+                            <li><strong>Gravity:</strong> <span>11.15 m/s²</span></li>
+                            <li><strong>Composition:</strong> <span>Ice Giant</span></li>
+                        </ul>
+                    </div>
+                    <div class="fact-card">
+                        <h3>Orbital</h3>
+                        <ul>
+                            <li><strong>Avg. Distance:</strong> <span>30.1 AU (4.5B km)</span></li>
+                            <li><strong>Orbital Period:</strong> <span>164.8 years</span></li>
+                            <li><strong>Eccentricity:</strong> <span>0.0086</span></li>
+                            <li><strong>Inclination:</strong> <span>1.77°</span></li>
+                        </ul>
+                    </div>
+                    <div class="fact-card">
+                        <h3>Rotation</h3>
+                        <ul>
+                            <li><strong>Length of Day:</strong> <span>16.11 hours</span></li>
+                            <li><strong>Axial Tilt:</strong> <span>28.32°</span></li>
+                        </ul>
+                    </div>
+                    <div class="fact-card">
+                        <h3>Atmosphere</h3>
+                        <ul>
+                            <li><strong>Constituents:</strong> <span>H2, He, CH4 (Methane)</span></li>
+                            <li><strong>Pressure:</strong> <span>Unknown (Gas/Ice)</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="visualisations">
+                <h2>Visualisations</h2>
+                <h3>Interactive 3D Model</h3>
+                <p>Click and drag to rotate the planet.</p>
+                <div id="threejs-container" role="application" aria-label="Interactive 3D model of Neptune"></div>
+            </section>
+
+            <section id="internal-structure">
+                <h2>Internal Structure & Geology</h2>
+                <div class="overview-content">
+                    <div>
+                        <p>Neptune's internal structure resembles that of Uranus. Its atmosphere forms about 5% to 10%
+                            of its mass and extends perhaps 10% to 20% of the way towards the core. Increasing
+                            concentrations of methane, ammonia and water are found in the lower regions of the
+                            atmosphere.</p>
+                        <p>The mantle is equivalent to 10 to 15 Earth masses and is rich in water, ammonia and methane.
+                            As is customary in planetary science, this mixture is referred to as "icy" even though it is
+                            a hot, highly dense fluid. The core is likely composed of iron, nickel and silicates.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="neptune-moons">
+                <h2>Neptune's Moons</h2>
+                <p>Neptune has 14 known moons. The largest by far is Triton, comprising more than 99.5% of the mass in
+                    orbit around Neptune. Triton is the only large moon in the Solar System with a retrograde orbit, an
+                    orbit in the direction opposite to its planet's rotation.</p>
+
+                <div class="key-facts-grid" style="margin-top: 2rem;">
+                    <div class="fact-card">
+                        <h3>Triton</h3>
+                        <ul>
+                            <li><strong>Diameter:</strong> <span>2,706 km</span></li>
+                            <li><strong>Orbital Period:</strong> <span>-5.88 days (Retrograde)</span></li>
+                            <li><strong>Feature:</strong> <span>Nitrogen geysers, retrograde orbit</span></li>
+                        </ul>
+                        <p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--accent-color);">
+                            <a href="https://www.ecosia.org/search?q=neptune+moon+triton+images" target="_blank"
+                                style="color: var(--accent-color); text-decoration: underline;">Search for Triton images
+                                on web</a>
+                        </p>
+                    </div>
+                    <div class="fact-card">
+                        <h3>Proteus</h3>
+                        <ul>
+                            <li><strong>Diameter:</strong> <span>420 km</span></li>
+                            <li><strong>Orbital Period:</strong> <span>1.12 days</span></li>
+                            <li><strong>Feature:</strong> <span>Largest irregular moon</span></li>
+                        </ul>
+                        <p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--accent-color);">
+                            <a href="https://www.ecosia.org/search?q=neptune+moon+proteus+images" target="_blank"
+                                style="color: var(--accent-color); text-decoration: underline;">Search for Proteus
+                                images on web</a>
+                        </p>
+                    </div>
+                    <div class="fact-card">
+                        <h3>Nereid</h3>
+                        <ul>
+                            <li><strong>Diameter:</strong> <span>340 km</span></li>
+                            <li><strong>Orbital Period:</strong> <span>360.1 days</span></li>
+                            <li><strong>Feature:</strong> <span>Highly eccentric orbit</span></li>
+                        </ul>
+                        <p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--accent-color);">
+                            <a href="https://www.ecosia.org/search?q=neptune+moon+nereid+images" target="_blank"
+                                style="color: var(--accent-color); text-decoration: underline;">Search for Nereid
+                                images on web</a>
+                        </p>
+                    </div>
+                    <div class="fact-card">
+                        <h3>Larissa</h3>
+                        <ul>
+                            <li><strong>Diameter:</strong> <span>194 km</span></li>
+                            <li><strong>Orbital Period:</strong> <span>0.55 days</span></li>
+                            <li><strong>Feature:</strong> <span>Heavily cratered</span></li>
+                        </ul>
+                        <p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--accent-color);">
+                            <a href="https://www.ecosia.org/search?q=neptune+moon+larissa+images" target="_blank"
+                                style="color: var(--accent-color); text-decoration: underline;">Search for Larissa
+                                images on web</a>
+                        </p>
+                    </div>
+                </div>
+
+                <div
+                    style="margin-top: 2rem; padding: 1rem; background-color: var(--primary-bg); border-radius: 8px; border: 1px solid var(--card-border);">
+                    <p style="margin: 0; font-size: 0.9rem;">
+                        <strong>Image Resources:</strong> Search for Neptune moon images on
+                        <a href="https://www.ecosia.org/search?q=neptune+moons" target="_blank"
+                            style="color: var(--accent-color); text-decoration: underline;">web</a>
+                    </p>
+                </div>
+            </section>
+
+            <section id="exploration">
+                <h2>History & Exploration</h2>
+                <p>Neptune was the first planet found by mathematical prediction rather than by empirical observation.
+                    Unexpected changes in the orbit of Uranus led Alexis Bouvard to deduce that its orbit was subject to
+                    gravitational perturbation by an unknown planet.</p>
+                <p>Neptune has been visited by only one spacecraft, Voyager 2, which flew by the planet on August 25,
+                    1989. Voyager 2 confirmed the existence of a magnetic field, discovered six new moons, and showed
+                    that Neptune has active weather systems.</p>
+            </section>
+        </main>
+
+        <footer>
+            <p>
+                <strong>CosmoTalker-Orbitarium is an open-source project.</strong>
+                CosmoTalker does <em>not</em> claim ownership of the images used here. Most images are taken from online
+                sources and are distributed under Creative Commons or similar licenses; some images are
+                licensed/third-party.
+            </p>
+            <p>
+                When viewing images: <em>right-click → "Open image in new tab"</em> will open the original online image
+                URL (the source). You can also click an image to open its original source in a new tab.
+            </p>
+            <p style="font-size:0.9rem;color:#bdbdbd;">
+                If you believe an image here is incorrectly attributed or requires removal, please open an issue on the
+                CosmoTalker repository.
+            </p>
+            <p>&copy; 2025-present CosmoTalker-Orbitarium</p>
+        </footer>
+
     </div>
+
+    <script>
+        // Three.js - Interactive 3D Model
+        const container = document.getElementById('threejs-container');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        container.appendChild(renderer.domElement);
+
+        // Planet Group
+        const neptuneGroup = new THREE.Group();
+        scene.add(neptuneGroup);
+
+        // Texture Loader
+        const textureLoader = new THREE.TextureLoader();
+
+        // Neptune Sphere
+        const geometry = new THREE.SphereGeometry(5, 64, 64);
+        const texture = textureLoader.load('https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Solarsystemscope_texture_2k_neptune.jpg/1024px-Solarsystemscope_texture_2k_neptune.jpg');
+        const material = new THREE.MeshStandardMaterial({ map: texture });
+        const sphere = new THREE.Mesh(geometry, material);
+        neptuneGroup.add(sphere);
+
+        // Neptune Rings
+        // Neptune has faint rings. We'll add a few thin ones.
+        const ringMaterial = new THREE.MeshBasicMaterial({
+            color: 0x6666ff, // Faint blueish rings
+            side: THREE.DoubleSide,
+            transparent: true,
+            opacity: 0.3
+        });
+
+        const ringGeometries = [
+            new THREE.RingGeometry(6.5, 6.6, 64), // Galle
+            new THREE.RingGeometry(8.0, 8.1, 64), // Le Verrier
+            new THREE.RingGeometry(9.5, 9.7, 64)  // Adams
+        ];
+
+        ringGeometries.forEach(geo => {
+            const ring = new THREE.Mesh(geo, ringMaterial);
+            ring.rotation.x = Math.PI / 2;
+            neptuneGroup.add(ring);
+        });
+
+        // Tilt the group (Neptune's axial tilt is ~28 degrees)
+        neptuneGroup.rotation.z = 28 * (Math.PI / 180);
+        neptuneGroup.rotation.x = 0.2;
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+        const pointLight = new THREE.PointLight(0xffffff, 0.8);
+        pointLight.position.set(20, 20, 20);
+        scene.add(pointLight);
+
+        camera.position.z = 15;
+
+        // Mouse interaction variables
+        let isMouseDown = false;
+        let previousMousePosition = { x: 0, y: 0 };
+
+        container.addEventListener('mousedown', (e) => {
+            isMouseDown = true;
+            container.style.cursor = 'grabbing';
+        });
+
+        container.addEventListener('mouseup', (e) => {
+            isMouseDown = false;
+            container.style.cursor = 'grab';
+        });
+
+        container.addEventListener('mouseleave', (e) => {
+            isMouseDown = false;
+            container.style.cursor = 'grab';
+        });
+
+        container.addEventListener('mousemove', (e) => {
+            if (!isMouseDown) return;
+
+            const deltaX = e.clientX - previousMousePosition.x;
+            const deltaY = e.clientY - previousMousePosition.y;
+
+            neptuneGroup.rotation.y += deltaX * 0.005;
+            neptuneGroup.rotation.x += deltaY * 0.005;
+
+            previousMousePosition = { x: e.clientX, y: e.clientY };
+        });
+
+        // Set initial mouse position
+        container.addEventListener('mouseenter', (e) => {
+            previousMousePosition = { x: e.clientX, y: e.clientY };
+        });
+
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            if (!isMouseDown) {
+                sphere.rotation.y += 0.002;
+            }
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        });
+    </script>
+
 </body>
+
 </html>
