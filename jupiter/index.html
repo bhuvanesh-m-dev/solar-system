@@ -4,20 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Earth - CosmoTalker-Orbitarium</title>
+    <title>Jupiter - CosmoTalker-Orbitarium</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;700&display=swap" rel="stylesheet">
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
         :root {
             --primary-bg: #0a0a1a;
             --secondary-bg: #1a1a2e;
             --text-color: #e0e0e0;
             --header-color: #ffffff;
-            --accent-color: #4da6ff;
-            /* Blue for Earth */
-            --card-border: #2a4a5a;
+            --accent-color: #d9a066;
+            /* Orange/Gold for Jupiter */
+            --card-border: #5a4a3a;
         }
 
         body {
@@ -38,7 +38,7 @@
 
         header.hero {
             height: 60vh;
-            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/The_Earth_seen_from_Apollo_17.jpg/1024px-The_Earth_seen_from_Apollo_17.jpg') no-repeat center center/cover;
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://upload.wikimedia.org/wikipedia/commons/e/e2/Jupiter.jpg') no-repeat center center/cover;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -187,7 +187,7 @@
         }
 
         .share-buttons a:hover {
-            background-color: #3a8cc5;
+            background-color: #c08b55;
         }
 
         footer {
@@ -215,13 +215,13 @@
 <body>
 
     <header class="hero">
-        <h1 id="planet-name">Earth</h1>
-        <p>The Blue Marble, our home.</p>
+        <h1 id="planet-name">Jupiter</h1>
+        <p>The King of Planets, a gas giant.</p>
         <div class="quick-facts-pill">
-            <span>1.0 AU from Sun</span>
-            <span>Radius: 6,371 km</span>
-            <span>Mass: 5.97 x 10^24 kg</span>
-            <span>1 Moon</span>
+            <span>5.2 AU from Sun</span>
+            <span>Radius: 69,911 km</span>
+            <span>Mass: 1.90 x 10^27 kg</span>
+            <span>95 Moons</span>
             <span>Discovered: Antiquity</span>
         </div>
     </header>
@@ -232,17 +232,16 @@
                 <h2>Overview</h2>
                 <div class="overview-content">
                     <div>
-                        <p>Earth is the third planet from the Sun and the only astronomical object known to harbor life.
-                            About 29.2% of Earth's surface is land consisting of continents and islands. The remaining
-                            70.8% is covered with water, mostly by oceans, seas, gulfs, and other salt-water bodies, but
-                            also by lakes, rivers, and other freshwater, which together constitute the hydrosphere.</p>
-                        <p>Earth's atmosphere consists mostly of nitrogen and oxygen. Tropical regions receive more
-                            energy from the Sun than polar regions and is redistributed by atmospheric and ocean
-                            circulation. Greenhouse gases also play an important role in regulating the surface
-                            temperature.</p>
+                        <p>Jupiter is the fifth planet from the Sun and the largest in the Solar System. It is a gas
+                            giant with a mass more than two and a half times that of all the other planets in the Solar
+                            System combined, but slightly less than one-thousandth the mass of the Sun.</p>
+                        <p>Jupiter is primarily composed of hydrogen, but helium constitutes one-quarter of its mass and
+                            one-tenth of its volume. It likely has a rocky core of heavier elements, but like the other
+                            giant planets, Jupiter lacks a well-defined solid surface. The ongoing contraction of its
+                            interior generates heat greater than the amount it receives from the Sun.</p>
                     </div>
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/The_Earth_seen_from_Apollo_17.jpg/600px-The_Earth_seen_from_Apollo_17.jpg"
-                        alt="Full view of Earth from space.">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Jupiter_and_its_shrunken_Great_Red_Spot.jpg/600px-Jupiter_and_its_shrunken_Great_Red_Spot.jpg"
+                        alt="Full view of Jupiter showing its bands and Great Red Spot.">
                 </div>
             </section>
 
@@ -252,34 +251,34 @@
                     <div class="fact-card">
                         <h3>Physical</h3>
                         <ul>
-                            <li><strong>Radius:</strong> <span>6,371 km</span></li>
-                            <li><strong>Mass:</strong> <span>5.97 x 10^24 kg</span></li>
-                            <li><strong>Density:</strong> <span>5.51 g/cm³</span></li>
-                            <li><strong>Gravity:</strong> <span>9.8 m/s²</span></li>
-                            <li><strong>Composition:</strong> <span>Rocky</span></li>
+                            <li><strong>Radius:</strong> <span>69,911 km</span></li>
+                            <li><strong>Mass:</strong> <span>1.90 x 10^27 kg</span></li>
+                            <li><strong>Density:</strong> <span>1.33 g/cm³</span></li>
+                            <li><strong>Gravity:</strong> <span>24.79 m/s²</span></li>
+                            <li><strong>Composition:</strong> <span>Gas Giant</span></li>
                         </ul>
                     </div>
                     <div class="fact-card">
                         <h3>Orbital</h3>
                         <ul>
-                            <li><strong>Avg. Distance:</strong> <span>1.0 AU (149.6M km)</span></li>
-                            <li><strong>Orbital Period:</strong> <span>365.25 days</span></li>
-                            <li><strong>Eccentricity:</strong> <span>0.0167</span></li>
-                            <li><strong>Inclination:</strong> <span>0.00°</span></li>
+                            <li><strong>Avg. Distance:</strong> <span>5.2 AU (778.5M km)</span></li>
+                            <li><strong>Orbital Period:</strong> <span>11.86 years</span></li>
+                            <li><strong>Eccentricity:</strong> <span>0.0489</span></li>
+                            <li><strong>Inclination:</strong> <span>1.30°</span></li>
                         </ul>
                     </div>
                     <div class="fact-card">
                         <h3>Rotation</h3>
                         <ul>
-                            <li><strong>Length of Day:</strong> <span>24 hours</span></li>
-                            <li><strong>Axial Tilt:</strong> <span>23.4°</span></li>
+                            <li><strong>Length of Day:</strong> <span>9.93 hours</span></li>
+                            <li><strong>Axial Tilt:</strong> <span>3.13°</span></li>
                         </ul>
                     </div>
                     <div class="fact-card">
                         <h3>Atmosphere</h3>
                         <ul>
-                            <li><strong>Constituents:</strong> <span>N2 (78%), O2 (21%)</span></li>
-                            <li><strong>Pressure:</strong> <span>1.013 bar</span></li>
+                            <li><strong>Constituents:</strong> <span>H2 (90%), He (10%)</span></li>
+                            <li><strong>Pressure:</strong> <span>Unknown (Gas)</span></li>
                         </ul>
                     </div>
                 </div>
@@ -289,62 +288,89 @@
                 <h2>Visualisations</h2>
                 <h3>Interactive 3D Model</h3>
                 <p>Click and drag to rotate the planet.</p>
-                <div id="threejs-container" role="application" aria-label="Interactive 3D model of Earth"></div>
+                <div id="threejs-container" role="application" aria-label="Interactive 3D model of Jupiter"></div>
             </section>
 
             <section id="internal-structure">
                 <h2>Internal Structure & Geology</h2>
                 <div class="overview-content">
                     <div>
-                        <p>Earth's interior, like that of the other terrestrial planets, is divided into layers by their
-                            chemical or physical (rheological) properties. The outer layer is a chemically distinct
-                            silicate solid crust, which is underlain by a highly viscous solid mantle.</p>
-                        <p>The crust is separated from the mantle by the Mohorovičić discontinuity. The thickness of the
-                            crust varies: in average 6 km (3.7 mi) under the oceans and 30–50 km (19–31 mi) for the
-                            continents. Beneath the mantle, an extremely low viscosity liquid outer core lies above a
-                            solid inner core.</p>
+                        <p>Jupiter is thought to consist of a dense core with a mixture of elements, a surrounding layer
+                            of liquid metallic hydrogen with some helium, and an outer layer predominantly of molecular
+                            hydrogen. Beyond this basic outline, there is still considerable uncertainty.</p>
+                        <p>The core is often described as rocky, but its detailed composition is unknown, as are the
+                            properties of materials at the temperatures and pressures of those depths. Above the layer
+                            of metallic hydrogen lies a transparent interior atmosphere of hydrogen.</p>
                     </div>
                 </div>
             </section>
 
-            <section id="earth-moons">
-                <h2>Earth's Moon</h2>
-                <p>Earth has one large natural satellite, simply known as <strong>the Moon</strong>. It is the
-                    fifth-largest satellite in the Solar System and the largest among planetary satellites relative to
-                    the size of the planet that it orbits.</p>
+            <section id="jupiter-moons">
+                <h2>Jupiter's Moons</h2>
+                <p>Jupiter has 95 known moons. The four largest are the <strong>Galilean moons</strong>: Io, Europa,
+                    Ganymede, and Callisto. They were discovered by Galileo Galilei in 1610 and were the first objects
+                    found to orbit a body other than Earth or the Sun.</p>
 
                 <div class="key-facts-grid" style="margin-top: 2rem;">
                     <div class="fact-card">
-                        <h3>The Moon (Luna)</h3>
+                        <h3>Io</h3>
                         <ul>
-                            <li><strong>Diameter:</strong> <span>3,474 km (2,159 mi)</span></li>
-                            <li><strong>Orbital Period:</strong> <span>27.3 days</span></li>
-                            <li><strong>Distance from Earth:</strong> <span>384,400 km (238,855 mi)</span></li>
-                            <li><strong>Discovery:</strong> <span>Prehistoric</span></li>
+                            <li><strong>Diameter:</strong> <span>3,643 km</span></li>
+                            <li><strong>Orbital Period:</strong> <span>1.77 days</span></li>
+                            <li><strong>Feature:</strong> <span>Most volcanically active</span></li>
                         </ul>
-                        <p style="margin-top: 1rem; font-size: 0.9rem;">The Moon is tidally locked to Earth, which means
-                            that the same side always faces Earth. Its gravitational influence produces the ocean tides,
-                            body tides, and the slight lengthening of the day.</p>
                         <p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--accent-color);">
-                            <a href="https://www.ecosia.org/search?q=earth+moon+images" target="_blank"
-                                style="color: var(--accent-color); text-decoration: underline;">Search for Moon images
+                            <a href="https://www.ecosia.org/search?q=jupiter+moon+io+images" target="_blank"
+                                style="color: var(--accent-color); text-decoration: underline;">Search for Io images on
+                                web</a>
+                        </p>
+                    </div>
+                    <div class="fact-card">
+                        <h3>Europa</h3>
+                        <ul>
+                            <li><strong>Diameter:</strong> <span>3,122 km</span></li>
+                            <li><strong>Orbital Period:</strong> <span>3.55 days</span></li>
+                            <li><strong>Feature:</strong> <span>Subsurface ocean</span></li>
+                        </ul>
+                        <p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--accent-color);">
+                            <a href="https://www.ecosia.org/search?q=jupiter+moon+europa+images" target="_blank"
+                                style="color: var(--accent-color); text-decoration: underline;">Search for Europa images
                                 on web</a>
                         </p>
                     </div>
-                </div>
-
-                <div style="margin-top: 2rem;">
-                    <h3 style="color: var(--accent-color); font-size: 1.5rem; margin-bottom: 1rem;">Characteristics</h3>
-                    <p>The Moon is a rocky body with a surface covered in craters, dead volcanoes, and lava flows. It
-                        has a very thin atmosphere (exosphere) and weak gravity (about 1/6th of Earth's). It is the only
-                        celestial body beyond Earth that has been visited by humans.</p>
+                    <div class="fact-card">
+                        <h3>Ganymede</h3>
+                        <ul>
+                            <li><strong>Diameter:</strong> <span>5,268 km</span></li>
+                            <li><strong>Orbital Period:</strong> <span>7.15 days</span></li>
+                            <li><strong>Feature:</strong> <span>Largest moon in Solar System</span></li>
+                        </ul>
+                        <p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--accent-color);">
+                            <a href="https://www.ecosia.org/search?q=jupiter+moon+ganymede+images" target="_blank"
+                                style="color: var(--accent-color); text-decoration: underline;">Search for Ganymede
+                                images on web</a>
+                        </p>
+                    </div>
+                    <div class="fact-card">
+                        <h3>Callisto</h3>
+                        <ul>
+                            <li><strong>Diameter:</strong> <span>4,821 km</span></li>
+                            <li><strong>Orbital Period:</strong> <span>16.69 days</span></li>
+                            <li><strong>Feature:</strong> <span>Heavily cratered</span></li>
+                        </ul>
+                        <p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--accent-color);">
+                            <a href="https://www.ecosia.org/search?q=jupiter+moon+callisto+images" target="_blank"
+                                style="color: var(--accent-color); text-decoration: underline;">Search for Callisto
+                                images on web</a>
+                        </p>
+                    </div>
                 </div>
 
                 <div
                     style="margin-top: 2rem; padding: 1rem; background-color: var(--primary-bg); border-radius: 8px; border: 1px solid var(--card-border);">
                     <p style="margin: 0; font-size: 0.9rem;">
-                        <strong>Image Resources:</strong> Search for Earth moon images on
-                        <a href="https://www.ecosia.org/search?q=earth+moon" target="_blank"
+                        <strong>Image Resources:</strong> Search for Jupiter moon images on
+                        <a href="https://www.ecosia.org/search?q=jupiter+moons" target="_blank"
                             style="color: var(--accent-color); text-decoration: underline;">web</a>
                     </p>
                 </div>
@@ -352,12 +378,11 @@
 
             <section id="exploration">
                 <h2>History & Exploration</h2>
-                <p>Humans have explored Earth since the dawn of our species, but space-based exploration began in the
-                    mid-20th century. The first photo of Earth from space was taken in 1946. Satellites now monitor
-                    weather, climate, and communications.</p>
-                <p>The International Space Station (ISS) has been continuously inhabited since 2000, serving as a
-                    microgravity and space environment research laboratory. Earth observation satellites provide crucial
-                    data on climate change, deforestation, and natural disasters.</p>
+                <p>Jupiter has been explored on several occasions by robotic spacecraft, beginning with the Pioneer 10
+                    flyby in 1973. The Voyager missions in 1979 provided detailed views of the planet and its moons.</p>
+                <p>The Galileo orbiter (1995–2003) studied the planet and its moons in depth. The Juno spacecraft, which
+                    arrived in 2016, is currently studying Jupiter's gravitational and magnetic fields and polar
+                    magnetosphere.</p>
             </section>
         </main>
 
@@ -377,587 +402,81 @@
                 CosmoTalker repository.
             </p>
             <p>&copy; 2025-present CosmoTalker-Orbitarium</p>
-            font-weight: 700;
-            transition: background-color 0.3s ease;
+        </footer>
+
+    </div>
+
+    <script>
+        // Three.js - Interactive 3D Model
+        const container = document.getElementById('threejs-container');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        scene.add(ambientLight);
+        const pointLight = new THREE.PointLight(0xffffff, 1);
+        pointLight.position.set(10, 10, 10);
+        scene.add(pointLight);
+
+        camera.position.z = 10;
+
+        // Mouse interaction variables
+        let isMouseDown = false;
+        let previousMousePosition = { x: 0, y: 0 };
+
+        container.addEventListener('mousedown', (e) => {
+            isMouseDown = true;
+            container.style.cursor = 'grabbing';
+        });
+
+        container.addEventListener('mouseup', (e) => {
+            isMouseDown = false;
+            container.style.cursor = 'grab';
+        });
+
+        container.addEventListener('mouseleave', (e) => {
+            isMouseDown = false;
+            container.style.cursor = 'grab';
+        });
+
+        container.addEventListener('mousemove', (e) => {
+            if (!isMouseDown) return;
+
+            const deltaX = e.clientX - previousMousePosition.x;
+            const deltaY = e.clientY - previousMousePosition.y;
+
+            sphere.rotation.y += deltaX * 0.005;
+            sphere.rotation.x += deltaY * 0.005;
+
+            previousMousePosition = { x: e.clientX, y: e.clientY };
+        });
+
+        // Set initial mouse position
+        container.addEventListener('mouseenter', (e) => {
+            previousMousePosition = { x: e.clientX, y: e.clientY };
+        });
+
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            if (!isMouseDown) {
+                sphere.rotation.y += 0.001; // Auto-rotate
             }
+            renderer.render(scene, camera);
+        }
 
-            .share-buttons a:hover {
-            background-color: #3a8cc5;
-            }
+        animate();
 
-            footer {
-            text-align: center;
-            padding: 1rem;
-            font-size: 0.9rem;
-            color: #aaa;
-            }
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        });
+    </script>
 
-            /* For accessibility */
-            .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border-width: 0;
-            }
-            </style>
-            </head>
+</body>
 
-            <body>
-
-                <header class="hero">
-                    <h1 id="planet-name">Earth</h1>
-                    <p>The Blue Marble, our home.</p>
-                    <div class="quick-facts-pill">
-                        <span>1.0 AU from Sun</span>
-                        <span>Radius: 6,371 km</span>
-                        <span>Mass: 5.97 x 10^24 kg</span>
-                        <span>1 Moon</span>
-                        <span>Discovered: Antiquity</span>
-                    </div>
-                </header>
-
-                <div class="container">
-                    <main>
-                        <section id="overview">
-                            <h2>Overview</h2>
-                            <div class="overview-content">
-                                <div>
-                                    <p>Earth is the third planet from the Sun and the only astronomical object known to
-                                        harbor life.
-                                        About 29.2% of Earth's surface is land consisting of continents and islands. The
-                                        remaining
-                                        70.8% is covered with water, mostly by oceans, seas, gulfs, and other salt-water
-                                        bodies, but
-                                        also by lakes, rivers, and other freshwater, which together constitute the
-                                        hydrosphere.</p>
-                                    <p>Earth's atmosphere consists mostly of nitrogen and oxygen. Tropical regions
-                                        receive more
-                                        energy from the Sun than polar regions and is redistributed by atmospheric and
-                                        ocean
-                                        circulation. Greenhouse gases also play an important role in regulating the
-                                        surface
-                                        temperature.</p>
-                                </div>
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/The_Earth_seen_from_Apollo_17.jpg/600px-The_Earth_seen_from_Apollo_17.jpg"
-                                    alt="Full view of Earth from space.">
-                            </div>
-                        </section>
-
-                        <section id="key-facts">
-                            <h2>Key Facts</h2>
-                            <div class="key-facts-grid">
-                                <div class="fact-card">
-                                    <h3>Physical</h3>
-                                    <ul>
-                                        <li><strong>Radius:</strong> <span>6,371 km</span></li>
-                                        <li><strong>Mass:</strong> <span>5.97 x 10^24 kg</span></li>
-                                        <li><strong>Density:</strong> <span>5.51 g/cm³</span></li>
-                                        <li><strong>Gravity:</strong> <span>9.8 m/s²</span></li>
-                                        <li><strong>Composition:</strong> <span>Rocky</span></li>
-                                    </ul>
-                                </div>
-                                <div class="fact-card">
-                                    <h3>Orbital</h3>
-                                    <ul>
-                                        <li><strong>Avg. Distance:</strong> <span>1.0 AU (149.6M km)</span></li>
-                                        <li><strong>Orbital Period:</strong> <span>365.25 days</span></li>
-                                        <li><strong>Eccentricity:</strong> <span>0.0167</span></li>
-                                        <li><strong>Inclination:</strong> <span>0.00°</span></li>
-                                    </ul>
-                                </div>
-                                <div class="fact-card">
-                                    <h3>Rotation</h3>
-                                    <ul>
-                                        <li><strong>Length of Day:</strong> <span>24 hours</span></li>
-                                        <li><strong>Axial Tilt:</strong> <span>23.4°</span></li>
-                                    </ul>
-                                </div>
-                                <div class="fact-card">
-                                    <h3>Atmosphere</h3>
-                                    <ul>
-                                        <li><strong>Constituents:</strong> <span>N2 (78%), O2 (21%)</span></li>
-                                        <li><strong>Pressure:</strong> <span>1.013 bar</span></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </section>
-
-                        <section id="visualisations">
-                            <h2>Visualisations</h2>
-                            <h3>Interactive 3D Model</h3>
-                            <p>Click and drag to rotate the planet.</p>
-                            <div id="threejs-container" role="application" aria-label="Interactive 3D model of Earth">
-                            </div>
-                        </section>
-
-                        <section id="internal-structure">
-                            <h2>Internal Structure & Geology</h2>
-                            <div class="overview-content">
-                                <div>
-                                    <p>Earth's interior, like that of the other terrestrial planets, is divided into
-                                        layers by their
-                                        chemical or physical (rheological) properties. The outer layer is a chemically
-                                        distinct
-                                        silicate solid crust, which is underlain by a highly viscous solid mantle.</p>
-                                    <p>The crust is separated from the mantle by the Mohorovičić discontinuity. The
-                                        thickness of the
-                                        crust varies: in average 6 km (3.7 mi) under the oceans and 30–50 km (19–31 mi)
-                                        for the
-                                        continents. Beneath the mantle, an extremely low viscosity liquid outer core
-                                        lies above a
-                                        solid inner core.</p>
-                                </div>
-                            </div>
-                        </section>
-
-                        <section id="earth-moons">
-                            <h2>Earth's Moon</h2>
-                            <p>Earth has one large natural satellite, simply known as <strong>the Moon</strong>. It is
-                                the
-                                fifth-largest satellite in the Solar System and the largest among planetary satellites
-                                relative to
-                                the size of the planet that it orbits.</p>
-
-                            <div class="key-facts-grid" style="margin-top: 2rem;">
-                                <div class="fact-card">
-                                    <h3>The Moon (Luna)</h3>
-                                    <ul>
-                                        <li><strong>Diameter:</strong> <span>3,474 km (2,159 mi)</span></li>
-                                        <li><strong>Orbital Period:</strong> <span>27.3 days</span></li>
-                                        <li><strong>Distance from Earth:</strong> <span>384,400 km (238,855 mi)</span>
-                                        </li>
-                                        <li><strong>Discovery:</strong> <span>Prehistoric</span></li>
-                                    </ul>
-                                    <p style="margin-top: 1rem; font-size: 0.9rem;">The Moon is tidally locked to Earth,
-                                        which means
-                                        that the same side always faces Earth. Its gravitational influence produces the
-                                        ocean tides,
-                                        body tides, and the slight lengthening of the day.</p>
-                                    <p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--accent-color);">
-                                        <a href="https://www.ecosia.org/search?q=earth+moon+images" target="_blank"
-                                            style="color: var(--accent-color); text-decoration: underline;">Search for
-                                            Moon images
-                                            on web</a>
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div style="margin-top: 2rem;">
-                                <h3 style="color: var(--accent-color); font-size: 1.5rem; margin-bottom: 1rem;">
-                                    Characteristics</h3>
-                                <p>The Moon is a rocky body with a surface covered in craters, dead volcanoes, and lava
-                                    flows. It
-                                    has a very thin atmosphere (exosphere) and weak gravity (about 1/6th of Earth's). It
-                                    is the only
-                                    celestial body beyond Earth that has been visited by humans.</p>
-                            </div>
-
-                            <div
-                                style="margin-top: 2rem; padding: 1rem; background-color: var(--primary-bg); border-radius: 8px; border: 1px solid var(--card-border);">
-                                <p style="margin: 0; font-size: 0.9rem;">
-                                    <strong>Image Resources:</strong> Search for Earth moon images on
-                                    <a href="https://www.ecosia.org/search?q=earth+moon" target="_blank"
-                                        style="color: var(--accent-color); text-decoration: underline;">web</a>
-                                </p>
-                            </div>
-                        </section>
-
-                        <section id="exploration">
-                            <h2>History & Exploration</h2>
-                            <p>Humans have explored Earth since the dawn of our species, but space-based exploration
-                                began in the
-                                mid-20th century. The first photo of Earth from space was taken in 1946. Satellites now
-                                monitor
-                                weather, climate, and communications.</p>
-                            <p>The International Space Station (ISS) has been continuously inhabited since 2000, serving
-                                as a
-                                microgravity and space environment research laboratory. Earth observation satellites
-                                provide crucial
-                                data on climate change, deforestation, and natural disasters.</p>
-                        </section>
-                    </main>
-
-                    <footer>
-                        <p>
-                            <strong>CosmoTalker-Orbitarium is an open-source project.</strong>
-                            }
-
-                            /* For accessibility */
-                            .sr-only {
-                            position: absolute;
-                            width: 1px;
-                            height: 1px;
-                            padding: 0;
-                            margin: -1px;
-                            overflow: hidden;
-                            clip: rect(0, 0, 0, 0);
-                            white-space: nowrap;
-                            border-width: 0;
-                            }
-                            </style>
-                            </head>
-
-                            <body>
-
-                                <header class="hero">
-                                    <h1 id="planet-name">Earth</h1>
-                                    <p>The Blue Marble, our home.</p>
-                                    <div class="quick-facts-pill">
-                                        <span>1.0 AU from Sun</span>
-                                        <span>Radius: 6,371 km</span>
-                                        <span>Mass: 5.97 x 10^24 kg</span>
-                                        <span>1 Moon</span>
-                                        <span>Discovered: Antiquity</span>
-                                    </div>
-                                </header>
-
-                                <div class="container">
-                                    <main>
-                                        <section id="overview">
-                                            <h2>Overview</h2>
-                                            <div class="overview-content">
-                                                <div>
-                                                    <p>Earth is the third planet from the Sun and the only astronomical
-                                                        object known to
-                                                        harbor life.
-                                                        About 29.2% of Earth's surface is land consisting of continents
-                                                        and islands. The
-                                                        remaining
-                                                        70.8% is covered with water, mostly by oceans, seas, gulfs, and
-                                                        other salt-water
-                                                        bodies, but
-                                                        also by lakes, rivers, and other freshwater, which together
-                                                        constitute the
-                                                        hydrosphere.</p>
-                                                    <p>Earth's atmosphere consists mostly of nitrogen and oxygen.
-                                                        Tropical regions
-                                                        receive more
-                                                        energy from the Sun than polar regions and is redistributed by
-                                                        atmospheric and
-                                                        ocean
-                                                        circulation. Greenhouse gases also play an important role in
-                                                        regulating the
-                                                        surface
-                                                        temperature.</p>
-                                                </div>
-                                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/The_Earth_seen_from_Apollo_17.jpg/600px-The_Earth_seen_from_Apollo_17.jpg"
-                                                    alt="Full view of Earth from space.">
-                                            </div>
-                                        </section>
-
-                                        <section id="key-facts">
-                                            <h2>Key Facts</h2>
-                                            <div class="key-facts-grid">
-                                                <div class="fact-card">
-                                                    <h3>Physical</h3>
-                                                    <ul>
-                                                        <li><strong>Radius:</strong> <span>6,371 km</span></li>
-                                                        <li><strong>Mass:</strong> <span>5.97 x 10^24 kg</span></li>
-                                                        <li><strong>Density:</strong> <span>5.51 g/cm³</span></li>
-                                                        <li><strong>Gravity:</strong> <span>9.8 m/s²</span></li>
-                                                        <li><strong>Composition:</strong> <span>Rocky</span></li>
-                                                    </ul>
-                                                </div>
-                                                <div class="fact-card">
-                                                    <h3>Orbital</h3>
-                                                    <ul>
-                                                        <li><strong>Avg. Distance:</strong> <span>1.0 AU (149.6M
-                                                                km)</span></li>
-                                                        <li><strong>Orbital Period:</strong> <span>365.25 days</span>
-                                                        </li>
-                                                        <li><strong>Eccentricity:</strong> <span>0.0167</span></li>
-                                                        <li><strong>Inclination:</strong> <span>0.00°</span></li>
-                                                    </ul>
-                                                </div>
-                                                <div class="fact-card">
-                                                    <h3>Rotation</h3>
-                                                    <ul>
-                                                        <li><strong>Length of Day:</strong> <span>24 hours</span></li>
-                                                        <li><strong>Axial Tilt:</strong> <span>23.4°</span></li>
-                                                    </ul>
-                                                </div>
-                                                <div class="fact-card">
-                                                    <h3>Atmosphere</h3>
-                                                    <ul>
-                                                        <li><strong>Constituents:</strong> <span>N2 (78%), O2
-                                                                (21%)</span></li>
-                                                        <li><strong>Pressure:</strong> <span>1.013 bar</span></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </section>
-
-                                        <section id="visualisations">
-                                            <h2>Visualisations</h2>
-                                            <h3>Interactive 3D Model</h3>
-                                            <p>Click and drag to rotate the planet.</p>
-                                            <div id="threejs-container" role="application"
-                                                aria-label="Interactive 3D model of Earth">
-                                            </div>
-                                        </section>
-
-                                        <section id="internal-structure">
-                                            <h2>Internal Structure & Geology</h2>
-                                            <div class="overview-content">
-                                                <div>
-                                                    <p>Earth's interior, like that of the other terrestrial planets, is
-                                                        divided into
-                                                        layers by their
-                                                        chemical or physical (rheological) properties. The outer layer
-                                                        is a chemically
-                                                        distinct
-                                                        silicate solid crust, which is underlain by a highly viscous
-                                                        solid mantle.</p>
-                                                    <p>The crust is separated from the mantle by the Mohorovičić
-                                                        discontinuity. The
-                                                        thickness of the
-                                                        crust varies: in average 6 km (3.7 mi) under the oceans and
-                                                        30–50 km (19–31 mi)
-                                                        for the
-                                                        continents. Beneath the mantle, an extremely low viscosity
-                                                        liquid outer core
-                                                        lies above a
-                                                        solid inner core.</p>
-                                                </div>
-                                            </div>
-                                        </section>
-
-                                        <section id="earth-moons">
-                                            <h2>Earth's Moon</h2>
-                                            <p>Earth has one large natural satellite, simply known as <strong>the
-                                                    Moon</strong>. It is
-                                                the
-                                                fifth-largest satellite in the Solar System and the largest among
-                                                planetary satellites
-                                                relative to
-                                                the size of the planet that it orbits.</p>
-
-                                            <div class="key-facts-grid" style="margin-top: 2rem;">
-                                                <div class="fact-card">
-                                                    <h3>The Moon (Luna)</h3>
-                                                    <ul>
-                                                        <li><strong>Diameter:</strong> <span>3,474 km (2,159 mi)</span>
-                                                        </li>
-                                                        <li><strong>Orbital Period:</strong> <span>27.3 days</span></li>
-                                                        <li><strong>Distance from Earth:</strong> <span>384,400 km
-                                                                (238,855 mi)</span>
-                                                        </li>
-                                                        <li><strong>Discovery:</strong> <span>Prehistoric</span></li>
-                                                    </ul>
-                                                    <p style="margin-top: 1rem; font-size: 0.9rem;">The Moon is tidally
-                                                        locked to Earth,
-                                                        which means
-                                                        that the same side always faces Earth. Its gravitational
-                                                        influence produces the
-                                                        ocean tides,
-                                                        body tides, and the slight lengthening of the day.</p>
-                                                    <p
-                                                        style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--accent-color);">
-                                                        <a href="https://www.ecosia.org/search?q=earth+moon+images"
-                                                            target="_blank"
-                                                            style="color: var(--accent-color); text-decoration: underline;">Search
-                                                            for
-                                                            Moon images
-                                                            on web</a>
-                                                    </p>
-                                                </div>
-                                            </div>
-
-                                            <div style="margin-top: 2rem;">
-                                                <h3
-                                                    style="color: var(--accent-color); font-size: 1.5rem; margin-bottom: 1rem;">
-                                                    Characteristics</h3>
-                                                <p>The Moon is a rocky body with a surface covered in craters, dead
-                                                    volcanoes, and lava
-                                                    flows. It
-                                                    has a very thin atmosphere (exosphere) and weak gravity (about 1/6th
-                                                    of Earth's). It
-                                                    is the only
-                                                    celestial body beyond Earth that has been visited by humans.</p>
-                                            </div>
-
-                                            <div
-                                                style="margin-top: 2rem; padding: 1rem; background-color: var(--primary-bg); border-radius: 8px; border: 1px solid var(--card-border);">
-                                                <p style="margin: 0; font-size: 0.9rem;">
-                                                    <strong>Image Resources:</strong> Search for Earth moon images on
-                                                    <a href="https://www.ecosia.org/search?q=earth+moon" target="_blank"
-                                                        style="color: var(--accent-color); text-decoration: underline;">web</a>
-                                                </p>
-                                            </div>
-                                        </section>
-
-                                        <section id="exploration">
-                                            <h2>History & Exploration</h2>
-                                            <p>Humans have explored Earth since the dawn of our species, but space-based
-                                                exploration
-                                                began in the
-                                                mid-20th century. The first photo of Earth from space was taken in 1946.
-                                                Satellites now
-                                                monitor
-                                                weather, climate, and communications.</p>
-                                            <p>The International Space Station (ISS) has been continuously inhabited
-                                                since 2000, serving
-                                                as a
-                                                microgravity and space environment research laboratory. Earth
-                                                observation satellites
-                                                provide crucial
-                                                data on climate change, deforestation, and natural disasters.</p>
-                                        </section>
-                                    </main>
-
-                                    <footer>
-                                        <p>
-                                            <strong>CosmoTalker-Orbitarium is an open-source project.</strong>
-                                            CosmoTalker does <em>not</em> claim ownership of the images used here. Most
-                                            images are taken
-                                            from online
-                                            sources and are distributed under Creative Commons or similar licenses; some
-                                            images are
-                                            licensed/third-party.
-                                        </p>
-                                        <p>
-                                            When viewing images: <em>right-click → "Open image in new tab"</em> will
-                                            open the original
-                                            online image
-                                            URL (the source). You can also click an image to open its original source in
-                                            a new tab.
-                                        </p>
-                                        <p>&copy; 2025-present CosmoTalker-Orbitarium</p>
-                                    </footer>
-
-                                </div>
-
-                                <!-- Import map for Three.js modules -->
-                                <script type="importmap">
-                    {
-                        "imports": {
-                            "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-                            "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-                        }
-                    }
-                </script>
-                                <script type="module">
-                                    import * as THREE from 'three';
-                                    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-
-                                    const container = document.getElementById('threejs-container');
-
-                                    // Scene Setup
-                                    const scene = new THREE.Scene();
-                                    // Add a subtle background starfield color or keep transparent
-                                    // scene.background = new THREE.Color(0x050505); 
-
-                                    const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-                                    camera.position.z = 15;
-
-                                    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-                                    renderer.setSize(container.clientWidth, container.clientHeight);
-                                    renderer.setPixelRatio(window.devicePixelRatio);
-                                    container.appendChild(renderer.domElement);
-
-                                    // Controls
-                                    const controls = new OrbitControls(camera, renderer.domElement);
-                                    controls.enableDamping = true;
-                                    controls.dampingFactor = 0.05;
-                                    controls.enableZoom = true;
-                                    controls.minDistance = 6;
-                                    controls.maxDistance = 50;
-                                    controls.autoRotate = true;
-                                    controls.autoRotateSpeed = 1.0;
-
-                                    // Texture Loader
-                                    const textureLoader = new THREE.TextureLoader();
-
-                                    // Earth Group
-                                    const earthGroup = new THREE.Group();
-                                    scene.add(earthGroup);
-
-                                    // 1. Earth Sphere
-                                    const earthGeometry = new THREE.SphereGeometry(5, 64, 64);
-                                    const earthMaterial = new THREE.MeshPhongMaterial({
-                                        map: textureLoader.load('https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Solarsystemscope_texture_8k_earth_daymap.jpg/1024px-Solarsystemscope_texture_8k_earth_daymap.jpg'),
-                                        specularMap: textureLoader.load('https://upload.wikimedia.org/wikipedia/commons/c/cf/Solarsystemscope_texture_8k_earth_specular_map.jpg'), // Specular map for shiny oceans
-                                        specular: new THREE.Color('grey'),
-                                        shininess: 10
-                                    });
-                                    const earthMesh = new THREE.Mesh(earthGeometry, earthMaterial);
-                                    earthGroup.add(earthMesh);
-
-                                    // 2. Clouds
-                                    const cloudGeometry = new THREE.SphereGeometry(5.05, 64, 64);
-                                    const cloudMaterial = new THREE.MeshPhongMaterial({
-                                        map: textureLoader.load('https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Solarsystemscope_texture_8k_earth_clouds.jpg/1024px-Solarsystemscope_texture_8k_earth_clouds.jpg'),
-                                        transparent: true,
-                                        opacity: 0.8,
-                                        blending: THREE.AdditiveBlending,
-                                        side: THREE.DoubleSide
-                                    });
-                                    const cloudMesh = new THREE.Mesh(cloudGeometry, cloudMaterial);
-                                    earthGroup.add(cloudMesh);
-
-                                    // 3. Atmosphere Glow (Simple Fresnel-like effect using a sprite or larger sphere)
-                                    const atmosphereGeometry = new THREE.SphereGeometry(5.2, 64, 64);
-                                    const atmosphereMaterial = new THREE.MeshPhongMaterial({
-                                        color: 0x4da6ff,
-                                        transparent: true,
-                                        opacity: 0.1,
-                                        side: THREE.BackSide
-                                    });
-                                    const atmosphereMesh = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
-                                    earthGroup.add(atmosphereMesh);
-
-
-                                    // 4. Starfield
-                                    const starGeometry = new THREE.BufferGeometry();
-                                    const starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.05 });
-                                    const starVertices = [];
-                                    for (let i = 0; i < 2000; i++) {
-                                        const x = (Math.random() - 0.5) * 200;
-                                        const y = (Math.random() - 0.5) * 200;
-                                        const z = (Math.random() - 0.5) * 200;
-                                        // Keep stars away from the center
-                                        if (Math.abs(x) < 10 && Math.abs(y) < 10 && Math.abs(z) < 10) continue;
-                                        starVertices.push(x, y, z);
-                                    }
-                                    starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
-                                    const stars = new THREE.Points(starGeometry, starMaterial);
-                                    scene.add(stars);
-
-                                    // Lighting
-                                    const ambientLight = new THREE.AmbientLight(0x333333);
-                                    scene.add(ambientLight);
-
-                                    const sunLight = new THREE.DirectionalLight(0xffffff, 1.5);
-                                    sunLight.position.set(50, 30, 50);
-                                    scene.add(sunLight);
-
-                                    // Animation Loop
-                                    function animate() {
-                                        requestAnimationFrame(animate);
-
-                                        // Rotate clouds slightly faster than earth
-                                        cloudMesh.rotation.y += 0.0005;
-
-                                        // Earth rotation is handled by autoRotate in controls, but we can add extra if needed
-                                        // earthMesh.rotation.y += 0.0002; 
-
-                                        controls.update();
-                                        renderer.render(scene, camera);
-                                    }
-
-                                    animate();
-
-                                    // Handle window resize
-                                    window.addEventListener('resize', () => {
-                                        camera.aspect = container.clientWidth / container.clientHeight;
-                                        camera.updateProjectionMatrix();
-                                        renderer.setSize(container.clientWidth, container.clientHeight);
-                                    });
-                                </script>
-
-                            </body>
+</html>
