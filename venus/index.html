@@ -1,17 +1,441 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sun Details</title>
-    <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="style.css">
+    <title>Venus - CosmoTalker-Orbitarium</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        :root {
+            --primary-bg: #0a0a1a;
+            --secondary-bg: #1a1a2e;
+            --text-color: #e0e0e0;
+            --header-color: #ffffff;
+            --accent-color: #e6c229;
+            /* Yellow/Gold for Venus */
+            --card-border: #5a4a2a;
+        }
+
+        body {
+            background-color: var(--primary-bg);
+            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Cg fill="%231a1a2e" fill-opacity="0.4"%3E%3Ccircle cx="50" cy="50" r="1"/%3E%3Ccircle cx="10" cy="10" r="1"/%3E%3Ccircle cx="90" cy="90" r="1"/%3E%3Ccircle cx="10" cy="90" r="1"/%3E%3Ccircle cx="90" cy="10" r="1"/%3E%3Ccircle cx="30" cy="70" r="1"/%3E%3Ccircle cx="70" cy="30" r="1"/%3E%3Ccircle cx="30" cy="30" r="1"/%3E%3Ccircle cx="70" cy="70" r="1"/%3E%3Ccircle cx="50" cy="10" r="1"/%3E%3Ccircle cx="10" cy="50" r="1"/%3E%3Ccircle cx="90" cy="50" r="1"/%3E%3Ccircle cx="50" cy="90" r="1"/%3E%3C/g%3E%3C/svg%3E');
+            color: var(--text-color);
+            font-family: 'Exo 2', sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header.hero {
+            height: 60vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://upload.wikimedia.org/wikipedia/commons/e/e5/Venus-real_color.jpg') no-repeat center center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: var(--header-color);
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+        }
+
+        header.hero h1 {
+            font-size: 4rem;
+            margin: 0;
+            font-weight: 700;
+        }
+
+        header.hero p {
+            font-size: 1.5rem;
+            margin: 10px 0 0;
+            font-weight: 300;
+        }
+
+        .quick-facts-pill {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            background-color: rgba(26, 26, 46, 0.8);
+            padding: 15px;
+            border-radius: 50px;
+            margin-top: 2rem;
+            border: 1px solid var(--card-border);
+        }
+
+        .quick-facts-pill span {
+            background-color: var(--accent-color);
+            color: #000;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        section {
+            background-color: var(--secondary-bg);
+            margin: 2rem 0;
+            padding: 2rem;
+            border-radius: 10px;
+            border: 1px solid var(--card-border);
+        }
+
+        h2 {
+            color: var(--header-color);
+            font-size: 2.5rem;
+            font-weight: 700;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        .overview-content {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .overview-content img {
+            max-width: 300px;
+            border-radius: 10px;
+        }
+
+        .key-facts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .fact-card {
+            background-color: var(--primary-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .fact-card h3 {
+            color: var(--accent-color);
+            margin-top: 0;
+            font-size: 1.2rem;
+        }
+
+        .fact-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .fact-card li {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .fact-card li strong {
+            color: var(--header-color);
+        }
+
+        #threejs-container {
+            width: 100%;
+            height: 500px;
+            border-radius: 10px;
+            background-color: var(--primary-bg);
+            border: 1px solid var(--card-border);
+            cursor: grab;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .gallery img {
+            width: 100%;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.05);
+        }
+
+        .share-buttons {
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .share-buttons a {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: var(--accent-color);
+            color: #000;
+            text-decoration: none;
+            font-weight: 700;
+            transition: background-color 0.3s ease;
+        }
+
+        .share-buttons a:hover {
+            background-color: #c4a000;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        /* For accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+    </style>
 </head>
+
 <body>
-    <div class="container glass-ui">
-        <h1>View Details option from CosmoTalker : Orbitarium will be relesed soon</h1>
-        <p>Thank you to visit the CosmoTalker Orbitarium....</p>
-        <a href="../index.html" class="action-btn details-btn" style="text-decoration: none; margin-top: 20px; display: inline-block;">Return to the CosmoTalker's Orbitarium</a>
+
+    <header class="hero">
+        <h1 id="planet-name">Venus</h1>
+        <p>The Morning Star, Earth's Twin.</p>
+        <div class="quick-facts-pill">
+            <span>0.72 AU from Sun</span>
+            <span>Radius: 6,052 km</span>
+            <span>Mass: 4.87 x 10^24 kg</span>
+            <span>0 Moons</span>
+            <span>Discovered: Antiquity</span>
+        </div>
+    </header>
+
+    <div class="container">
+        <main>
+            <section id="overview">
+                <h2>Overview</h2>
+                <div class="overview-content">
+                    <div>
+                        <p>Venus is the second planet from the Sun. It is named after the Roman goddess of love and
+                            beauty. As the brightest natural object in Earth's night sky after the Moon, Venus can cast
+                            shadows and can be visible to the naked eye in broad daylight.</p>
+                        <p>Venus is a terrestrial planet and is sometimes called Earth's "sister planet" because of
+                            their similar size, mass, proximity to the Sun, and bulk composition. However, it is
+                            radically different from Earth in other respects. It has the densest atmosphere of the four
+                            terrestrial planets, consisting of more than 96% carbon dioxide.</p>
+                    </div>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e5/Venus-real_color.jpg"
+                        alt="Full view of Venus.">
+                </div>
+            </section>
+
+            <section id="key-facts">
+                <h2>Key Facts</h2>
+                <div class="key-facts-grid">
+                    <div class="fact-card">
+                        <h3>Physical</h3>
+                        <ul>
+                            <li><strong>Radius:</strong> <span>6,052 km</span></li>
+                            <li><strong>Mass:</strong> <span>4.87 x 10^24 kg</span></li>
+                            <li><strong>Density:</strong> <span>5.24 g/cm³</span></li>
+                            <li><strong>Gravity:</strong> <span>8.87 m/s²</span></li>
+                            <li><strong>Composition:</strong> <span>Rocky</span></li>
+                        </ul>
+                    </div>
+                    <div class="fact-card">
+                        <h3>Orbital</h3>
+                        <ul>
+                            <li><strong>Avg. Distance:</strong> <span>0.72 AU (108.2M km)</span></li>
+                            <li><strong>Orbital Period:</strong> <span>225 days</span></li>
+                            <li><strong>Eccentricity:</strong> <span>0.0067</span></li>
+                            <li><strong>Inclination:</strong> <span>3.39°</span></li>
+                        </ul>
+                    </div>
+                    <div class="fact-card">
+                        <h3>Rotation</h3>
+                        <ul>
+                            <li><strong>Length of Day:</strong> <span>243 Earth days</span></li>
+                            <li><strong>Axial Tilt:</strong> <span>177.4° (Retrograde)</span></li>
+                        </ul>
+                    </div>
+                    <div class="fact-card">
+                        <h3>Atmosphere</h3>
+                        <ul>
+                            <li><strong>Constituents:</strong> <span>CO2 (96.5%), N2 (3.5%)</span></li>
+                            <li><strong>Pressure:</strong> <span>92 bar</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="visualisations">
+                <h2>Visualisations</h2>
+                <h3>Interactive 3D Model</h3>
+                <p>Click and drag to rotate the planet.</p>
+                <div id="threejs-container" role="application" aria-label="Interactive 3D model of Venus"></div>
+            </section>
+
+            <section id="internal-structure">
+                <h2>Internal Structure & Geology</h2>
+                <div class="overview-content">
+                    <div>
+                        <p>Without seismic data or knowledge of its moment of inertia, little direct information is
+                            available about the internal structure and geochemistry of Venus. However, the similarity in
+                            size and density between Venus and Earth suggests they share a similar internal structure: a
+                            core, mantle, and crust.</p>
+                        <p>Like that of Earth, the Venusian core is most likely at least partially liquid because the
+                            two planets have been cooling at about the same rate. The slightly smaller size of Venus
+                            means pressures are 24% lower in its deep interior than Earth's.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="venus-moons">
+                <h2>Venus Moons</h2>
+                <p>Venus does not have any moons. It is one of only two planets in our solar system (the other being
+                    Mercury) that does not have a natural satellite.</p>
+
+                <div
+                    style="margin-top: 2rem; padding: 1rem; background-color: var(--primary-bg); border-radius: 8px; border: 1px solid var(--card-border);">
+                    <p style="margin: 0; font-size: 0.9rem;">
+                        <strong>Image Resources:</strong> Search for Venus images on
+                        <a href="https://www.google.com/search?q=venus+planet" target="_blank"
+                            style="color: var(--accent-color); text-decoration: underline;">Google</a>
+                    </p>
+                </div>
+            </section>
+
+            <section id="exploration">
+                <h2>History & Exploration</h2>
+                <p>The first robotic space probe mission to Venus, and the first to any planet, began with the Soviet
+                    Venera program in 1961. The United States' Mariner 2 became the first spacecraft to successfully fly
+                    by Venus in 1962.</p>
+                <p>Venera 7 became the first spacecraft to land on another planet in 1970. Magellan orbited Venus from
+                    1990 to 1994, mapping 98% of the surface. Currently, Japan's Akatsuki orbiter is studying the
+                    atmosphere.</p>
+            </section>
+        </main>
+
+        <footer>
+            <p>
+                <strong>CosmoTalker-Orbitarium is an open-source project.</strong>
+                CosmoTalker does <em>not</em> claim ownership of the images used here. Most images are taken from online
+                sources and are distributed under Creative Commons or similar licenses; some images are
+                licensed/third-party.
+            </p>
+            <p>
+                When viewing images: <em>right-click → "Open image in new tab"</em> will open the original online image
+                URL (the source). You can also click an image to open its original source in a new tab.
+            </p>
+            <p style="font-size:0.9rem;color:#bdbdbd;">
+                If you believe an image here is incorrectly attributed or requires removal, please open an issue on the
+                CosmoTalker repository.
+            </p>
+            <p>&copy; 2025-present CosmoTalker-Orbitarium</p>
+        </footer>
+
     </div>
+
+    <script>
+        // Three.js - Interactive 3D Model
+        const container = document.getElementById('threejs-container');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        container.appendChild(renderer.domElement);
+
+        // Planet
+        const geometry = new THREE.SphereGeometry(5, 64, 64);
+        const textureLoader = new THREE.TextureLoader();
+        // Using a Venus texture map
+        const texture = textureLoader.load('https://upload.wikimedia.org/wikipedia/commons/1/19/Cylindrical_Map_of_Venus.jpg');
+        const material = new THREE.MeshStandardMaterial({ map: texture });
+        const sphere = new THREE.Mesh(geometry, material);
+        scene.add(sphere);
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+        const pointLight = new THREE.PointLight(0xffffff, 1);
+        pointLight.position.set(10, 10, 10);
+        scene.add(pointLight);
+
+        camera.position.z = 10;
+
+        // Mouse interaction variables
+        let isMouseDown = false;
+        let previousMousePosition = { x: 0, y: 0 };
+
+        container.addEventListener('mousedown', (e) => {
+            isMouseDown = true;
+            container.style.cursor = 'grabbing';
+        });
+
+        container.addEventListener('mouseup', (e) => {
+            isMouseDown = false;
+            container.style.cursor = 'grab';
+        });
+
+        container.addEventListener('mouseleave', (e) => {
+            isMouseDown = false;
+            container.style.cursor = 'grab';
+        });
+
+        container.addEventListener('mousemove', (e) => {
+            if (!isMouseDown) return;
+
+            const deltaX = e.clientX - previousMousePosition.x;
+            const deltaY = e.clientY - previousMousePosition.y;
+
+            sphere.rotation.y += deltaX * 0.005;
+            sphere.rotation.x += deltaY * 0.005;
+
+            previousMousePosition = { x: e.clientX, y: e.clientY };
+        });
+
+        // Set initial mouse position
+        container.addEventListener('mouseenter', (e) => {
+            previousMousePosition = { x: e.clientX, y: e.clientY };
+        });
+
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            if (!isMouseDown) {
+                sphere.rotation.y += 0.001; // Auto-rotate
+            }
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        });
+    </script>
+
 </body>
+
 </html>
